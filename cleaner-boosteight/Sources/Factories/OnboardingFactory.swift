@@ -6,15 +6,15 @@ enum OnboardingFactory {
             .init(
                 title: "Clean your Storage",
                 description: "Pick the best & delete the rest",
-                image: .test),
+                image: .onb1),
             .init(
                 title: "Detect Similar Photos",
                 description: "Clean similar photos & videos, save your storage\nspace on your phone.",
-                image: .test),
+                image: .onb2),
             .init(
                 title: "Video Compressor",
                 description: "Find large videos or media files and compress\nthem to free up storage space",
-                image: .test),
+                image: .onb3),
         ]
     }
 }

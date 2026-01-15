@@ -19,6 +19,11 @@ final class OnboardingPageView: UIView {
         return $0
     }(UILabel())
     
+    let imageView = {
+        $0.contentMode = .scaleAspectFit
+        return $0
+    }(UIImageView())
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
@@ -31,8 +36,13 @@ final class OnboardingPageView: UIView {
 
 private extension OnboardingPageView {
     func setupConstraints() {
-        [descriptionLabel, titleLabel].forEach {
+        [imageView, titleLabel, descriptionLabel].forEach {
             addSubview($0)
+        }
+        
+        imageView.snp.makeConstraints {
+            $0.top.equalTo(safeTop).inset(44)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints {

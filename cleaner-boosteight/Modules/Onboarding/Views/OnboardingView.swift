@@ -28,7 +28,7 @@ private extension OnboardingView {
         
         continueButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.bottom.equalTo(safeBottom).inset(UIDevice.hasHomeButton ? 16 : 0)
+            $0.bottom.equalTo(safeBottom).inset(16)
         }
         
         pageControl.snp.makeConstraints {

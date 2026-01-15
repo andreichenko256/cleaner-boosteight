@@ -19,7 +19,7 @@ extension OnboardingPageViewController {
     func configure(with onboardingModel: OnboardingPageModel) {
         onboardingPageView.titleLabel.text = onboardingModel.title
         onboardingPageView.descriptionLabel.text = onboardingModel.description
-//        onboardingPageView.imageView.image = onboardingModel.image
+        onboardingPageView.imageView.image = onboardingModel.image
     }
 }
 
