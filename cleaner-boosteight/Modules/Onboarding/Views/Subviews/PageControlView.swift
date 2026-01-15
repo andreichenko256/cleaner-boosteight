@@ -77,7 +77,7 @@ private extension PageControlView {
             let isActive = index == currentPage
             let targetColor = isActive ? Colors.primaryBlue : Colors.inactiveDot
             dot.backgroundColor = targetColor
-            dot.snp.makeConstraints {
+            dot.snp.remakeConstraints {
                 $0.height.equalTo(dotSize)
                 $0.width.equalTo(isActive ? dotSize * 2 : dotSize)
             }

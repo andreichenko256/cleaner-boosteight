@@ -1,10 +1,13 @@
 import UIKit
 import SnapKit
+import Combine
 
 final class OnboardingViewController: UIViewController {
     private var pages: [UIViewController] = []
     private var pageModels: [OnboardingPageModel] = []
-    private var currentPageIndex = 0
+    
+    private let viewModel = OnboardingViewModel()
+    private var cancellables: Set<AnyCancellable> = []
     
     private let pageVC = UIPageViewController(
         transitionStyle: .scroll,
@@ -18,6 +21,7 @@ final class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindViewModel()
         createPages()
         setupActions()
         setupPageVC()
@@ -54,10 +58,22 @@ private extension OnboardingViewController {
         pageModels = OnboardingFactory.make()
         pages = pageModels.enumerated().map { index, model in
             let viewController = OnboardingPageViewController()
-            viewController.isLastPage = index == pageModels.count - 1
+            
             viewController.configure(with: model)
             return viewController
         }
+    }
+}
+
+private extension OnboardingViewController {
+    func bindViewModel() {
+        viewModel.$currentPageIndex
+            .sink { [weak self] in
+                self?.onboardingView.pageControl.currentPage = $0
+            }
+            .store(in: &cancellables)
+        
+        onboardingView.pageControl.numberOfPages = viewModel.numberOfPages
     }
 }
 
@@ -68,7 +84,27 @@ private extension OnboardingViewController {
     
     func continueButtonTapped() {
         onboardingView.continueButton.onTap = { [weak self] in
-            print("continue")
+            guard let self else { return }
+            if viewModel.isLastPage {
+                viewModel.continueButtonTapped()
+            } else {
+                moveToNextPage()
+            }
+
         }
     }
+    
+    func moveToNextPage() {
+           guard let nextVC = viewModel.getViewController(at: viewModel.currentPageIndex + 1) else {
+               return
+           }
+           
+           pageVC.setViewControllers(
+               [nextVC],
+               direction: .forward,
+               animated: true
+           ) { [weak self] _ in
+               self?.viewModel.continueButtonTapped()
+           }
+       }
 }
