@@ -44,7 +44,7 @@ final class PageControlView: UIView {
 
 private extension PageControlView {
     func setupConstraints() {
-       addSubview(stackView)
+        addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.height.equalTo(dotSize)
@@ -60,13 +60,13 @@ private extension PageControlView {
             dots.append(dot)
             stackView.addArrangedSubview(dot)
         }
-    
+        
         
         updateDots()
     }
     
     func createDot() -> UIView {
-        let dot = UIView() 
+        let dot = UIView()
         dot.backgroundColor = Colors.inactiveDot
         dot.layer.cornerRadius = cornerRadius
         dot.clipsToBounds = true
@@ -80,11 +80,19 @@ private extension PageControlView {
         for (index, dot) in dots.enumerated() {
             let isActive = index == currentPage
             let targetColor = isActive ? Colors.primaryBlue : Colors.inactiveDot
-            dot.backgroundColor = targetColor
             dot.snp.remakeConstraints {
                 $0.height.equalTo(dotSize)
                 $0.width.equalTo(isActive ? dotSize * 2 : dotSize)
             }
+            
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                options: [.curveEaseInOut],
+                animations: {
+                    dot.backgroundColor = targetColor
+                }
+            )
         }
     }
 }

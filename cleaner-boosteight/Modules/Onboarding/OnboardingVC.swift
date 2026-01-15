@@ -90,21 +90,21 @@ private extension OnboardingViewController {
             } else {
                 moveToNextPage()
             }
-
+            
         }
     }
     
     func moveToNextPage() {
-           guard let nextVC = viewModel.getViewController(at: viewModel.currentPageIndex + 1) else {
-               return
-           }
-           
-           pageVC.setViewControllers(
-               [nextVC],
-               direction: .forward,
-               animated: true
-           ) { [weak self] _ in
-               self?.viewModel.continueButtonTapped()
-           }
-       }
+        guard let nextVC = viewModel.getViewController(at: viewModel.currentPageIndex + 1) else {
+            return
+        }
+        
+        pageVC.setViewControllers(
+            [nextVC],
+            direction: .forward,
+            animated: true
+        ) { [weak self] _ in
+            self?.viewModel.continueButtonTapped()
+        }
+    }
 }
