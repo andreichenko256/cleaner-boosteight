@@ -6,36 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		ED2A094D2F19640A00C19D72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A09452F19640A00C19D72 /* AppDelegate.swift */; };
+		ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A094A2F19640A00C19D72 /* SceneDelegate.swift */; };
+		ED2A094F2F19640A00C19D72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A094B2F19640A00C19D72 /* ViewController.swift */; };
+		ED2A09502F19640A00C19D72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2A09462F19640A00C19D72 /* Assets.xcassets */; };
+		ED2A09522F19640A00C19D72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED2A09492F19640A00C19D72 /* LaunchScreen.storyboard */; };
+		ED2A09552F19646200C19D72 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = ED2A09542F19646200C19D72 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		ED2A092D2F19621E00C19D72 /* cleaner-boosteight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cleaner-boosteight.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED2A09452F19640A00C19D72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ED2A09462F19640A00C19D72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ED2A09472F19640A00C19D72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED2A09482F19640A00C19D72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		ED2A094A2F19640A00C19D72 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		ED2A094B2F19640A00C19D72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ED2A093F2F19621E00C19D72 /* Exceptions for "cleaner-boosteight" folder in "cleaner-boosteight" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = ED2A092C2F19621E00C19D72 /* cleaner-boosteight */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		ED2A092F2F19621E00C19D72 /* cleaner-boosteight */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ED2A093F2F19621E00C19D72 /* Exceptions for "cleaner-boosteight" folder in "cleaner-boosteight" target */,
-			);
-			path = "cleaner-boosteight";
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		ED2A092A2F19621E00C19D72 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED2A09552F19646200C19D72 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,7 +40,7 @@
 		ED2A09242F19621E00C19D72 = {
 			isa = PBXGroup;
 			children = (
-				ED2A092F2F19621E00C19D72 /* cleaner-boosteight */,
+				ED2A094C2F19640A00C19D72 /* cleaner-boosteight */,
 				ED2A092E2F19621E00C19D72 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +51,19 @@
 				ED2A092D2F19621E00C19D72 /* cleaner-boosteight.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ED2A094C2F19640A00C19D72 /* cleaner-boosteight */ = {
+			isa = PBXGroup;
+			children = (
+				ED2A09452F19640A00C19D72 /* AppDelegate.swift */,
+				ED2A09462F19640A00C19D72 /* Assets.xcassets */,
+				ED2A09472F19640A00C19D72 /* Info.plist */,
+				ED2A09492F19640A00C19D72 /* LaunchScreen.storyboard */,
+				ED2A094A2F19640A00C19D72 /* SceneDelegate.swift */,
+				ED2A094B2F19640A00C19D72 /* ViewController.swift */,
+			);
+			path = "cleaner-boosteight";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -73,11 +81,9 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				ED2A092F2F19621E00C19D72 /* cleaner-boosteight */,
-			);
 			name = "cleaner-boosteight";
 			packageProductDependencies = (
+				ED2A09542F19646200C19D72 /* SnapKit */,
 			);
 			productName = "cleaner-boosteight";
 			productReference = ED2A092D2F19621E00C19D72 /* cleaner-boosteight.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = ED2A09242F19621E00C19D72;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				ED2A09532F19646200C19D72 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ED2A092E2F19621E00C19D72 /* Products */;
 			projectDirPath = "";
@@ -122,6 +131,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED2A09502F19640A00C19D72 /* Assets.xcassets in Resources */,
+				ED2A09522F19640A00C19D72 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,10 +143,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED2A094D2F19640A00C19D72 /* AppDelegate.swift in Sources */,
+				ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */,
+				ED2A094F2F19640A00C19D72 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		ED2A09492F19640A00C19D72 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED2A09482F19640A00C19D72 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		ED2A09412F19621E00C19D72 /* Debug */ = {
@@ -148,11 +173,13 @@
 				DEVELOPMENT_TEAM = A673JD59FG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "cleaner-boosteight/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Cleaner;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -161,12 +188,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "andreichenko256.cleaner-boosteight";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -180,11 +211,13 @@
 				DEVELOPMENT_TEAM = A673JD59FG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "cleaner-boosteight/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Cleaner;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -193,12 +226,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "andreichenko256.cleaner-boosteight";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -345,6 +382,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ED2A09532F19646200C19D72 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ED2A09542F19646200C19D72 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED2A09532F19646200C19D72 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ED2A09252F19621E00C19D72 /* Project object */;
 }
