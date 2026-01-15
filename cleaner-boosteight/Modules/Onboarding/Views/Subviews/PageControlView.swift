@@ -60,6 +60,7 @@ private extension PageControlView {
             dots.append(dot)
             stackView.addArrangedSubview(dot)
         }
+    
         
         updateDots()
     }
@@ -69,6 +70,9 @@ private extension PageControlView {
         dot.backgroundColor = Colors.inactiveDot
         dot.layer.cornerRadius = cornerRadius
         dot.clipsToBounds = true
+        dot.snp.makeConstraints {
+            $0.size.equalTo(dotSize)
+        }
         return dot
     }
     
