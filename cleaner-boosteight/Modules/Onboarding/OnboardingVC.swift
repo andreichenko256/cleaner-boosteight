@@ -9,11 +9,7 @@ final class OnboardingViewController: UIViewController {
     private let viewModel = OnboardingViewModel()
     private var cancellables: Set<AnyCancellable> = []
     
-    private let pageVC = UIPageViewController(
-        transitionStyle: .scroll,
-        navigationOrientation: .horizontal,
-        options: nil
-    )
+    private var currentPageIndex: Int = 0
     
     private var onboardingView: OnboardingView {
         return view as! OnboardingView
@@ -24,7 +20,7 @@ final class OnboardingViewController: UIViewController {
         bindViewModel()
         createPages()
         setupActions()
-        setupPageVC()
+        setupInitialPage()
     }
     
     override func loadView() {
@@ -33,25 +29,17 @@ final class OnboardingViewController: UIViewController {
 }
 
 private extension OnboardingViewController {
-    func setupPageVC() {
-        onboardingView.containerView.addSubview(pageVC.view)
+    func setupInitialPage() {
+        guard let firstPage = pages.first else { return }
         
-        pageVC.view.snp.makeConstraints {
+        addChild(firstPage)
+        onboardingView.containerView.addSubview(firstPage.view)
+        
+        firstPage.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        addChild(pageVC)
-        
-        if let firstPage = pages.first {
-            pageVC.setViewControllers(
-                [firstPage],
-                direction: .forward,
-                animated: true,
-                completion: nil
-            )
-        }
-        
-        pageVC.didMove(toParent: self)
+        firstPage.didMove(toParent: self)
     }
     
     func createPages() {
@@ -95,16 +83,41 @@ private extension OnboardingViewController {
     }
     
     func moveToNextPage() {
-        guard let nextVC = viewModel.getViewController(at: viewModel.currentPageIndex + 1) else {
-            return
-        }
+        let nextIndex = currentPageIndex + 1
+        guard nextIndex < pages.count else { return }
         
-        pageVC.setViewControllers(
-            [nextVC],
-            direction: .forward,
-            animated: true
-        ) { [weak self] _ in
+        let currentVC = pages[currentPageIndex]
+        let nextVC = pages[nextIndex]
+        
+        transitionWithFade(from: currentVC, to: nextVC) { [weak self] in
+            self?.currentPageIndex = nextIndex
             self?.viewModel.continueButtonTapped()
         }
+    }
+    
+    func transitionWithFade(from currentVC: UIViewController, to nextVC: UIViewController, completion: @escaping VoidBlock) {
+        addChild(nextVC)
+        onboardingView.containerView.addSubview(nextVC.view)
+        
+        nextVC.view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        nextVC.view.alpha = 0
+        
+        UIView.animate(
+            withDuration: 0.3,
+            animations: {
+                currentVC.view.alpha = 0
+                nextVC.view.alpha = 1
+            },
+            completion: { _ in
+                currentVC.view.removeFromSuperview()
+                currentVC.removeFromParent()
+                nextVC.didMove(toParent: self)
+                currentVC.view.alpha = 1
+                completion()
+            }
+        )
     }
 }
