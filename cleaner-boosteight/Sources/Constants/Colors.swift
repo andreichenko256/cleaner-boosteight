@@ -10,8 +10,8 @@ enum Colors {
     static let secondaryGray = UIColor(red: 99/255, green: 99/255, blue: 99/255, alpha: 1)
     
     static let inactiveDot = UIColor(red: 234/255, green: 234/255, blue: 234/255, alpha: 1)
-    
     static let midGray = UIColor(red: 142/255, green: 142/255, blue: 142/255, alpha: 1)
+    static let mainText = UIColor(red: 31/255, green: 31/255, blue: 31/255, alpha: 1)
     
     static let bgProgressColor = UIColor(red: 243/255, green: 244/255, blue: 255/255, alpha: 0.5)
     static let progressColor = UIColor(red: 83/255, green: 105/255, blue: 237/255, alpha: 1)
