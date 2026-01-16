@@ -24,6 +24,8 @@
 		ED2A09702F196D8600C19D72 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A096F2F196D8500C19D72 /* UIView.swift */; };
 		ED2A09722F197BD200C19D72 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A09712F197BD000C19D72 /* UIDevice.swift */; };
 		ED34E5C82F1A673E006B6330 /* InfoBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34E5C72F1A673E006B6330 /* InfoBadgeView.swift */; };
+		ED34E5CB2F1A6C01006B6330 /* VideoCompressorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34E5CA2F1A6C00006B6330 /* VideoCompressorCell.swift */; };
+		ED34E5CD2F1A6E78006B6330 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED34E5CC2F1A6E78006B6330 /* Montserrat-Regular.ttf */; };
 		ED8917482F19820800EAF996 /* PageControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8917472F19820700EAF996 /* PageControlView.swift */; };
 		ED89174B2F19874C00EAF996 /* OnboardingPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89174A2F19874B00EAF996 /* OnboardingPageModel.swift */; };
 		ED89174F2F1987FA00EAF996 /* OnboardingFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89174E2F1987FA00EAF996 /* OnboardingFactory.swift */; };
@@ -68,6 +70,8 @@
 		ED2A096F2F196D8500C19D72 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		ED2A09712F197BD000C19D72 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 		ED34E5C72F1A673E006B6330 /* InfoBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBadgeView.swift; sourceTree = "<group>"; };
+		ED34E5CA2F1A6C00006B6330 /* VideoCompressorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressorCell.swift; sourceTree = "<group>"; };
+		ED34E5CC2F1A6E78006B6330 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		ED8917472F19820700EAF996 /* PageControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControlView.swift; sourceTree = "<group>"; };
 		ED89174A2F19874B00EAF996 /* OnboardingPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageModel.swift; sourceTree = "<group>"; };
 		ED89174E2F1987FA00EAF996 /* OnboardingFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFactory.swift; sourceTree = "<group>"; };
@@ -254,6 +258,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		ED34E5C92F1A6BFA006B6330 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				ED34E5CA2F1A6C00006B6330 /* VideoCompressorCell.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		ED8917462F19820300EAF996 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,6 +377,7 @@
 		ED891B862F19D3D200EAF996 /* Montserrat */ = {
 			isa = PBXGroup;
 			children = (
+				ED34E5CC2F1A6E78006B6330 /* Montserrat-Regular.ttf */,
 				ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */,
 			);
 			path = Montserrat;
@@ -383,6 +396,7 @@
 		ED891C952F19FC1500EAF996 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				ED34E5C92F1A6BFA006B6330 /* Subviews */,
 				ED891C982F19FC4300EAF996 /* VideoCompressorView.swift */,
 			);
 			path = Views;
@@ -460,6 +474,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED34E5CD2F1A6E78006B6330 /* Montserrat-Regular.ttf in Resources */,
 				ED891B882F19D3E600EAF996 /* Montserrat-SemiBold.ttf in Resources */,
 				ED2A09502F19640A00C19D72 /* Assets.xcassets in Resources */,
 				ED2A09522F19640A00C19D72 /* LaunchScreen.storyboard in Resources */,
@@ -499,6 +514,7 @@
 				ED2A095F2F1965F800C19D72 /* OnboardingView.swift in Sources */,
 				ED891B8A2F19E39300EAF996 /* MediaType.swift in Sources */,
 				ED89174F2F1987FA00EAF996 /* OnboardingFactory.swift in Sources */,
+				ED34E5CB2F1A6C01006B6330 /* VideoCompressorCell.swift in Sources */,
 				ED2A09702F196D8600C19D72 /* UIView.swift in Sources */,
 				ED2A096B2F196B7800C19D72 /* VoidBlock.swift in Sources */,
 				ED8917652F19BC0000EAF996 /* DiskInfo.swift in Sources */,
