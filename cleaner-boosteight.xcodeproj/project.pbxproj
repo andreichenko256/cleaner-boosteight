@@ -44,6 +44,9 @@
 		ED891B8A2F19E39300EAF996 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B892F19E39100EAF996 /* MediaType.swift */; };
 		ED891B8C2F19E63900EAF996 /* PermissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B8B2F19E63900EAF996 /* PermissionService.swift */; };
 		ED891C932F19F8F300EAF996 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891C922F19F8F300EAF996 /* HapticService.swift */; };
+		ED891C972F19FC1900EAF996 /* VideoCompressorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891C962F19FC1900EAF996 /* VideoCompressorVC.swift */; };
+		ED891C992F19FC4300EAF996 /* VideoCompressorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891C982F19FC4300EAF996 /* VideoCompressorView.swift */; };
+		ED891C9C2F19FCBE00EAF996 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891C9B2F19FCB900EAF996 /* CustomNavigationBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +87,9 @@
 		ED891B892F19E39100EAF996 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		ED891B8B2F19E63900EAF996 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
 		ED891C922F19F8F300EAF996 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
+		ED891C962F19FC1900EAF996 /* VideoCompressorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressorVC.swift; sourceTree = "<group>"; };
+		ED891C982F19FC4300EAF996 /* VideoCompressorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressorView.swift; sourceTree = "<group>"; };
+		ED891C9B2F19FCB900EAF996 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCountService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,6 +169,7 @@
 		ED2A09592F1965AA00C19D72 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				ED891C942F19FC1000EAF996 /* VideoCompressor */,
 				ED8917592F19AACA00EAF996 /* Main */,
 				ED2A095A2F1965C100C19D72 /* Onboarding */,
 			);
@@ -193,6 +200,7 @@
 		ED2A09602F19660F00C19D72 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				ED891C9B2F19FCB900EAF996 /* CustomNavigationBar.swift */,
 				ED2A096C2F196BE800C19D72 /* MainCommonView.swift */,
 			);
 			path = Views;
@@ -359,6 +367,31 @@
 			path = Montserrat;
 			sourceTree = "<group>";
 		};
+		ED891C942F19FC1000EAF996 /* VideoCompressor */ = {
+			isa = PBXGroup;
+			children = (
+				ED891C962F19FC1900EAF996 /* VideoCompressorVC.swift */,
+				ED891C952F19FC1500EAF996 /* Views */,
+				ED891C9A2F19FC6900EAF996 /* Models */,
+			);
+			path = VideoCompressor;
+			sourceTree = "<group>";
+		};
+		ED891C952F19FC1500EAF996 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ED891C982F19FC4300EAF996 /* VideoCompressorView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		ED891C9A2F19FC6900EAF996 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -449,6 +482,7 @@
 				ED89196F2F19C53800EAF996 /* MainVM.swift in Sources */,
 				ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */,
 				ED891B822F19D1A000EAF996 /* MediaGroupModel.swift in Sources */,
+				ED891C9C2F19FCBE00EAF996 /* CustomNavigationBar.swift in Sources */,
 				ED8917602F19B98800EAF996 /* UILabel.swift in Sources */,
 				ED2A09672F1967CF00C19D72 /* Colors.swift in Sources */,
 				ED2A09722F197BD200C19D72 /* UIDevice.swift in Sources */,
@@ -465,7 +499,9 @@
 				ED2A096B2F196B7800C19D72 /* VoidBlock.swift in Sources */,
 				ED8917652F19BC0000EAF996 /* DiskInfo.swift in Sources */,
 				ED8917672F19BC1000EAF996 /* DiskInfoService.swift in Sources */,
+				ED891C972F19FC1900EAF996 /* VideoCompressorVC.swift in Sources */,
 				ED891B842F19D25300EAF996 /* Fonts.swift in Sources */,
+				ED891C992F19FC4300EAF996 /* VideoCompressorView.swift in Sources */,
 				ED89196A2F19C70000EAF996 /* Byte.swift in Sources */,
 				28FF09FAED05AA2D2CC046DF /* MediaCountService.swift in Sources */,
 				2294BAFF07317F5BE8E6C55B /* MediaCacheService.swift in Sources */,
