@@ -12,6 +12,7 @@ final class MainViewModel {
     private let diskInfoService: DiskInfoServiceProtocol
     private let permissionService: PermissionServiceProtocol
     private let mediaCountService: MediaCountServiceProtocol
+    private let mediaCacheService: MediaCacheServiceProtocol
     
     @Published private(set) var diskInfoDisplayModel: DiskInfoDisplayModel?
     @Published private(set) var error: Error?
@@ -21,12 +22,18 @@ final class MainViewModel {
     init(
         diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
         permissionService: PermissionServiceProtocol = PermissionService(),
-        mediaCountService: MediaCountServiceProtocol = MediaCountService()
+        mediaCountService: MediaCountServiceProtocol = MediaCountService(),
+        mediaCacheService: MediaCacheServiceProtocol = MediaCacheService()
     ) {
         self.diskInfoService = diskInfoService
         self.permissionService = permissionService
         self.mediaCountService = mediaCountService
+        self.mediaCacheService = mediaCacheService
         loadMediaData()
+    }
+    
+    private func convertBytesToGB(_ bytes: UInt64) -> Float {
+        return Float(bytes) / 1_073_741_824.0
     }
 }
 
@@ -35,10 +42,86 @@ private extension MainViewModel {
         let videoCount = mediaCountService.countAllVideos()
         let mediaCount = mediaCountService.countAllMedia()
         
+        let cachedVideoInfo = mediaCacheService.getCachedMediaInfo(for: .videos)
+        let cachedMediaInfo = mediaCacheService.getCachedMediaInfo(for: .allMedia)
+        
+        let videoSize: Float
+        let mediaSize: Float
+        let needsVideoUpdate = cachedVideoInfo == nil || cachedVideoInfo?.count != videoCount
+        let needsMediaUpdate = cachedMediaInfo == nil || cachedMediaInfo?.count != mediaCount
+        
+        if let cachedVideo = cachedVideoInfo, cachedVideo.count == videoCount {
+            videoSize = convertBytesToGB(cachedVideo.size)
+        } else {
+            videoSize = 0
+        }
+        
+        if let cachedMedia = cachedMediaInfo, cachedMedia.count == mediaCount {
+            mediaSize = convertBytesToGB(cachedMedia.size)
+        } else {
+            mediaSize = 0
+        }
+        
         medias = [
-            .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: 0, isLocked: true),
-            .init(type: .media, mediaCount: mediaCount, mediaSize: 0, isLocked: true)
+            .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: videoSize, isLocked: true, isLoading: needsVideoUpdate),
+            .init(type: .media, mediaCount: mediaCount, mediaSize: mediaSize, isLocked: true, isLoading: needsMediaUpdate)
         ]
+        
+        if needsVideoUpdate || needsMediaUpdate {
+            Task {
+                await loadMediaSizes(
+                    updateVideos: needsVideoUpdate,
+                    updateMedia: needsMediaUpdate,
+                    videoCount: videoCount,
+                    mediaCount: mediaCount
+                )
+            }
+        }
+    }
+    
+    func loadMediaSizes(
+        updateVideos: Bool,
+        updateMedia: Bool,
+        videoCount: Int,
+        mediaCount: Int
+    ) async {
+        var videoSize: UInt64 = 0
+        var mediaSize: UInt64 = 0
+        
+        if updateVideos {
+            videoSize = await mediaCountService.calculateAllVideosSize()
+            mediaCacheService.saveMediaInfo(
+                CachedMediaInfo(count: videoCount, size: videoSize, timestamp: Date()),
+                for: .videos
+            )
+        }
+        
+        if updateMedia {
+            mediaSize = await mediaCountService.calculateAllMediaSize()
+            mediaCacheService.saveMediaInfo(
+                CachedMediaInfo(count: mediaCount, size: mediaSize, timestamp: Date()),
+                for: .allMedia
+            )
+        }
+        
+        await MainActor.run {
+            medias = medias.map { media in
+                var updatedMedia = media
+                switch media.type {
+                case .videoCompressor:
+                    if updateVideos {
+                        updatedMedia.mediaSize = convertBytesToGB(videoSize)
+                        updatedMedia.isLoading = false
+                    }
+                case .media:
+                    if updateMedia {
+                        updatedMedia.mediaSize = convertBytesToGB(mediaSize)
+                        updatedMedia.isLoading = false
+                    }
+                }
+                return updatedMedia
+            }
+        }
     }
 }
 
@@ -116,15 +199,40 @@ extension MainViewModel {
         let videoCount = mediaCountService.countAllVideos()
         let mediaCount = mediaCountService.countAllMedia()
         
+        let cachedVideoInfo = mediaCacheService.getCachedMediaInfo(for: .videos)
+        let cachedMediaInfo = mediaCacheService.getCachedMediaInfo(for: .allMedia)
+        
+        let needsVideoUpdate = cachedVideoInfo == nil || cachedVideoInfo?.count != videoCount
+        let needsMediaUpdate = cachedMediaInfo == nil || cachedMediaInfo?.count != mediaCount
+        
         medias = medias.map { media in
             var updatedMedia = media
             switch media.type {
             case .videoCompressor:
                 updatedMedia.mediaCount = videoCount
+                updatedMedia.isLoading = needsVideoUpdate
+                if let cached = cachedVideoInfo, cached.count == videoCount {
+                    updatedMedia.mediaSize = convertBytesToGB(cached.size)
+                }
             case .media:
                 updatedMedia.mediaCount = mediaCount
+                updatedMedia.isLoading = needsMediaUpdate
+                if let cached = cachedMediaInfo, cached.count == mediaCount {
+                    updatedMedia.mediaSize = convertBytesToGB(cached.size)
+                }
             }
             return updatedMedia
+        }
+        
+        if needsVideoUpdate || needsMediaUpdate {
+            Task {
+                await loadMediaSizes(
+                    updateVideos: needsVideoUpdate,
+                    updateMedia: needsMediaUpdate,
+                    videoCount: videoCount,
+                    mediaCount: mediaCount
+                )
+            }
         }
     }
 }

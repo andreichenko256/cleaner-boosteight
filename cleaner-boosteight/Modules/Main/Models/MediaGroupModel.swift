@@ -5,4 +5,5 @@ struct MediaGroupModel {
     var mediaCount: Int
     var mediaSize: Float
     var isLocked: Bool
+    var isLoading: Bool
 }

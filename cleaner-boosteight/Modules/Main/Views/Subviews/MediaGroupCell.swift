@@ -69,6 +69,13 @@ final class MediaGroupCell: UITableViewCell {
         return $0
     }(UIImageView(image: .lockIcon))
     
+    private let loadingIndicator = {
+        $0.style = .medium
+        $0.hidesWhenStopped = true
+        $0.color = .black
+        return $0
+    }(UIActivityIndicatorView())
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -99,7 +106,7 @@ private extension MediaGroupCell {
     
     func setupContainerViewConstraints() {
         [iconImageView, titleLabel, mediaCountLabel,
-         previewImageView, lockImageView, viewAllContainer].forEach {
+         previewImageView, lockImageView, viewAllContainer, loadingIndicator].forEach {
             containerView.addSubview($0)
         }
         
@@ -125,6 +132,11 @@ private extension MediaGroupCell {
         viewAllContainer.snp.makeConstraints {
             $0.top.equalTo(mediaCountLabel)
             $0.trailing.equalToSuperview().inset(14)
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.leading.equalTo(mediaCountLabel.snp.trailing).offset(8)
+            $0.centerY.equalTo(mediaCountLabel)
         }
         
         previewImageView.snp.makeConstraints {
@@ -161,19 +173,21 @@ private extension MediaGroupCell {
             )
         )
         
-        result.append(
-            NSAttributedString(
-                string: " • ",
-                attributes: secondaryAttributes
+        if let size = size {
+            result.append(
+                NSAttributedString(
+                    string: " • ",
+                    attributes: secondaryAttributes
+                )
             )
-        )
-        
-        result.append(
-            NSAttributedString(
-                string: "\(size ?? "0") GB",
-                attributes: secondaryAttributes
+            
+            result.append(
+                NSAttributedString(
+                    string: "\(size) GB",
+                    attributes: secondaryAttributes
+                )
             )
-        )
+        }
         
         return result
     }
@@ -182,10 +196,21 @@ private extension MediaGroupCell {
 extension MediaGroupCell {
     func configure(with model: MediaGroupModel) {
         titleLabel.text = model.type.title
-        mediaCountLabel.attributedText = makeMediaInfoText(
-            count: model.mediaCount,
-            size: String(model.mediaSize)
-        )
+        
+        if model.isLoading {
+            loadingIndicator.startAnimating()
+            mediaCountLabel.attributedText = makeMediaInfoText(
+                count: model.mediaCount,
+                size: nil
+            )
+        } else {
+            loadingIndicator.stopAnimating()
+            mediaCountLabel.attributedText = makeMediaInfoText(
+                count: model.mediaCount,
+                size: String(format: "%.1f", model.mediaSize)
+            )
+        }
+        
         iconImageView.image = model.type.image
         previewImageView.image = model.type.previewImage
         viewAllContainer.isHidden = model.type == .videoCompressor ? true : false
