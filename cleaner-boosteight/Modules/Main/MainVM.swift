@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import UIKit
 
 final class MainViewModel {
     
@@ -13,22 +14,26 @@ final class MainViewModel {
     private let permissionService: PermissionServiceProtocol
     private let mediaCountService: MediaCountServiceProtocol
     private let mediaCacheService: MediaCacheServiceProtocol
+    private let hapticService: HapticServiceProtocol
     
     @Published private(set) var diskInfoDisplayModel: DiskInfoDisplayModel?
     @Published private(set) var error: Error?
     @Published private(set) var permissionGranted: Bool?
     @Published private(set) var medias: [MediaGroupModel] = []
+    @Published private(set) var alertModel: AlertModel?
     
     init(
         diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
         permissionService: PermissionServiceProtocol = PermissionService(),
         mediaCountService: MediaCountServiceProtocol = MediaCountService(),
-        mediaCacheService: MediaCacheServiceProtocol = MediaCacheService()
+        mediaCacheService: MediaCacheServiceProtocol = MediaCacheService(),
+        hapticService: HapticServiceProtocol = HapticService()
     ) {
         self.diskInfoService = diskInfoService
         self.permissionService = permissionService
         self.mediaCountService = mediaCountService
         self.mediaCacheService = mediaCacheService
+        self.hapticService = hapticService
         loadMediaData()
     }
     
@@ -234,5 +239,24 @@ extension MainViewModel {
                 )
             }
         }
+    }
+    
+    func handleMediaCellTap() {
+        let status = permissionService.checkPhotoLibraryStatus()
+        
+        guard status != .authorized else {
+            return
+        }
+        
+        showPermissionDeniedAlert()
+    }
+    
+    private func showPermissionDeniedAlert() {
+        alertModel = AlertModel(
+            title: "Access Denied",
+            message: "Photo library access is required to view your media. Please enable it in Settings.",
+            primaryAction: .init(title: "Settings", style: .openSettings, handler: nil),
+            secondaryAction: .init(title: "Cancel", style: .cancel, handler: nil)
+        )
     }
 }

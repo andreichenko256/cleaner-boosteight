@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2294BAFF07317F5BE8E6C55B /* MediaCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */; };
 		28FF09FAED05AA2D2CC046DF /* MediaCountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */; };
+		2D463908A21940DD86F466FC /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2075E14F599B1520E272D5 /* AlertModel.swift */; };
 		ED2A094D2F19640A00C19D72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A09452F19640A00C19D72 /* AppDelegate.swift */; };
 		ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A094A2F19640A00C19D72 /* SceneDelegate.swift */; };
 		ED2A09502F19640A00C19D72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2A09462F19640A00C19D72 /* Assets.xcassets */; };
@@ -42,9 +43,11 @@
 		ED891B882F19D3E600EAF996 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */; };
 		ED891B8A2F19E39300EAF996 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B892F19E39100EAF996 /* MediaType.swift */; };
 		ED891B8C2F19E63900EAF996 /* PermissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B8B2F19E63900EAF996 /* PermissionService.swift */; };
+		ED891C932F19F8F300EAF996 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891C922F19F8F300EAF996 /* HapticService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F2075E14F599B1520E272D5 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCacheService.swift; sourceTree = "<group>"; };
 		ED2A092D2F19621E00C19D72 /* cleaner-boosteight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cleaner-boosteight.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2A09452F19640A00C19D72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +83,7 @@
 		ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED891B892F19E39100EAF996 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		ED891B8B2F19E63900EAF996 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
+		ED891C922F19F8F300EAF996 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
 		F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCountService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -312,6 +316,7 @@
 		ED8917682F19BC2000EAF996 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				ED891C922F19F8F300EAF996 /* HapticService.swift */,
 				ED891B8B2F19E63900EAF996 /* PermissionService.swift */,
 				ED8917662F19BC1000EAF996 /* DiskInfoService.swift */,
 				F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */,
@@ -324,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				ED8917642F19BC0000EAF996 /* DiskInfo.swift */,
+				0F2075E14F599B1520E272D5 /* AlertModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -449,6 +455,7 @@
 				ED89174B2F19874C00EAF996 /* OnboardingPageModel.swift in Sources */,
 				ED2A095D2F1965D500C19D72 /* OnboardingVC.swift in Sources */,
 				ED89175B2F19AACE00EAF996 /* MainVC.swift in Sources */,
+				ED891C932F19F8F300EAF996 /* HapticService.swift in Sources */,
 				ED89175E2F19AAD700EAF996 /* MainView.swift in Sources */,
 				ED8917482F19820800EAF996 /* PageControlView.swift in Sources */,
 				ED2A095F2F1965F800C19D72 /* OnboardingView.swift in Sources */,
@@ -462,6 +469,7 @@
 				ED89196A2F19C70000EAF996 /* Byte.swift in Sources */,
 				28FF09FAED05AA2D2CC046DF /* MediaCountService.swift in Sources */,
 				2294BAFF07317F5BE8E6C55B /* MediaCacheService.swift in Sources */,
+				2D463908A21940DD86F466FC /* AlertModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -62,6 +62,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.handleMediaCellTap()
+    }
 }
 
 private extension MainViewController {
@@ -109,6 +114,14 @@ private extension MainViewController {
                 self?.mainView.mediaTableView.reloadData()
             }
             .store(in: &cancellables)
+        
+        viewModel.$alertModel
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] alertModel in
+                self?.showAlert(alertModel)
+            }
+            .store(in: &cancellables)
     }
     
     func updateUI(with displayModel: MainViewModel.DiskInfoDisplayModel) {
@@ -137,6 +150,53 @@ private extension MainViewController {
             viewModel.unlockMedia()
         } else {
             print("Photo library access denied")
+        }
+    }
+    
+    func showAlert(_ model: AlertModel) {
+        let alert = UIAlertController(
+            title: model.title,
+            message: model.message,
+            preferredStyle: .alert
+        )
+        
+        let primaryAction = UIAlertAction(
+            title: model.primaryAction.title,
+            style: .default
+        ) { [weak self] _ in
+            self?.handleAlertAction(model.primaryAction)
+        }
+        alert.addAction(primaryAction)
+        
+        if let secondaryAction = model.secondaryAction {
+            let cancelAction = UIAlertAction(
+                title: secondaryAction.title,
+                style: .cancel
+            ) { [weak self] _ in
+                self?.handleAlertAction(secondaryAction)
+            }
+            alert.addAction(cancelAction)
+        }
+        
+        present(alert, animated: true)
+    }
+    
+    func handleAlertAction(_ action: AlertModel.AlertAction) {
+        switch action.style {
+        case .openSettings:
+            openAppSettings()
+        case .default, .cancel:
+            action.handler?()
+        }
+    }
+    
+    func openAppSettings() {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsURL) {
+            UIApplication.shared.open(settingsURL)
         }
     }
 }

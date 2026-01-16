@@ -5,10 +5,10 @@ import Combine
 final class OnboardingViewController: UIViewController {
     private var pages: [UIViewController] = []
     private var pageModels: [OnboardingPageModel] = []
-    
-    private let viewModel: OnboardingViewModel
     private var cancellables: Set<AnyCancellable> = []
-    
+    private let hapticService: HapticServiceProtocol
+    private let viewModel: OnboardingViewModel
+
     private var currentPageIndex: Int = 0
     
     private var onboardingView: OnboardingView {
@@ -23,8 +23,12 @@ final class OnboardingViewController: UIViewController {
         setupInitialPage()
     }
     
-    init(viewModel: OnboardingViewModel = OnboardingViewModel()) {
+    init(
+        viewModel: OnboardingViewModel = OnboardingViewModel(),
+        hapticService: HapticServiceProtocol = HapticService()
+    ) {
         self.viewModel = viewModel
+        self.hapticService = hapticService
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -82,6 +86,7 @@ private extension OnboardingViewController {
     func continueButtonTapped() {
         onboardingView.continueButton.onTap = { [weak self] in
             guard let self else { return }
+            hapticService.impact(.medium)
             if viewModel.isLastPage {
                 viewModel.continueButtonTapped()
             } else {

@@ -41,7 +41,7 @@ private extension OnboardingPageView {
         }
         
         imageView.snp.makeConstraints {
-            $0.top.equalTo(safeTop).inset(44)
+            $0.bottom.equalTo(titleLabel.snp.top).offset(-22)
             $0.horizontalEdges.equalToSuperview()
         }
         
