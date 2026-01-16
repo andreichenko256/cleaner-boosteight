@@ -1,17 +1,24 @@
 import UIKit
 import SnapKit
+import Combine
 
 final class MainViewController: UIViewController {
-    
-    private let diskInfoService: DiskInfoServiceProtocol
+    private let viewModel: MainViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     private var mainView: MainView {
         return view as! MainView
     }
     
-    init(diskInfoService: DiskInfoServiceProtocol = DiskInfoService()) {
-        self.diskInfoService = diskInfoService
+    init(viewModel: MainViewModel = MainViewModel()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        for family in UIFont.familyNames.sorted() {
+            print("Family: \(family)")
+            for name in UIFont.fontNames(forFamilyName: family) {
+                print("   \(name)")
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -20,7 +27,9 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadDiskInfo()
+        setupBindings()
+        setupMediaTableView()
+        viewModel.loadDiskInfo()
     }
     
     override func loadView() {
@@ -28,29 +37,63 @@ final class MainViewController: UIViewController {
     }
 }
 
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    private func setupMediaTableView () {
+        mainView.mediaTableView.dataSource = self
+        mainView.mediaTableView.delegate = self
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: MediaGroupCell.reuseIdentifier,
+            for: indexPath
+        ) as! MediaGroupCell
+        
+        return cell
+    }
+    
+}
+
 private extension MainViewController {
-    func loadDiskInfo() {
-        do {
-            let diskInfo = try diskInfoService.getDiskInfo()
-            
-            let usedSpaceFormatted = diskInfo.usedSpace.formattedBytesRounded(to: 1)
-            let totalSpaceFormatted = "of \(diskInfo.totalSpace.formattedBytesRounded(to: 1))"
-            
-            mainView.valueStorageLabel.setTexts(
-                semibold: usedSpaceFormatted,
-                regular: totalSpaceFormatted,
-                fontSize: 16,
-                color: Colors.primaryWhite
-            )
-            
-            mainView.circularProgressView.setProgress(
-                diskInfo.usagePercentage,
-                animated: true,
-                duration: 1.5
-            )
-        } catch {
-            print("Failed to load disk info: \(error)")
-            mainView.circularProgressView.setProgress(0, animated: false)
-        }
+    func setupBindings() {
+        viewModel.$diskInfoDisplayModel
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] displayModel in
+                self?.updateUI(with: displayModel)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$error
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                self?.handleError(error)
+            }
+            .store(in: &cancellables)
+    }
+    
+    func updateUI(with displayModel: MainViewModel.DiskInfoDisplayModel) {
+        mainView.valueStorageLabel.setTexts(
+            semibold: displayModel.usedSpaceText,
+            regular: displayModel.totalSpaceText,
+            fontSize: 16,
+            color: Colors.primaryWhite
+        )
+        
+        mainView.circularProgressView.setProgress(
+            displayModel.usagePercentage,
+            animated: true,
+            duration: 1.5
+        )
+    }
+    
+    func handleError(_ error: Error) {
+        print("Failed to load disk info: \(error)")
+        mainView.circularProgressView.setProgress(0, animated: false)
     }
 }

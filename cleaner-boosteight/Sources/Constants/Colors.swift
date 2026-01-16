@@ -7,6 +7,7 @@ enum Colors {
     static let primaryGray = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 1)
     
     static let secondaryBlue = UIColor(red: 135/255, green: 179/255, blue: 251/255, alpha: 1)
+    static let secondaryGray = UIColor(red: 99/255, green: 99/255, blue: 99/255, alpha: 1)
     
     static let inactiveDot = UIColor(red: 234/255, green: 234/255, blue: 234/255, alpha: 1)
     

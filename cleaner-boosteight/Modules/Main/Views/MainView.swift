@@ -9,6 +9,13 @@ final class MainView: UIView {
         return $0
     }(UILabel())
     
+    let mediaTableView = {
+        $0.showsVerticalScrollIndicator = false
+        $0.separatorStyle = .none
+        $0.register(MediaGroupCell.self, forCellReuseIdentifier: MediaGroupCell.reuseIdentifier)
+        return $0
+    }(UITableView())
+    
     private let iphoneStorageLabel = {
         $0.text = "iPhone Storage"
         $0.textColor = Colors.primaryWhite
@@ -67,13 +74,20 @@ private extension MainView {
         
         containerView.snp.makeConstraints {
             $0.horizontalEdges.bottom.equalToSuperview()
-            $0.height.equalTo(500)
         }
+        
+        setupContainerViewConstraints()
     }
     
     func setupContainerViewConstraints() {
-        [].forEach {
+        [mediaTableView].forEach {
             containerView.addSubview($0)
+        }
+        
+        mediaTableView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(24)
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(safeBottom).inset(35)
         }
     }
 }

@@ -32,8 +32,12 @@
 		ED8917632F19BB1700EAF996 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8917622F19BB1700EAF996 /* CircularProgressView.swift */; };
 		ED8917652F19BC0000EAF996 /* DiskInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8917642F19BC0000EAF996 /* DiskInfo.swift */; };
 		ED8917672F19BC1000EAF996 /* DiskInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8917662F19BC1000EAF996 /* DiskInfoService.swift */; };
-		ED89196F2F19C53800EAF996 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89196E2F19C53400EAF996 /* MainVM.swift */; };
 		ED89196A2F19C70000EAF996 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89196B2F19C70000EAF996 /* Byte.swift */; };
+		ED89196F2F19C53800EAF996 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89196E2F19C53400EAF996 /* MainVM.swift */; };
+		ED891B7F2F19CDE600EAF996 /* MediaGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B7E2F19CDE600EAF996 /* MediaGroupCell.swift */; };
+		ED891B822F19D1A000EAF996 /* Untitled.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B812F19D1A000EAF996 /* Untitled.swift */; };
+		ED891B842F19D25300EAF996 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B832F19D25200EAF996 /* Fonts.swift */; };
+		ED891B882F19D3E600EAF996 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,8 +67,12 @@
 		ED8917622F19BB1700EAF996 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		ED8917642F19BC0000EAF996 /* DiskInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskInfo.swift; sourceTree = "<group>"; };
 		ED8917662F19BC1000EAF996 /* DiskInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskInfoService.swift; sourceTree = "<group>"; };
-		ED89196E2F19C53400EAF996 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		ED89196B2F19C70000EAF996 /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
+		ED89196E2F19C53400EAF996 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
+		ED891B7E2F19CDE600EAF996 /* MediaGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaGroupCell.swift; sourceTree = "<group>"; };
+		ED891B812F19D1A000EAF996 /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		ED891B832F19D25200EAF996 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +127,7 @@
 		ED2A09572F19655400C19D72 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ED891B852F19D38300EAF996 /* Fonts */,
 				ED2A09462F19640A00C19D72 /* Assets.xcassets */,
 				ED2A09492F19640A00C19D72 /* LaunchScreen.storyboard */,
 			);
@@ -197,6 +206,7 @@
 		ED2A09652F1967CA00C19D72 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				ED891B832F19D25200EAF996 /* Fonts.swift */,
 				ED2A09662F1967CF00C19D72 /* Colors.swift */,
 			);
 			path = Constants;
@@ -268,6 +278,7 @@
 				ED89196E2F19C53400EAF996 /* MainVM.swift */,
 				ED89175A2F19AACE00EAF996 /* MainVC.swift */,
 				ED89175C2F19AAD100EAF996 /* Views */,
+				ED891B802F19D19000EAF996 /* Models */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -285,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				ED8917622F19BB1700EAF996 /* CircularProgressView.swift */,
+				ED891B7E2F19CDE600EAF996 /* MediaGroupCell.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -303,6 +315,30 @@
 				ED8917642F19BC0000EAF996 /* DiskInfo.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		ED891B802F19D19000EAF996 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ED891B812F19D1A000EAF996 /* Untitled.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		ED891B852F19D38300EAF996 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				ED891B862F19D3D200EAF996 /* Montserrat */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		ED891B862F19D3D200EAF996 /* Montserrat */ = {
+			isa = PBXGroup;
+			children = (
+				ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */,
+			);
+			path = Montserrat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -370,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED891B882F19D3E600EAF996 /* Montserrat-SemiBold.ttf in Resources */,
 				ED2A09502F19640A00C19D72 /* Assets.xcassets in Resources */,
 				ED2A09522F19640A00C19D72 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -382,6 +419,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED891B7F2F19CDE600EAF996 /* MediaGroupCell.swift in Sources */,
 				ED2A09642F19668700C19D72 /* PrimaryButton.swift in Sources */,
 				ED2A096D2F196BEA00C19D72 /* MainCommonView.swift in Sources */,
 				ED8917522F198A0800EAF996 /* OnboardingPageView.swift in Sources */,
@@ -391,6 +429,7 @@
 				ED8917632F19BB1700EAF996 /* CircularProgressView.swift in Sources */,
 				ED89196F2F19C53800EAF996 /* MainVM.swift in Sources */,
 				ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */,
+				ED891B822F19D1A000EAF996 /* Untitled.swift in Sources */,
 				ED8917602F19B98800EAF996 /* UILabel.swift in Sources */,
 				ED2A09672F1967CF00C19D72 /* Colors.swift in Sources */,
 				ED2A09722F197BD200C19D72 /* UIDevice.swift in Sources */,
@@ -405,6 +444,7 @@
 				ED2A096B2F196B7800C19D72 /* VoidBlock.swift in Sources */,
 				ED8917652F19BC0000EAF996 /* DiskInfo.swift in Sources */,
 				ED8917672F19BC1000EAF996 /* DiskInfoService.swift in Sources */,
+				ED891B842F19D25300EAF996 /* Fonts.swift in Sources */,
 				ED89196A2F19C70000EAF996 /* Byte.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
