@@ -1,4 +1,5 @@
 import UIKit
+import Photos
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -10,7 +11,20 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
 //        let coordinator = AppCoordinator(window: window)
 //        coordinator.start()
-        window.rootViewController = SelectVideoQualityViewController()
+        
+        // Временно для тестирования - получаем первое видео
+        let videoFetchService = VideoFetchService()
+        Task {
+            let videos = await videoFetchService.fetchAllVideos()
+            if let firstVideo = videos.first {
+                let viewModel = SelectVideoQualityViewModel(videoModel: firstVideo)
+                let viewController = SelectVideoQualityViewController(viewModel: viewModel)
+                await MainActor.run {
+                    window.rootViewController = viewController
+                }
+            }
+        }
+        
         self.window = window
         window.makeKeyAndVisible()
 //        self.appCoordinator = coordinator

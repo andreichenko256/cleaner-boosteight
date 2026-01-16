@@ -5,6 +5,14 @@ final class SelectVideoQualityView: MainCommonView, CustomNavigationBarConfigura
     let customNavigationBar = CustomNavigationBar(title: "Video Compressor")
     let compressButton = PrimaryButton(title: "")
     let qualitySelector = QualitySelector()
+    let sizeChangeView = SizeChangeView()
+    
+    let videoContainerView = {
+        $0.backgroundColor = .clear
+        $0.layer.cornerRadius = 5
+        $0.clipsToBounds = true
+        return $0
+    }(UIView())
     
     private let compressContainerView: UIView = {
         let container = UIView()
@@ -49,8 +57,15 @@ final class SelectVideoQualityView: MainCommonView, CustomNavigationBarConfigura
 
 private extension SelectVideoQualityView {
     func setupConstraints() {
-        [customNavigationBar, compressButton, qualitySelector].forEach {
+        [customNavigationBar, videoContainerView,
+         compressButton, qualitySelector, sizeChangeView].forEach {
             addSubview($0)
+        }
+        
+        videoContainerView.snp.makeConstraints {
+            $0.top.equalTo(customNavigationBar.snp.bottom).offset(16)
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(sizeChangeView.snp.top).offset(-18)
         }
         
         compressButton.snp.makeConstraints {
@@ -67,6 +82,11 @@ private extension SelectVideoQualityView {
             $0.leading.equalToSuperview().inset(12.83)
             $0.trailing.equalToSuperview().inset(19.17)
             $0.bottom.equalTo(compressButton.snp.top).offset(-18)
+        }
+        
+        sizeChangeView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(qualitySelector.snp.top).offset(-19)
         }
     }
 }
