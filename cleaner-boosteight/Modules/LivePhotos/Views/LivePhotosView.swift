@@ -7,6 +7,11 @@ final class LivePhotosView: MainCommonView, CustomNavigationBarConfigurable {
     let sizeInfoBadge = InfoBadgeView(title: "0", icon: .storageBadge)
     let selectionView = SelectionView()
     
+    let deleteItemsButton = {
+        $0.isHidden = true
+        return $0
+    }(PrimaryButton(title: "Delete"))
+    
     let collectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -35,7 +40,8 @@ final class LivePhotosView: MainCommonView, CustomNavigationBarConfigurable {
 private extension LivePhotosView {
     func setupConstraints() {
         [customNavigationBar, countInfoBadge,
-         sizeInfoBadge, selectionView, collectionView].forEach {
+         sizeInfoBadge, selectionView,
+         collectionView, deleteItemsButton].forEach {
             addSubview($0)
         }
         
@@ -58,6 +64,11 @@ private extension LivePhotosView {
             $0.top.equalTo(sizeInfoBadge.snp.bottom).offset(16)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview()
+        }
+        
+        deleteItemsButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(safeBottom).inset(16)
         }
     }
 }
