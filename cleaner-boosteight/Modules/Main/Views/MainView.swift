@@ -10,6 +10,7 @@ final class MainView: UIView {
     }(UILabel())
     
     let mediaTableView = {
+        $0.backgroundColor = .clear
         $0.showsVerticalScrollIndicator = false
         $0.separatorStyle = .none
         $0.alwaysBounceVertical = false

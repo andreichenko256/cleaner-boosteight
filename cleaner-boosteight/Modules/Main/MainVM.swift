@@ -11,6 +11,7 @@ final class MainViewModel {
     
     private let diskInfoService: DiskInfoServiceProtocol
     private let permissionService: PermissionServiceProtocol
+    private let mediaCountService: MediaCountServiceProtocol
     
     @Published private(set) var diskInfoDisplayModel: DiskInfoDisplayModel?
     @Published private(set) var error: Error?
@@ -19,24 +20,38 @@ final class MainViewModel {
     
     init(
         diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
-        permissionService: PermissionServiceProtocol = PermissionService()
+        permissionService: PermissionServiceProtocol = PermissionService(),
+        mediaCountService: MediaCountServiceProtocol = MediaCountService()
     ) {
         self.diskInfoService = diskInfoService
         self.permissionService = permissionService
+        self.mediaCountService = mediaCountService
         loadMediaData()
     }
 }
 
 private extension MainViewModel {
     func loadMediaData() {
+        let videoCount = mediaCountService.countAllVideos()
+        let mediaCount = mediaCountService.countAllMedia()
+        
         medias = [
-            .init(type: .videoCompressor, mediaCount: 33, mediaSize: 33, isLocked: true),
-            .init(type: .media, mediaCount: 33, mediaSize: 33, isLocked: true)
+            .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: 0, isLocked: true),
+            .init(type: .media, mediaCount: mediaCount, mediaSize: 0, isLocked: true)
         ]
     }
 }
 
 extension MainViewModel {
+    func refreshData() {
+        loadDiskInfo()
+        
+        let status = permissionService.checkPhotoLibraryStatus()
+        if status == .authorized {
+            updateMediaCounts()
+        }
+    }
+    
     func loadDiskInfo() {
         do {
             let diskInfo = try diskInfoService.getDiskInfo()
@@ -88,9 +103,27 @@ extension MainViewModel {
     }
     
     func unlockMedia() {
+        updateMediaCounts()
+        
         medias = medias.map { media in
             var updatedMedia = media
             updatedMedia.isLocked = false
+            return updatedMedia
+        }
+    }
+    
+    func updateMediaCounts() {
+        let videoCount = mediaCountService.countAllVideos()
+        let mediaCount = mediaCountService.countAllMedia()
+        
+        medias = medias.map { media in
+            var updatedMedia = media
+            switch media.type {
+            case .videoCompressor:
+                updatedMedia.mediaCount = videoCount
+            case .media:
+                updatedMedia.mediaCount = mediaCount
+            }
             return updatedMedia
         }
     }

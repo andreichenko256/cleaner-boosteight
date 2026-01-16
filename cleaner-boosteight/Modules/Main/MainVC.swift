@@ -23,6 +23,7 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setupBindings()
         setupMediaTableView()
+        setupNotifications()
         viewModel.loadDiskInfo()
         viewModel.checkPhotoLibraryPermission()
     }
@@ -34,6 +35,10 @@ final class MainViewController: UIViewController {
     
     override func loadView() {
         view = MainView()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -60,6 +65,19 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 private extension MainViewController {
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+    }
+    
+    @objc func handleAppWillEnterForeground() {
+        viewModel.refreshData()
+    }
+    
     func setupBindings() {
         viewModel.$diskInfoDisplayModel
             .compactMap { $0 }
