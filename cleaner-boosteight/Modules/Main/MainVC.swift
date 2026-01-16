@@ -6,11 +6,6 @@ final class MainViewController: UIViewController {
     private let viewModel: MainViewModel
     private var cancellables = Set<AnyCancellable>()
     
-    let medias: [MediaGroupModel] = [
-        .init(type: .videoCompressor, mediaCount: 33, mediaSize: 33),
-        .init(type: .media, mediaCount: 33, mediaSize: 33)
-    ]
-    
     private var mainView: MainView {
         return view as! MainView
     }
@@ -29,11 +24,12 @@ final class MainViewController: UIViewController {
         setupBindings()
         setupMediaTableView()
         viewModel.loadDiskInfo()
+        viewModel.checkPhotoLibraryPermission()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        requestPermissionsAfterDelay()
+        viewModel.requestPermissionsAfterDelay()
     }
     
     override func loadView() {
@@ -48,7 +44,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return medias.count
+        return viewModel.medias.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,7 +53,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             for: indexPath
         ) as! MediaGroupCell
         
-        cell.configure(with: medias[indexPath.row])
+        cell.configure(with: viewModel.medias[indexPath.row])
         
         return cell
     }
@@ -88,13 +84,13 @@ private extension MainViewController {
                 self?.handlePermissionResult(granted)
             }
             .store(in: &cancellables)
-    }
-    
-    func requestPermissionsAfterDelay() {
-        Task {
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            await viewModel.requestPhotoLibraryPermission()
-        }
+        
+        viewModel.$medias
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.mainView.mediaTableView.reloadData()
+            }
+            .store(in: &cancellables)
     }
     
     func updateUI(with displayModel: MainViewModel.DiskInfoDisplayModel) {
@@ -120,10 +116,9 @@ private extension MainViewController {
     func handlePermissionResult(_ granted: Bool) {
         if granted {
             print("Photo library access granted")
-            // TODO: Load media data
+            viewModel.unlockMedia()
         } else {
             print("Photo library access denied")
-            // TODO: Show alert or UI feedback
         }
     }
 }

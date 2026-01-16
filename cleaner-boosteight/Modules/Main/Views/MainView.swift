@@ -33,12 +33,12 @@ final class MainView: UIView {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 30
         $0.layer.maskedCorners = [
-             .layerMinXMinYCorner,
-             .layerMaxXMinYCorner
-         ]
+            .layerMinXMinYCorner,
+            .layerMaxXMinYCorner
+        ]
         return $0
     }(UIView())
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -89,7 +89,7 @@ private extension MainView {
         [mediaTableView].forEach {
             containerView.addSubview($0)
         }
- 
+        
         mediaTableView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(16)

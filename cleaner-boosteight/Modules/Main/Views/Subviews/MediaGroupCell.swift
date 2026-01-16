@@ -189,5 +189,6 @@ extension MediaGroupCell {
         iconImageView.image = model.type.image
         previewImageView.image = model.type.previewImage
         viewAllContainer.isHidden = model.type == .videoCompressor ? true : false
+        lockImageView.isHidden = !model.isLocked
     }
 }

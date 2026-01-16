@@ -6,7 +6,7 @@ final class OnboardingViewController: UIViewController {
     private var pages: [UIViewController] = []
     private var pageModels: [OnboardingPageModel] = []
     
-    private let viewModel = OnboardingViewModel()
+    private let viewModel: OnboardingViewModel
     private var cancellables: Set<AnyCancellable> = []
     
     private var currentPageIndex: Int = 0
@@ -21,6 +21,15 @@ final class OnboardingViewController: UIViewController {
         createPages()
         setupActions()
         setupInitialPage()
+    }
+    
+    init(viewModel: OnboardingViewModel = OnboardingViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func loadView() {

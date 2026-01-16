@@ -15,6 +15,7 @@ final class MainViewModel {
     @Published private(set) var diskInfoDisplayModel: DiskInfoDisplayModel?
     @Published private(set) var error: Error?
     @Published private(set) var permissionGranted: Bool?
+    @Published private(set) var medias: [MediaGroupModel] = []
     
     init(
         diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
@@ -22,8 +23,20 @@ final class MainViewModel {
     ) {
         self.diskInfoService = diskInfoService
         self.permissionService = permissionService
+        loadMediaData()
     }
-    
+}
+
+private extension MainViewModel {
+    func loadMediaData() {
+        medias = [
+            .init(type: .videoCompressor, mediaCount: 33, mediaSize: 33, isLocked: true),
+            .init(type: .media, mediaCount: 33, mediaSize: 33, isLocked: true)
+        ]
+    }
+}
+
+extension MainViewModel {
     func loadDiskInfo() {
         do {
             let diskInfo = try diskInfoService.getDiskInfo()
@@ -41,10 +54,44 @@ final class MainViewModel {
         }
     }
     
+    func checkPhotoLibraryPermission() {
+        let status = permissionService.checkPhotoLibraryStatus()
+        
+        switch status {
+        case .authorized:
+            permissionGranted = true
+        case .denied, .restricted:
+            permissionGranted = false
+        case .notDetermined:
+            break
+        }
+    }
+    
+    func requestPermissionsAfterDelay() {
+        let status = permissionService.checkPhotoLibraryStatus()
+        
+        guard status == .notDetermined else {
+            return
+        }
+        
+        Task {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            await requestPhotoLibraryPermission()
+        }
+    }
+    
     func requestPhotoLibraryPermission() async {
         let granted = await permissionService.requestPhotoLibraryAccess()
         await MainActor.run {
             permissionGranted = granted
+        }
+    }
+    
+    func unlockMedia() {
+        medias = medias.map { media in
+            var updatedMedia = media
+            updatedMedia.isLocked = false
+            return updatedMedia
         }
     }
 }
