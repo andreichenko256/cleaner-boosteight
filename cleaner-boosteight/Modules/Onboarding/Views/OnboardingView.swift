@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class OnboardingView: MainView {
+final class OnboardingView: MainCommonView {
     let continueButton = PrimaryButton(title: "Continue")
     let pageControl = PageControlView()
     

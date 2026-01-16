@@ -1,0 +1,79 @@
+import UIKit
+import SnapKit
+
+final class MainView: UIView {
+    let circularProgressView = CircularProgressView()
+    
+    let valueStorageLabel = {
+        $0.numberOfLines = 0
+        return $0
+    }(UILabel())
+    
+    private let iphoneStorageLabel = {
+        $0.text = "iPhone Storage"
+        $0.textColor = Colors.primaryWhite
+        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.numberOfLines = 0
+        return $0
+    }(UILabel())
+    
+    private let containerView = {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 30
+        $0.layer.maskedCorners = [
+             .layerMinXMinYCorner,
+             .layerMaxXMinYCorner
+         ]
+        return $0
+    }(UIView())
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private extension MainView {
+    func setupUI() {
+        backgroundColor = Colors.secondaryBlue
+    }
+    
+    func setupConstraints() {
+        [iphoneStorageLabel, valueStorageLabel,
+         circularProgressView, containerView].forEach {
+            addSubview($0)
+        }
+        
+        iphoneStorageLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(12.5)
+            $0.top.equalTo(safeTop).inset(82.5)
+        }
+        
+        valueStorageLabel.snp.makeConstraints {
+            $0.leading.equalTo(iphoneStorageLabel)
+            $0.top.equalTo(iphoneStorageLabel.snp.bottom).offset(6)
+        }
+        
+        circularProgressView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(10)
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(148)
+        }
+        
+        containerView.snp.makeConstraints {
+            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.height.equalTo(500)
+        }
+    }
+    
+    func setupContainerViewConstraints() {
+        [].forEach {
+            containerView.addSubview($0)
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class MainView: UIView {
+class MainCommonView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -13,7 +13,7 @@ class MainView: UIView {
     }
 }
 
-private extension MainView {
+private extension MainCommonView {
     func setupUI() {
         backgroundColor = .white
     }
