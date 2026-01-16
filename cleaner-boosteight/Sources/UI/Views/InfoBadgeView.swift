@@ -33,6 +33,12 @@ final class InfoBadgeView: UIView {
     }
 }
 
+extension InfoBadgeView {
+    func updateTitle(_ title: String) {
+        titleLabel.text = title
+    }
+}
+
 private extension InfoBadgeView {
     func setupUI() {
         backgroundColor = .white

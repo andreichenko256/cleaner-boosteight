@@ -4,7 +4,7 @@ import SnapKit
 final class VideoCompressorView: MainCommonView, CustomNavigationBarConfigurable {
     let customNavigationBar = CustomNavigationBar(title: "Video Compressor")
     
-    private let videoInfoBadge = InfoBadgeView(title: "1746 Videos", icon: .videoBadge)
+    private let videoInfoBadge = InfoBadgeView(title: "Loading...", icon: .videoBadge)
     
     let videosCollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -29,6 +29,11 @@ final class VideoCompressorView: MainCommonView, CustomNavigationBarConfigurable
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updateVideoInfo(count: Int, size: String) {
+        let text = "\(count) Videos • \(size)"
+        videoInfoBadge.updateTitle(text)
     }
 }
 

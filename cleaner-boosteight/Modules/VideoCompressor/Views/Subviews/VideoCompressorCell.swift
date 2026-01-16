@@ -4,13 +4,14 @@ import SnapKit
 final class VideoCompressorCell: UICollectionViewCell {
     static let reuseIdentifier = "VideoCompressorCell"
     
-    private let iconImageView = {
+    private let thumbnailImageView = {
         $0.contentMode = .scaleAspectFill
+        $0.backgroundColor = Colors.secondaryGray.withAlphaComponent(0.5)
         return $0
     }(UIImageView())
     
     private let sizeLabel = {
-        $0.numberOfLines = 0
+        $0.numberOfLines = 1
         $0.textAlignment = .center
         $0.textColor = .white
         $0.font = Fonts.Montserrat.regular14
@@ -28,7 +29,7 @@ final class VideoCompressorCell: UICollectionViewCell {
         $0.clipsToBounds = true
         return $0
     }(UIView())
-    
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupUI()
@@ -37,6 +38,12 @@ final class VideoCompressorCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        thumbnailImageView.image = nil
+        sizeLabel.text = nil
     }
 }
 
@@ -48,11 +55,11 @@ private extension VideoCompressorCell {
     }
     
     func setupConstraints() {
-        [iconImageView, sizeContainerView].forEach {
+        [thumbnailImageView, sizeContainerView].forEach {
             contentView.addSubview($0)
         }
         
-        iconImageView.snp.makeConstraints {
+        thumbnailImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
@@ -63,7 +70,11 @@ private extension VideoCompressorCell {
 }
 
 extension VideoCompressorCell {
-    func configure() {
-        
+    func configure(with video: VideoModel) {
+        sizeLabel.text = video.formattedSize
+    }
+    
+    func updateThumbnail(_ image: UIImage?) {
+        thumbnailImageView.image = image
     }
 }

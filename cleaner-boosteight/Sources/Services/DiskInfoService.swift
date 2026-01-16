@@ -10,7 +10,6 @@ enum DiskInfoError: Error {
 }
 
 final class DiskInfoService: DiskInfoServiceProtocol {
-    
     private let fileManager: FileManager
     
     init(fileManager: FileManager = .default) {

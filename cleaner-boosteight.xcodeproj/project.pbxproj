@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09DC72D856D4746BFB6B6939 /* ByteSizeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFD7EEF35C775F1840CB4F /* ByteSizeFormatter.swift */; };
+		DFFAB4BB9B212212C18A00C2 /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A201AD0ED92F3014083D1A8D /* VideoModel.swift */; };
+		C25F30FE125C4963BB929A51 /* VideoCompressorVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B8757907AFB4A5E64DAFF /* VideoCompressorVM.swift */; };
+		379F2E6EEE55A9BC65C202BA /* VideoFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F463E4739312E9F1D2F46A /* VideoFetchService.swift */; };
 		2294BAFF07317F5BE8E6C55B /* MediaCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */; };
 		28FF09FAED05AA2D2CC046DF /* MediaCountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */; };
 		2D463908A21940DD86F466FC /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2075E14F599B1520E272D5 /* AlertModel.swift */; };
@@ -59,6 +63,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20FFD7EEF35C775F1840CB4F /* ByteSizeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteSizeFormatter.swift; sourceTree = "<group>"; };
+		A201AD0ED92F3014083D1A8D /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
+		E01B8757907AFB4A5E64DAFF /* VideoCompressorVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressorVM.swift; sourceTree = "<group>"; };
+		06F463E4739312E9F1D2F46A /* VideoFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFetchService.swift; sourceTree = "<group>"; };
 		0F2075E14F599B1520E272D5 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCacheService.swift; sourceTree = "<group>"; };
 		BB1111112F1ABC0000000001 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -192,9 +200,18 @@
 				ED89174D2F1987F200EAF996 /* Factories */,
 				ED2A096E2F196D7A00C19D72 /* Extensions */,
 				ED2A09692F196B5700C19D72 /* Typealiases */,
-				ED2A09652F1967CA00C19D72 /* Constants */,
+				ED2A09652F1967CA00C19D72 /* Constants */,				66F202F53B363FAE09D736AD /* Helpers */,
+
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		66F202F53B363FAE09D736AD /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				20FFD7EEF35C775F1840CB4F /* ByteSizeFormatter.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		ED2A09592F1965AA00C19D72 /* Modules */ = {
@@ -369,7 +386,8 @@
 				ED891B8B2F19E63900EAF996 /* PermissionService.swift */,
 				ED8917662F19BC1000EAF996 /* DiskInfoService.swift */,
 				F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */,
-				656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */,
+				656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */,				06F463E4739312E9F1D2F46A /* VideoFetchService.swift */,
+
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -412,11 +430,20 @@
 		ED891C942F19FC1000EAF996 /* VideoCompressor */ = {
 			isa = PBXGroup;
 			children = (
+				BE625928FEF1FFBCC2F375A5 /* Models */,
+				E01B8757907AFB4A5E64DAFF /* VideoCompressorVM.swift */,
 				ED891C962F19FC1900EAF996 /* VideoCompressorVC.swift */,
 				ED891C952F19FC1500EAF996 /* Views */,
-				ED891C9A2F19FC6900EAF996 /* Models */,
 			);
 			path = VideoCompressor;
+			sourceTree = "<group>";
+		};
+		BE625928FEF1FFBCC2F375A5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A201AD0ED92F3014083D1A8D /* VideoModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		ED891C952F19FC1500EAF996 /* Views */ = {
@@ -426,13 +453,6 @@
 				ED891C982F19FC4300EAF996 /* VideoCompressorView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		ED891C9A2F19FC6900EAF996 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -514,6 +534,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09DC72D856D4746BFB6B6939 /* ByteSizeFormatter.swift in Sources */,
+				DFFAB4BB9B212212C18A00C2 /* VideoModel.swift in Sources */,
+				C25F30FE125C4963BB929A51 /* VideoCompressorVM.swift in Sources */,
+				379F2E6EEE55A9BC65C202BA /* VideoFetchService.swift in Sources */,
 				AA1111112F1ABC0000000001 /* Coordinator.swift in Sources */,
 				AA2222222F1ABC0000000002 /* AppCoordinator.swift in Sources */,
 				AA3333332F1ABC0000000003 /* OnboardingCoordinator.swift in Sources */,
