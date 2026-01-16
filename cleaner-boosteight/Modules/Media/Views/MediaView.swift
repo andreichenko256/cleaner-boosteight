@@ -17,6 +17,7 @@ final class MediaView: MainCommonView, CustomNavigationBarConfigurable {
         collectionView.contentInset.top = 8
         collectionView.contentInset.left = 16.7
         collectionView.contentInset.right = 16.7
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
     

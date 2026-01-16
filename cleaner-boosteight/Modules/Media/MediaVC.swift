@@ -25,6 +25,11 @@ final class MediaViewController: UIViewController {
         setupBindings()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.refreshMediaData()
+    }
+    
     override func loadView() {
         view = MediaView()
     }

@@ -46,8 +46,17 @@ final class MainViewModel {
 
 private extension MainViewModel {
     func loadMediaData() {
-        let videoCount = mediaCountService.countAllVideos()
-        let mediaCount = mediaCountService.countAllMedia()
+        Task {
+            await loadMediaDataAsync()
+        }
+    }
+    
+    func loadMediaDataAsync() async {
+        async let videoCountAsync = mediaCountService.countAllVideos()
+        async let mediaCountAsync = mediaCountService.countAllMedia()
+        
+        let videoCount = await videoCountAsync
+        let mediaCount = await mediaCountAsync
         
         let cachedVideoInfo = mediaCacheService.getCachedMediaInfo(for: .videos)
         let cachedMediaInfo = mediaCacheService.getCachedMediaInfo(for: .allMedia)
@@ -69,20 +78,20 @@ private extension MainViewModel {
             mediaSize = 0
         }
         
-        medias = [
-            .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: videoSize, isLocked: true, isLoading: needsVideoUpdate),
-            .init(type: .media, mediaCount: mediaCount, mediaSize: mediaSize, isLocked: true, isLoading: needsMediaUpdate)
-        ]
+        await MainActor.run {
+            medias = [
+                .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: videoSize, isLocked: true, isLoading: needsVideoUpdate),
+                .init(type: .media, mediaCount: mediaCount, mediaSize: mediaSize, isLocked: true, isLoading: needsMediaUpdate)
+            ]
+        }
         
         if needsVideoUpdate || needsMediaUpdate {
-            Task {
-                await loadMediaSizes(
-                    updateVideos: needsVideoUpdate,
-                    updateMedia: needsMediaUpdate,
-                    videoCount: videoCount,
-                    mediaCount: mediaCount
-                )
-            }
+            await loadMediaSizes(
+                updateVideos: needsVideoUpdate,
+                updateMedia: needsMediaUpdate,
+                videoCount: videoCount,
+                mediaCount: mediaCount
+            )
         }
     }
     
@@ -203,8 +212,17 @@ extension MainViewModel {
     }
     
     func updateMediaCounts() {
-        let videoCount = mediaCountService.countAllVideos()
-        let mediaCount = mediaCountService.countAllMedia()
+        Task {
+            await updateMediaCountsAsync()
+        }
+    }
+    
+    private func updateMediaCountsAsync() async {
+        async let videoCountAsync = mediaCountService.countAllVideos()
+        async let mediaCountAsync = mediaCountService.countAllMedia()
+        
+        let videoCount = await videoCountAsync
+        let mediaCount = await mediaCountAsync
         
         let cachedVideoInfo = mediaCacheService.getCachedMediaInfo(for: .videos)
         let cachedMediaInfo = mediaCacheService.getCachedMediaInfo(for: .allMedia)
@@ -212,34 +230,34 @@ extension MainViewModel {
         let needsVideoUpdate = cachedVideoInfo == nil || cachedVideoInfo?.count != videoCount
         let needsMediaUpdate = cachedMediaInfo == nil || cachedMediaInfo?.count != mediaCount
         
-        medias = medias.map { media in
-            var updatedMedia = media
-            switch media.type {
-            case .videoCompressor:
-                updatedMedia.mediaCount = videoCount
-                updatedMedia.isLoading = needsVideoUpdate
-                if let cached = cachedVideoInfo, cached.count == videoCount {
-                    updatedMedia.mediaSize = convertBytesToGB(cached.size)
+        await MainActor.run {
+            medias = medias.map { media in
+                var updatedMedia = media
+                switch media.type {
+                case .videoCompressor:
+                    updatedMedia.mediaCount = videoCount
+                    updatedMedia.isLoading = needsVideoUpdate
+                    if let cached = cachedVideoInfo, cached.count == videoCount {
+                        updatedMedia.mediaSize = convertBytesToGB(cached.size)
+                    }
+                case .media:
+                    updatedMedia.mediaCount = mediaCount
+                    updatedMedia.isLoading = needsMediaUpdate
+                    if let cached = cachedMediaInfo, cached.count == mediaCount {
+                        updatedMedia.mediaSize = convertBytesToGB(cached.size)
+                    }
                 }
-            case .media:
-                updatedMedia.mediaCount = mediaCount
-                updatedMedia.isLoading = needsMediaUpdate
-                if let cached = cachedMediaInfo, cached.count == mediaCount {
-                    updatedMedia.mediaSize = convertBytesToGB(cached.size)
-                }
+                return updatedMedia
             }
-            return updatedMedia
         }
         
         if needsVideoUpdate || needsMediaUpdate {
-            Task {
-                await loadMediaSizes(
-                    updateVideos: needsVideoUpdate,
-                    updateMedia: needsMediaUpdate,
-                    videoCount: videoCount,
-                    mediaCount: mediaCount
-                )
-            }
+            await loadMediaSizes(
+                updateVideos: needsVideoUpdate,
+                updateMedia: needsMediaUpdate,
+                videoCount: videoCount,
+                mediaCount: mediaCount
+            )
         }
     }
     

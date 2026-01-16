@@ -23,6 +23,13 @@ final class MediaCell: UICollectionViewCell {
         return $0
     }(UILabel())
     
+    private let activityIndicator = {
+        $0.style = .medium
+        $0.color = Colors.midGray
+        $0.hidesWhenStopped = true
+        return $0
+    }(UIActivityIndicatorView())
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -43,7 +50,7 @@ private extension MediaCell {
     }
     
     func setupConstraints() {
-        [iconImageView, titleLabel, countLabel].forEach {
+        [iconImageView, titleLabel, countLabel, activityIndicator].forEach {
             contentView.addSubview($0)
         }
         
@@ -61,6 +68,11 @@ private extension MediaCell {
             $0.leading.equalTo(iconImageView)
             $0.top.equalTo(titleLabel.snp.bottom).offset(6.6)
         }
+        
+        activityIndicator.snp.makeConstraints {
+            $0.leading.equalTo(iconImageView)
+            $0.top.equalTo(countLabel)
+        }
     }
     
     func setupShadow() {
@@ -75,7 +87,15 @@ private extension MediaCell {
 extension MediaCell {
     func configure(with model: MediaModel) {
         titleLabel.text = model.title
-        countLabel.text = "\(model.count) items"
         iconImageView.image = model.image
+        
+        if model.isLoading {
+            countLabel.isHidden = true
+            activityIndicator.startAnimating()
+        } else {
+            countLabel.isHidden = false
+            activityIndicator.stopAnimating()
+            countLabel.text = "\(model.count) items"
+        }
     }
 }
