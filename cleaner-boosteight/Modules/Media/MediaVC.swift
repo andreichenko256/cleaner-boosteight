@@ -1,15 +1,28 @@
 import UIKit
 import SnapKit
+import Combine
 
 final class MediaViewController: UIViewController {
+    private let viewModel: MediaViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     private var mediaView: MediaView {
         return view as! MediaView
     }
     
+    init(viewModel: MediaViewModel = MediaViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupBindings()
     }
     
     override func loadView() {
@@ -24,16 +37,29 @@ extension MediaViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return viewModel.mediaItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCell.reuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MediaCell.reuseIdentifier,
+            for: indexPath
+        ) as! MediaCell
+        
+        let mediaItem = viewModel.mediaItems[indexPath.item]
+        cell.configure(with: mediaItem)
         
         return cell
     }
 }
 
 private extension MediaViewController {
-    
+    func setupBindings() {
+        viewModel.$mediaItems
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.mediaView.mediaCollectionView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
 }
