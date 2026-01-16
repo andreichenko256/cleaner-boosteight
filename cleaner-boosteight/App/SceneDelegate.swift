@@ -11,7 +11,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
 //        let coordinator = AppCoordinator(window: window)
 //        coordinator.start()
-        window.rootViewController = MediaViewController()
+        window.rootViewController = LivePhotosViewController()
         self.window = window
         window.makeKeyAndVisible()
 //        self.appCoordinator = coordinator
