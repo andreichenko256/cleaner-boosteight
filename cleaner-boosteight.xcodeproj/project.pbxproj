@@ -35,9 +35,10 @@
 		ED89196A2F19C70000EAF996 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89196B2F19C70000EAF996 /* Byte.swift */; };
 		ED89196F2F19C53800EAF996 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89196E2F19C53400EAF996 /* MainVM.swift */; };
 		ED891B7F2F19CDE600EAF996 /* MediaGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B7E2F19CDE600EAF996 /* MediaGroupCell.swift */; };
-		ED891B822F19D1A000EAF996 /* Untitled.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B812F19D1A000EAF996 /* Untitled.swift */; };
+		ED891B822F19D1A000EAF996 /* MediaGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B812F19D1A000EAF996 /* MediaGroupModel.swift */; };
 		ED891B842F19D25300EAF996 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B832F19D25200EAF996 /* Fonts.swift */; };
 		ED891B882F19D3E600EAF996 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */; };
+		ED891B8A2F19E39300EAF996 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B892F19E39100EAF996 /* MediaType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,9 +71,10 @@
 		ED89196B2F19C70000EAF996 /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
 		ED89196E2F19C53400EAF996 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		ED891B7E2F19CDE600EAF996 /* MediaGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaGroupCell.swift; sourceTree = "<group>"; };
-		ED891B812F19D1A000EAF996 /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		ED891B812F19D1A000EAF996 /* MediaGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaGroupModel.swift; sourceTree = "<group>"; };
 		ED891B832F19D25200EAF996 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		ED891B892F19E39100EAF996 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,7 +322,8 @@
 		ED891B802F19D19000EAF996 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				ED891B812F19D1A000EAF996 /* Untitled.swift */,
+				ED891B892F19E39100EAF996 /* MediaType.swift */,
+				ED891B812F19D1A000EAF996 /* MediaGroupModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -429,7 +432,7 @@
 				ED8917632F19BB1700EAF996 /* CircularProgressView.swift in Sources */,
 				ED89196F2F19C53800EAF996 /* MainVM.swift in Sources */,
 				ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */,
-				ED891B822F19D1A000EAF996 /* Untitled.swift in Sources */,
+				ED891B822F19D1A000EAF996 /* MediaGroupModel.swift in Sources */,
 				ED8917602F19B98800EAF996 /* UILabel.swift in Sources */,
 				ED2A09672F1967CF00C19D72 /* Colors.swift in Sources */,
 				ED2A09722F197BD200C19D72 /* UIDevice.swift in Sources */,
@@ -439,6 +442,7 @@
 				ED89175E2F19AAD700EAF996 /* MainView.swift in Sources */,
 				ED8917482F19820800EAF996 /* PageControlView.swift in Sources */,
 				ED2A095F2F1965F800C19D72 /* OnboardingView.swift in Sources */,
+				ED891B8A2F19E39300EAF996 /* MediaType.swift in Sources */,
 				ED89174F2F1987FA00EAF996 /* OnboardingFactory.swift in Sources */,
 				ED2A09702F196D8600C19D72 /* UIView.swift in Sources */,
 				ED2A096B2F196B7800C19D72 /* VoidBlock.swift in Sources */,

@@ -6,6 +6,31 @@ final class MediaGroupCell: UITableViewCell {
     
     private let containerView = UIView()
     
+    private lazy var viewAllContainer = {
+        let label = UILabel()
+        label.text = "View all"
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.textColor = Colors.secondaryGray
+        label.numberOfLines = 0
+        
+        let icon = UIImageView(image: .arrowRight)
+        icon.contentMode = .scaleAspectFit
+        
+        $0.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.verticalEdges.equalToSuperview()
+        }
+
+        $0.addSubview(icon)
+        icon.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(label)
+            make.leading.equalTo(label.snp.trailing).offset(10.67)
+        }
+        
+        return $0
+    }(UIView())
+    
     private let titleLabel = {
         $0.font = Fonts.Montserrat.semiBold20
         $0.textColor = Colors.primaryBlack
@@ -28,6 +53,22 @@ final class MediaGroupCell: UITableViewCell {
         return $0
     }(UIImageView())
     
+    private let previewImageView = {
+        $0.contentMode = .scaleAspectFill
+        $0.snp.makeConstraints { make in
+            make.height.equalTo(155)
+        }
+        return $0
+    }(UIImageView())
+    
+    private let lockImageView = {
+        $0.contentMode = .scaleAspectFit
+        $0.snp.makeConstraints { make in
+            make.size.equalTo(24)
+        }
+        return $0
+    }(UIImageView(image: .lockIcon))
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -43,7 +84,6 @@ private extension MediaGroupCell {
     func setupUI() {
         backgroundColor = .clear
         selectionStyle = .none
-        
     }
     
     func setupConstraints() {
@@ -58,7 +98,8 @@ private extension MediaGroupCell {
     }
     
     func setupContainerViewConstraints() {
-        [iconImageView, titleLabel, mediaCountLabel, iconImageView].forEach {
+        [iconImageView, titleLabel, mediaCountLabel,
+         previewImageView, lockImageView, viewAllContainer].forEach {
             containerView.addSubview($0)
         }
         
@@ -76,10 +117,22 @@ private extension MediaGroupCell {
             $0.leading.equalTo(iconImageView)
         }
         
-        iconImageView.snp.makeConstraints {
-            $0.top.equalTo(mediaCountLabel.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(12.5)
+        lockImageView.snp.makeConstraints {
+            $0.top.equalTo(iconImageView)
+            $0.trailing.equalToSuperview().inset(8)
         }
+        
+        viewAllContainer.snp.makeConstraints {
+            $0.top.equalTo(mediaCountLabel)
+            $0.trailing.equalToSuperview().inset(14)
+        }
+        
+        previewImageView.snp.makeConstraints {
+            $0.top.equalTo(mediaCountLabel.snp.bottom).offset(21)
+            $0.horizontalEdges.equalToSuperview().inset(12.5)
+            $0.bottom.equalToSuperview().inset(8)
+        }
+        
     }
 }
 
@@ -93,7 +146,7 @@ private extension MediaGroupCell {
         
         let primaryAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 16, weight: .regular),
-            .foregroundColor: Colors.primaryBlack
+            .foregroundColor: Colors.secondaryGray
         ]
         
         let secondaryAttributes: [NSAttributedString.Key: Any] = [
@@ -117,7 +170,7 @@ private extension MediaGroupCell {
         
         result.append(
             NSAttributedString(
-                string: size ?? "0",
+                string: "\(size ?? "0") GB",
                 attributes: secondaryAttributes
             )
         )
@@ -128,11 +181,13 @@ private extension MediaGroupCell {
 
 extension MediaGroupCell {
     func configure(with model: MediaGroupModel) {
-        titleLabel.text = model.title
+        titleLabel.text = model.type.title
         mediaCountLabel.attributedText = makeMediaInfoText(
             count: model.mediaCount,
             size: String(model.mediaSize)
         )
-        iconImageView.image = model.image
+        iconImageView.image = model.type.image
+        previewImageView.image = model.type.previewImage
+        viewAllContainer.isHidden = model.type == .videoCompressor ? true : false
     }
 }

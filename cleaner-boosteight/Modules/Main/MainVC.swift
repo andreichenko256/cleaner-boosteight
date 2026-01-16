@@ -6,6 +6,11 @@ final class MainViewController: UIViewController {
     private let viewModel: MainViewModel
     private var cancellables = Set<AnyCancellable>()
     
+    let medias: [MediaGroupModel] = [
+        .init(type: .videoCompressor, mediaCount: 33, mediaSize: 33),
+        .init(type: .media, mediaCount: 33, mediaSize: 33)
+    ]
+    
     private var mainView: MainView {
         return view as! MainView
     }
@@ -13,12 +18,6 @@ final class MainViewController: UIViewController {
     init(viewModel: MainViewModel = MainViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        for family in UIFont.familyNames.sorted() {
-            print("Family: \(family)")
-            for name in UIFont.fontNames(forFamilyName: family) {
-                print("   \(name)")
-            }
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -44,7 +43,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return medias.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -53,9 +52,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             for: indexPath
         ) as! MediaGroupCell
         
+        cell.configure(with: medias[indexPath.row])
+        
         return cell
     }
-    
 }
 
 private extension MainViewController {
