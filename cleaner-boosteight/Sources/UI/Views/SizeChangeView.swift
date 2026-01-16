@@ -4,7 +4,7 @@ import SnapKit
 final class SizeChangeView: UIView {
     
     let nowValueLabel = {
-        $0.text = "30.88 MB"
+        $0.text = "-"
         $0.textColor = Colors.primaryBlack
         $0.font = .systemFont(ofSize: 24, weight: .semibold)
         $0.numberOfLines = 0
@@ -12,7 +12,7 @@ final class SizeChangeView: UIView {
     }(UILabel())
     
     let willBeValueLabel = {
-        $0.text = "15.75 MB"
+        $0.text = "-"
         $0.textColor = Colors.primaryBlue
         $0.font = .systemFont(ofSize: 24, weight: .semibold)
         $0.numberOfLines = 0
@@ -78,5 +78,12 @@ private extension SizeChangeView {
         label.textColor = Colors.primaryGray
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
+    }
+}
+
+extension SizeChangeView {
+    func updateSizes(now: String, willBe: String) {
+        nowValueLabel.text = now
+        willBeValueLabel.text = willBe
     }
 }

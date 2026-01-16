@@ -9,25 +9,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
         
-//        let coordinator = AppCoordinator(window: window)
-//        coordinator.start()
-        
-        // Временно для тестирования - получаем первое видео
-        let videoFetchService = VideoFetchService()
-        Task {
-            let videos = await videoFetchService.fetchAllVideos()
-            if let firstVideo = videos.first {
-                let viewModel = SelectVideoQualityViewModel(videoModel: firstVideo)
-                let viewController = SelectVideoQualityViewController(viewModel: viewModel)
-                await MainActor.run {
-                    window.rootViewController = viewController
-                }
-            }
-        }
+        let coordinator = AppCoordinator(window: window)
+        coordinator.start()
         
         self.window = window
-        window.makeKeyAndVisible()
-//        self.appCoordinator = coordinator
+        self.appCoordinator = coordinator
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {

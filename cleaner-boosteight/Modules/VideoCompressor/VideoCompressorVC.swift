@@ -3,6 +3,7 @@ import SnapKit
 
 final class VideoCompressorViewController: UIViewController {
     var onBack: VoidBlock?
+    var onVideoSelected: ((VideoModel) -> Void)?
     
     private let viewModel: VideoCompressorVMProtocol
     
@@ -60,6 +61,11 @@ extension VideoCompressorViewController: UICollectionViewDataSource, UICollectio
         }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let video = viewModel.videos[indexPath.item]
+        onVideoSelected?(video)
     }
     
 }

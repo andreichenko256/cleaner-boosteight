@@ -4,7 +4,7 @@ import AVKit
 import Combine
 
 final class SelectVideoQualityViewController: UIViewController {
-    
+    var onBack: VoidBlock?
     
     private var electVideoQualityView: SelectVideoQualityView {
         return view as! SelectVideoQualityView
@@ -30,6 +30,7 @@ final class SelectVideoQualityViewController: UIViewController {
         setupVideoPlayer()
         setupQualitySelector()
         setupCompressButton()
+        setupBackButton()
         bindViewModel()
         
         viewModel.loadVideo()
@@ -72,6 +73,12 @@ private extension SelectVideoQualityViewController {
             for: .touchUpInside
         )
     }
+    
+    func setupBackButton() {
+        electVideoQualityView.customNavigationBar.onBackTap = { [weak self] in
+            self?.onBack?()
+        }
+    }
 }
 
 private extension SelectVideoQualityViewController {
@@ -97,6 +104,16 @@ private extension SelectVideoQualityViewController {
                 self?.showError(errorMessage)
             }
             .store(in: &cancellables)
+        
+        Publishers.CombineLatest(
+            viewModel.currentSizePublisher,
+            viewModel.estimatedSizePublisher
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] currentSize, estimatedSize in
+            self?.electVideoQualityView.sizeChangeView.updateSizes(now: currentSize, willBe: estimatedSize)
+        }
+        .store(in: &cancellables)
     }
 }
 private extension SelectVideoQualityViewController {

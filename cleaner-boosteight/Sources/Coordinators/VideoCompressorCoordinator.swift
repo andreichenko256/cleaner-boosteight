@@ -16,7 +16,22 @@ final class VideoCompressorCoordinator: Coordinator {
             self?.finish()
         }
         
+        videoCompressorVC.onVideoSelected = { [weak self] video in
+            self?.showSelectVideoQuality(for: video)
+        }
+        
         navigationController.pushViewController(videoCompressorVC, animated: true)
+    }
+    
+    private func showSelectVideoQuality(for video: VideoModel) {
+        let viewModel = SelectVideoQualityViewModel(videoModel: video)
+        let selectVideoQualityVC = SelectVideoQualityViewController(viewModel: viewModel)
+        
+        selectVideoQualityVC.onBack = { [weak self] in
+            self?.navigationController.popViewController(animated: true)
+        }
+        
+        navigationController.pushViewController(selectVideoQualityVC, animated: true)
     }
     
     func finish() {

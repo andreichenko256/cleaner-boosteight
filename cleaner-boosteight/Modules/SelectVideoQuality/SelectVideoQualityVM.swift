@@ -8,11 +8,15 @@ protocol SelectVideoQualityViewModelProtocol: AnyObject {
     var selectedQuality: VideoQuality { get }
     var isLoadingVideo: Bool { get }
     var errorMessage: String? { get }
+    var currentSize: String { get }
+    var estimatedSize: String { get }
     
     var playerPublisher: AnyPublisher<AVPlayer?, Never> { get }
     var selectedQualityPublisher: AnyPublisher<VideoQuality, Never> { get }
     var isLoadingPublisher: AnyPublisher<Bool, Never> { get }
     var errorPublisher: AnyPublisher<String?, Never> { get }
+    var currentSizePublisher: AnyPublisher<String, Never> { get }
+    var estimatedSizePublisher: AnyPublisher<String, Never> { get }
     
     func loadVideo()
     func selectQuality(_ quality: VideoQuality)
@@ -25,6 +29,8 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
     @Published private(set) var selectedQuality: VideoQuality = .medium
     @Published private(set) var isLoadingVideo: Bool = false
     @Published private(set) var errorMessage: String?
+    @Published private(set) var currentSize: String
+    @Published private(set) var estimatedSize: String
     
     var playerPublisher: AnyPublisher<AVPlayer?, Never> {
         $player.eraseToAnyPublisher()
@@ -42,11 +48,21 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
         $errorMessage.eraseToAnyPublisher()
     }
     
+    var currentSizePublisher: AnyPublisher<String, Never> {
+        $currentSize.eraseToAnyPublisher()
+    }
+    
+    var estimatedSizePublisher: AnyPublisher<String, Never> {
+        $estimatedSize.eraseToAnyPublisher()
+    }
+    
     private let videoModel: VideoModel
     private var cancellables = Set<AnyCancellable>()
     
     init(videoModel: VideoModel) {
         self.videoModel = videoModel
+        self.currentSize = ByteSizeFormatter.format(videoModel.size)
+        self.estimatedSize = ByteSizeFormatter.format(Self.calculateEstimatedSize(original: videoModel.size, quality: .medium))
     }
 
     func loadVideo() {
@@ -73,6 +89,7 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
     func selectQuality(_ quality: VideoQuality) {
         guard selectedQuality != quality else { return }
         selectedQuality = quality
+        estimatedSize = ByteSizeFormatter.format(Self.calculateEstimatedSize(original: videoModel.size, quality: quality))
     }
     
     func cleanup() {
@@ -95,5 +112,20 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
         }
         
         player = AVPlayer(playerItem: playerItem)
+    }
+    
+    private static func calculateEstimatedSize(original: UInt64, quality: VideoQuality) -> UInt64 {
+        let compressionRatio: Double
+        
+        switch quality {
+        case .low:
+            compressionRatio = 0.35
+        case .medium:
+            compressionRatio = 0.55
+        case .high:
+            compressionRatio = 0.75
+        }
+        
+        return UInt64(Double(original) * compressionRatio)
     }
 }
