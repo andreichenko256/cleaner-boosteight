@@ -14,6 +14,8 @@ final class MainView: UIView {
         $0.separatorStyle = .none
         $0.alwaysBounceVertical = false
         $0.isScrollEnabled = true
+        $0.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
+        $0.scrollIndicatorInsets = $0.contentInset
         $0.register(MediaGroupCell.self, forCellReuseIdentifier: MediaGroupCell.reuseIdentifier)
         return $0
     }(UITableView())
@@ -27,6 +29,7 @@ final class MainView: UIView {
     }(UILabel())
     
     private let containerView = {
+        $0.clipsToBounds = true
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 30
         $0.layer.maskedCorners = [
@@ -35,7 +38,7 @@ final class MainView: UIView {
          ]
         return $0
     }(UIView())
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -75,7 +78,7 @@ private extension MainView {
         }
         
         containerView.snp.makeConstraints {
-            $0.top.equalTo(circularProgressView.snp.bottom).offset(47.5)
+            $0.top.equalTo(circularProgressView.snp.bottom).offset(UIDevice.hasHomeButton ? 30 : 47.5)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
         
@@ -86,11 +89,11 @@ private extension MainView {
         [mediaTableView].forEach {
             containerView.addSubview($0)
         }
-        
+ 
         mediaTableView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(24)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.bottom.equalTo(safeBottom).inset(8)
+            $0.bottom.equalTo(safeBottom)
         }
     }
 }

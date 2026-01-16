@@ -31,6 +31,11 @@ final class MainViewController: UIViewController {
         viewModel.loadDiskInfo()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        requestPermissionsAfterDelay()
+    }
+    
     override func loadView() {
         view = MainView()
     }
@@ -75,6 +80,21 @@ private extension MainViewController {
                 self?.handleError(error)
             }
             .store(in: &cancellables)
+        
+        viewModel.$permissionGranted
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] granted in
+                self?.handlePermissionResult(granted)
+            }
+            .store(in: &cancellables)
+    }
+    
+    func requestPermissionsAfterDelay() {
+        Task {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            await viewModel.requestPhotoLibraryPermission()
+        }
     }
     
     func updateUI(with displayModel: MainViewModel.DiskInfoDisplayModel) {
@@ -95,5 +115,15 @@ private extension MainViewController {
     func handleError(_ error: Error) {
         print("Failed to load disk info: \(error)")
         mainView.circularProgressView.setProgress(0, animated: false)
+    }
+    
+    func handlePermissionResult(_ granted: Bool) {
+        if granted {
+            print("Photo library access granted")
+            // TODO: Load media data
+        } else {
+            print("Photo library access denied")
+            // TODO: Show alert or UI feedback
+        }
     }
 }

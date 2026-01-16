@@ -10,12 +10,18 @@ final class MainViewModel {
     }
     
     private let diskInfoService: DiskInfoServiceProtocol
+    private let permissionService: PermissionServiceProtocol
     
     @Published private(set) var diskInfoDisplayModel: DiskInfoDisplayModel?
     @Published private(set) var error: Error?
+    @Published private(set) var permissionGranted: Bool?
     
-    init(diskInfoService: DiskInfoServiceProtocol = DiskInfoService()) {
+    init(
+        diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
+        permissionService: PermissionServiceProtocol = PermissionService()
+    ) {
         self.diskInfoService = diskInfoService
+        self.permissionService = permissionService
     }
     
     func loadDiskInfo() {
@@ -32,6 +38,13 @@ final class MainViewModel {
             )
         } catch let loadError {
             error = loadError
+        }
+    }
+    
+    func requestPhotoLibraryPermission() async {
+        let granted = await permissionService.requestPhotoLibraryAccess()
+        await MainActor.run {
+            permissionGranted = granted
         }
     }
 }
