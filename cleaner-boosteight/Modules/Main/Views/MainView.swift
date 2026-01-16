@@ -60,8 +60,8 @@ private extension MainView {
         }
         
         circularProgressView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(10)
-            $0.centerX.equalToSuperview()
+            $0.top.equalTo(safeTop).inset(30.5)
+            $0.trailing.equalToSuperview().inset(37)
             $0.size.equalTo(148)
         }
         

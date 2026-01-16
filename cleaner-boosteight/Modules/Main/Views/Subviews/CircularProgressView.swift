@@ -100,6 +100,7 @@ private extension CircularProgressView {
         backgroundLayer.strokeColor = backgroundProgressColor.cgColor
         backgroundLayer.lineWidth = lineWidth
         layer.addSublayer(backgroundLayer)
+        setupShadow(for: backgroundLayer)
         
         progressLayer.strokeColor = progressColor.cgColor
         progressLayer.lineWidth = lineWidth
@@ -135,6 +136,14 @@ private extension CircularProgressView {
     func updateProgress() {
         progressLayer.strokeEnd = progress
         percentageLabel.text = "\(Int(progress * 100))%"
+    }
+    
+    func setupShadow(for layer: CAShapeLayer) {
+        layer.shadowColor = UIColor(red: 86/255, green: 147/255, blue: 249/255, alpha: 1).cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 0)
+        layer.shadowRadius = 13.9 / 2
+        layer.shadowOpacity = 1
+        layer.masksToBounds = false
     }
 }
 
