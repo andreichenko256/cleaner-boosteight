@@ -10,6 +10,12 @@
 		2294BAFF07317F5BE8E6C55B /* MediaCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */; };
 		28FF09FAED05AA2D2CC046DF /* MediaCountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */; };
 		2D463908A21940DD86F466FC /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2075E14F599B1520E272D5 /* AlertModel.swift */; };
+		AA1111112F1ABC0000000001 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1111112F1ABC0000000001 /* Coordinator.swift */; };
+		AA2222222F1ABC0000000002 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2222222F1ABC0000000002 /* AppCoordinator.swift */; };
+		AA3333332F1ABC0000000003 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3333332F1ABC0000000003 /* OnboardingCoordinator.swift */; };
+		AA4444442F1ABC0000000004 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4444442F1ABC0000000004 /* MainCoordinator.swift */; };
+		AA5555552F1ABC0000000005 /* VideoCompressorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5555552F1ABC0000000005 /* VideoCompressorCoordinator.swift */; };
+		AA6666662F1ABC0000000006 /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6666662F1ABC0000000006 /* OnboardingService.swift */; };
 		ED2A094D2F19640A00C19D72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A09452F19640A00C19D72 /* AppDelegate.swift */; };
 		ED2A094E2F19640A00C19D72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A094A2F19640A00C19D72 /* SceneDelegate.swift */; };
 		ED2A09502F19640A00C19D72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2A09462F19640A00C19D72 /* Assets.xcassets */; };
@@ -55,6 +61,12 @@
 /* Begin PBXFileReference section */
 		0F2075E14F599B1520E272D5 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCacheService.swift; sourceTree = "<group>"; };
+		BB1111112F1ABC0000000001 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		BB2222222F1ABC0000000002 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		BB3333332F1ABC0000000003 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
+		BB4444442F1ABC0000000004 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		BB5555552F1ABC0000000005 /* VideoCompressorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressorCoordinator.swift; sourceTree = "<group>"; };
+		BB6666662F1ABC0000000006 /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
 		ED2A092D2F19621E00C19D72 /* cleaner-boosteight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cleaner-boosteight.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2A09452F19640A00C19D72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED2A09462F19640A00C19D72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -111,6 +123,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC7777772F1ABC0000000007 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				BB1111112F1ABC0000000001 /* Coordinator.swift */,
+				BB2222222F1ABC0000000002 /* AppCoordinator.swift */,
+				BB3333332F1ABC0000000003 /* OnboardingCoordinator.swift */,
+				BB4444442F1ABC0000000004 /* MainCoordinator.swift */,
+				BB5555552F1ABC0000000005 /* VideoCompressorCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
 		ED2A09242F19621E00C19D72 = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +185,7 @@
 		ED2A09582F1965A400C19D72 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				CC7777772F1ABC0000000007 /* Coordinators */,
 				ED2A09612F19664F00C19D72 /* UI */,
 				ED8917682F19BC2000EAF996 /* Services */,
 				ED8917692F19BC2500EAF996 /* Models */,
@@ -339,6 +364,7 @@
 		ED8917682F19BC2000EAF996 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				BB6666662F1ABC0000000006 /* OnboardingService.swift */,
 				ED891C922F19F8F300EAF996 /* HapticService.swift */,
 				ED891B8B2F19E63900EAF996 /* PermissionService.swift */,
 				ED8917662F19BC1000EAF996 /* DiskInfoService.swift */,
@@ -488,6 +514,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA1111112F1ABC0000000001 /* Coordinator.swift in Sources */,
+				AA2222222F1ABC0000000002 /* AppCoordinator.swift in Sources */,
+				AA3333332F1ABC0000000003 /* OnboardingCoordinator.swift in Sources */,
+				AA4444442F1ABC0000000004 /* MainCoordinator.swift in Sources */,
+				AA5555552F1ABC0000000005 /* VideoCompressorCoordinator.swift in Sources */,
+				AA6666662F1ABC0000000006 /* OnboardingService.swift in Sources */,
 				ED891B7F2F19CDE600EAF996 /* MediaGroupCell.swift in Sources */,
 				ED2A09642F19668700C19D72 /* PrimaryButton.swift in Sources */,
 				ED2A096D2F196BEA00C19D72 /* MainCommonView.swift in Sources */,

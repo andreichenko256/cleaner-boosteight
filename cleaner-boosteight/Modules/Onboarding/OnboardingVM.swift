@@ -12,7 +12,7 @@ final class OnboardingViewModel {
         pages.count
     }
     
-    var onFinishOnboarding: VoidBlock?
+    var onOnboardingComplete: VoidBlock?
     
     init() {
         setupPages()
@@ -40,7 +40,7 @@ private extension OnboardingViewModel {
     }
     
     func finishOnboarding() {
-        onFinishOnboarding?()
+        onOnboardingComplete?()
     }
 }
 

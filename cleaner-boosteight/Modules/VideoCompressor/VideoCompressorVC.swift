@@ -3,6 +3,8 @@ import SnapKit
 
 final class VideoCompressorViewController: UIViewController {
     
+    var onBack: VoidBlock?
+    
     private var videoCompressorView: VideoCompressorView {
         return view as! VideoCompressorView
     }
@@ -10,6 +12,7 @@ final class VideoCompressorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupBackButton()
     }
     
     override func loadView() {
@@ -37,5 +40,9 @@ extension VideoCompressorViewController: UICollectionViewDataSource, UICollectio
 }
 
 private extension VideoCompressorViewController {
-    
+    func setupBackButton() {
+        videoCompressorView.customNavigationBar.onBackTap = { [weak self] in
+            self?.onBack?()
+        }
+    }
 }

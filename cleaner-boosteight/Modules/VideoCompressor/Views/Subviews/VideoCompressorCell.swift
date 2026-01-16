@@ -7,10 +7,9 @@ final class VideoCompressorCell: UICollectionViewCell {
     private let iconImageView = {
         $0.contentMode = .scaleAspectFill
         return $0
-    }(UIImageView(image: .test))
+    }(UIImageView())
     
     private let sizeLabel = {
-        $0.text = "1.2 GB"
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.textColor = .white
