@@ -7,12 +7,36 @@ final class MediaViewModel {
     private let mediaCountService: MediaCountServiceProtocol
     
     @Published private(set) var mediaItems: [MediaModel] = []
+    var onMediaItemTapped: ((MediaItemType) -> Void)?
     
     init(mediaCountService: MediaCountServiceProtocol = MediaCountService()) {
         self.mediaCountService = mediaCountService
         Task {
             await loadMediaData()
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleMediaDeleted),
+            name: .mediaItemsDeleted,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func handleMediaDeleted() {
+        Task {
+            await loadMediaData()
+        }
+    }
+    
+    func handleMediaItemTap(at index: Int) {
+        guard index < mediaItems.count else { return }
+        let item = mediaItems[index]
+        onMediaItemTapped?(item.type)
     }
 }
 
@@ -20,12 +44,12 @@ private extension MediaViewModel {
     func loadMediaData() async {
         await MainActor.run {
             mediaItems = [
-                MediaModel(title: "Duplicate Photos", count: "0", image: .duplicatePhotosMedia, isLoading: true),
-                MediaModel(title: "Similar Photos", count: "0", image: .similarPhotosVideosMedia, isLoading: true),
-                MediaModel(title: "Screenshots", count: "0", image: .screenshotsMedia, isLoading: true),
-                MediaModel(title: "Live Photos", count: "0", image: .livePhotosMedia, isLoading: true),
-                MediaModel(title: "Screen Recordings", count: "0", image: .screenRecordingsMedia, isLoading: true),
-                MediaModel(title: "Similar Videos", count: "0", image: .similarPhotosVideosMedia, isLoading: true)
+                MediaModel(type: .duplicatePhotos, title: "Duplicate Photos", count: "0", image: .duplicatePhotosMedia, isLoading: true),
+                MediaModel(type: .similarPhotos, title: "Similar Photos", count: "0", image: .similarPhotosVideosMedia, isLoading: true),
+                MediaModel(type: .screenshots, title: "Screenshots", count: "0", image: .screenshotsMedia, isLoading: true),
+                MediaModel(type: .livePhotos, title: "Live Photos", count: "0", image: .livePhotosMedia, isLoading: true),
+                MediaModel(type: .screenRecordings, title: "Screen Recordings", count: "0", image: .screenRecordingsMedia, isLoading: true),
+                MediaModel(type: .similarVideos, title: "Similar Videos", count: "0", image: .similarPhotosVideosMedia, isLoading: true)
             ]
         }
         
@@ -48,36 +72,42 @@ private extension MediaViewModel {
         await MainActor.run {
             mediaItems = [
                 MediaModel(
+                    type: .duplicatePhotos,
                     title: "Duplicate Photos",
                     count: "\(counts.duplicate)",
                     image: .duplicatePhotosMedia,
                     isLoading: false
                 ),
                 MediaModel(
+                    type: .similarPhotos,
                     title: "Similar Photos",
                     count: "\(counts.similarPhotos)",
                     image: .similarPhotosVideosMedia,
                     isLoading: false
                 ),
                 MediaModel(
+                    type: .screenshots,
                     title: "Screenshots",
                     count: "\(counts.screenshots)",
                     image: .screenshotsMedia,
                     isLoading: false
                 ),
                 MediaModel(
+                    type: .livePhotos,
                     title: "Live Photos",
                     count: "\(counts.livePhotos)",
                     image: .livePhotosMedia,
                     isLoading: false
                 ),
                 MediaModel(
+                    type: .screenRecordings,
                     title: "Screen Recordings",
                     count: "\(counts.screenRecordings)",
                     image: .screenRecordingsMedia,
                     isLoading: false
                 ),
                 MediaModel(
+                    type: .similarVideos,
                     title: "Similar Videos",
                     count: "\(counts.similarVideos)",
                     image: .similarPhotosVideosMedia,

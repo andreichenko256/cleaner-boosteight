@@ -65,7 +65,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.handleMediaCellTap()
+        let mediaType = viewModel.medias[indexPath.row].type
+        viewModel.handleMediaCellTap(type: mediaType)
     }
 }
 

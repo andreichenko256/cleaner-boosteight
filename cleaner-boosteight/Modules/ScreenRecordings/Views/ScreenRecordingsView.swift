@@ -27,22 +27,64 @@ final class ScreenRecordingsView: MainCommonView, CustomNavigationBarConfigurabl
         return collectionView
     }()
     
+    private let loadingIndicator = {
+        $0.style = .large
+        $0.hidesWhenStopped = true
+        $0.color = .black
+        return $0
+    }(UIActivityIndicatorView())
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupConstraints()
         setupCustomNavigationBar()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func showLoading() {
+        loadingIndicator.startAnimating()
+        collectionView.alpha = 0.5
+        collectionView.isUserInteractionEnabled = false
+        countInfoBadge.alpha = 0.5
+        sizeInfoBadge.alpha = 0.5
+        selectionView.isUserInteractionEnabled = false
+    }
+    
+    func hideLoading() {
+        loadingIndicator.stopAnimating()
+        collectionView.alpha = 1.0
+        collectionView.isUserInteractionEnabled = true
+        countInfoBadge.alpha = 1.0
+        sizeInfoBadge.alpha = 1.0
+        selectionView.isUserInteractionEnabled = true
+    }
+    
+    func showEmptyState() {
+        collectionView.isHidden = true
+        countInfoBadge.isHidden = true
+        sizeInfoBadge.isHidden = true
+        selectionView.isHidden = true
+    }
+    
+    func hideEmptyState() {
+        collectionView.isHidden = false
+        countInfoBadge.isHidden = false
+        sizeInfoBadge.isHidden = false
+        selectionView.isHidden = false
+    }
 }
 
 private extension ScreenRecordingsView {
     func setupConstraints() {
-        [customNavigationBar, countInfoBadge,
-         sizeInfoBadge, selectionView,
-         collectionView, deleteItemsButton].forEach {
+        [countInfoBadge,
+         sizeInfoBadge,
+         selectionView,
+         collectionView,
+         deleteItemsButton,
+         loadingIndicator].forEach {
             addSubview($0)
         }
         
@@ -71,5 +113,13 @@ private extension ScreenRecordingsView {
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalTo(safeBottom).inset(16)
         }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        bringSubviewToFront(loadingIndicator)
+        bringSubviewToFront(selectionView)
+        bringSubviewToFront(deleteItemsButton)
     }
 }

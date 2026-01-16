@@ -6,6 +6,7 @@ final class SelectableItemCell: UICollectionViewCell {
     
     private let previewImageView = {
         $0.contentMode = .scaleAspectFill
+        $0.backgroundColor = .systemGray5
         return $0
     }(UIImageView())
     
@@ -22,6 +23,12 @@ final class SelectableItemCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        previewImageView.image = nil
+        checkmarkImageView.image = .uncheckedMarkSquare
     }
 }
 
@@ -48,7 +55,8 @@ private extension SelectableItemCell {
 }
 
 extension SelectableItemCell {
-//    func configure(with model:) {
-//        
-//    }
+    func configure(with image: UIImage?, isSelected: Bool) {
+        previewImageView.image = image
+        checkmarkImageView.image = isSelected ? .checkmarkSquare : .uncheckedMarkSquare
+    }
 }

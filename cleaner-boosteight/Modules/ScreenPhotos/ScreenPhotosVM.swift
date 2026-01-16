@@ -2,7 +2,7 @@ import Combine
 import Photos
 import Foundation
 
-final class ScreenRecordingsViewModel {
+final class ScreenPhotosViewModel {
     private let photoFetchService: PhotoFetchServiceProtocol
     private let mediaCountService: MediaCountServiceProtocol
     
@@ -29,7 +29,7 @@ final class ScreenRecordingsViewModel {
     
     func loadData() {
         Task {
-            await fetchScreenRecordings()
+            await fetchScreenshots()
         }
     }
     
@@ -43,7 +43,6 @@ final class ScreenRecordingsViewModel {
         for index in items.indices {
             items[index].isSelected = true
         }
-
         items = items
     }
     
@@ -65,7 +64,7 @@ final class ScreenRecordingsViewModel {
             }) { success, error in
                 if success {
                     Task {
-                        await self.fetchScreenRecordings()
+                        await self.fetchScreenshots()
                         await MainActor.run {
                             NotificationCenter.default.post(name: .mediaItemsDeleted, object: nil)
                         }
@@ -77,14 +76,14 @@ final class ScreenRecordingsViewModel {
     }
 }
 
-private extension ScreenRecordingsViewModel {
-    func fetchScreenRecordings() async {
+private extension ScreenPhotosViewModel {
+    func fetchScreenshots() async {
         await MainActor.run {
             isLoading = true
         }
         
-        let fetchedItems = await photoFetchService.fetchScreenRecordings()
-        let size = await mediaCountService.calculateScreenRecordingsSize()
+        let fetchedItems = await photoFetchService.fetchScreenshots()
+        let size = await mediaCountService.calculateScreenshotsSize()
         
         await MainActor.run {
             items = fetchedItems

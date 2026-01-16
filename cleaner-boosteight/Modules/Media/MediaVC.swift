@@ -27,7 +27,6 @@ final class MediaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.refreshMediaData()
     }
     
     override func loadView() {
@@ -55,6 +54,10 @@ extension MediaViewController: UICollectionViewDelegate, UICollectionViewDataSou
         cell.configure(with: mediaItem)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.handleMediaItemTap(at: indexPath.item)
     }
 }
 

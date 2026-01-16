@@ -22,7 +22,7 @@ final class MainViewModel {
     @Published private(set) var medias: [MediaGroupModel] = []
     @Published private(set) var alertModel: AlertModel?
     
-    var onMediaGroupTapped: VoidBlock?
+    var onMediaGroupTapped: ((MediaType) -> Void)?
     
     init(
         diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
@@ -261,7 +261,7 @@ extension MainViewModel {
         }
     }
     
-    func handleMediaCellTap() {
+    func handleMediaCellTap(type: MediaType) {
         let status = permissionService.checkPhotoLibraryStatus()
         
         guard status == .authorized else {
@@ -269,7 +269,7 @@ extension MainViewModel {
             return
         }
         
-        onMediaGroupTapped?()
+        onMediaGroupTapped?(type)
     }
     
     private func showPermissionDeniedAlert() {

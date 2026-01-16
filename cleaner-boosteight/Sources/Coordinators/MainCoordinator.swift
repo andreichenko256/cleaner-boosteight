@@ -20,8 +20,13 @@ final class MainCoordinator: Coordinator {
 private extension MainCoordinator {
     func showMainScreen() {
         let viewModel = MainViewModel()
-        viewModel.onMediaGroupTapped = { [weak self] in
-            self?.showVideoCompressor()
+        viewModel.onMediaGroupTapped = { [weak self] mediaType in
+            switch mediaType {
+            case .videoCompressor:
+                self?.showVideoCompressor()
+            case .media:
+                self?.showMedia()
+            }
         }
         
         let mainVC = MainViewController(viewModel: viewModel)
@@ -39,5 +44,43 @@ private extension MainCoordinator {
         
         addChild(videoCompressorCoordinator)
         videoCompressorCoordinator.start()
+    }
+    
+    func showMedia() {
+        let viewModel = MediaViewModel()
+        viewModel.onMediaItemTapped = { [weak self] mediaType in
+            self?.handleMediaItemTap(mediaType)
+        }
+        
+        let mediaVC = MediaViewController(viewModel: viewModel)
+        navigationController.pushViewController(mediaVC, animated: true)
+    }
+    
+    func handleMediaItemTap(_ type: MediaItemType) {
+        switch type {
+        case .screenshots:
+            showScreenPhotos()
+        case .livePhotos:
+            showLivePhotos()
+        case .screenRecordings:
+            showScreenRecordings()
+        case .duplicatePhotos, .similarPhotos, .similarVideos:
+            break
+        }
+    }
+    
+    func showScreenPhotos() {
+        let screenPhotosVC = ScreenPhotosViewController()
+        navigationController.pushViewController(screenPhotosVC, animated: true)
+    }
+    
+    func showLivePhotos() {
+        let livePhotosVC = LivePhotosViewController()
+        navigationController.pushViewController(livePhotosVC, animated: true)
+    }
+    
+    func showScreenRecordings() {
+        let screenRecordingsVC = ScreenRecordingsViewController()
+        navigationController.pushViewController(screenRecordingsVC, animated: true)
     }
 }

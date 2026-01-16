@@ -2,12 +2,17 @@ import UIKit
 import SnapKit
 
 final class SelectionView: UIView {
+    var onSelectAllTapped: VoidBlock?
+    var onDeselectAllTapped: VoidBlock?
+    
+    private var isAllSelected = false
     
     private let checkMarkImageView = {
         $0.contentMode = .scaleAspectFit
         $0.snp.makeConstraints { make in
             make.size.equalTo(24)
         }
+        $0.isUserInteractionEnabled = false
         return $0
     }(UIImageView(image: .checkmarkBlack))
     
@@ -16,6 +21,7 @@ final class SelectionView: UIView {
         $0.textColor = Colors.primaryBlack
         $0.font = .systemFont(ofSize: 14, weight: .medium)
         $0.numberOfLines = 0
+        $0.isUserInteractionEnabled = false
         return $0
     }(UILabel())
     
@@ -23,10 +29,24 @@ final class SelectionView: UIView {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
+        setupGesture()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print("SelectionView frame: \(frame)")
+        print("SelectionView bounds: \(bounds)")
+    }
+}
+
+extension SelectionView {
+    func updateSelectionState(hasSelectedItems: Bool) {
+        isAllSelected = hasSelectedItems
+        titleLabel.text = hasSelectedItems ? "Deselect all" : "Select all"
     }
 }
 
@@ -61,5 +81,20 @@ private extension SelectionView {
         layer.shadowOffset = CGSize(width: 0, height: 0)
         
         layer.masksToBounds = false
+    }
+    
+    func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGesture)
+        isUserInteractionEnabled = true
+    }
+    
+    @objc func handleTap() {
+        print("test")
+        if isAllSelected {
+            onDeselectAllTapped?()
+        } else {
+            onSelectAllTapped?()
+        }
     }
 }
