@@ -6,6 +6,7 @@ protocol PhotoFetchServiceProtocol {
     func fetchScreenshots() async -> [PhotoAssetModel]
     func fetchLivePhotos() async -> [PhotoAssetModel]
     func fetchScreenRecordings() async -> [PhotoAssetModel]
+    func fetchDuplicatePhotoGroups() async -> [[PHAsset]]
     func requestThumbnail(for asset: PHAsset, targetSize: CGSize) async -> UIImage?
     func calculateSize(for assets: [PHAsset]) -> UInt64
 }
@@ -80,6 +81,31 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
                 }
                 
                 continuation.resume(returning: screenRecordings)
+            }
+        }
+    }
+    
+    func fetchDuplicatePhotoGroups() async -> [[PHAsset]] {
+        return await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let fetchOptions = PHFetchOptions()
+                fetchOptions.includeHiddenAssets = false
+                fetchOptions.includeAllBurstAssets = false
+                
+                let photosResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+                var assetsBySize: [UInt64: [PHAsset]] = [:]
+                
+                photosResult.enumerateObjects { asset, _, _ in
+                    let resources = PHAssetResource.assetResources(for: asset)
+                    if let resource = resources.first,
+                       let fileSize = resource.value(forKey: "fileSize") as? UInt64 {
+                        assetsBySize[fileSize, default: []].append(asset)
+                    }
+                }
+                
+                let duplicateGroups = assetsBySize.values.filter { $0.count > 1 }
+                
+                continuation.resume(returning: Array(duplicateGroups))
             }
         }
     }

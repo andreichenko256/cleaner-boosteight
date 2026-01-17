@@ -60,8 +60,8 @@ private extension DuplicateSimilarView {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(sizeInfoBadge.snp.bottom).offset(16)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().inset(16)
+            $0.trailing.bottom.equalToSuperview()
         }
-        
     }
 }
