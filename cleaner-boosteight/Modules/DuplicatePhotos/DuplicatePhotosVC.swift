@@ -9,13 +9,27 @@ final class DuplicatePhotosViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
     }
     
     override func loadView() {
-        view = DuplicateSimilarView(title: "Duplicate Photos", type: .duplicate)
+        view = DuplicateSimilarView(title: "Duplicate Photos")
     }
 }
 
-private extension DuplicatePhotosViewController {
+extension DuplicatePhotosViewController: UITableViewDelegate, UITableViewDataSource {
+    func setupTableView() {
+        duplicateSimilarView.tableView.dataSource = self
+        duplicateSimilarView.tableView.delegate = self
+    }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DuplicateSimilarCell.reuseIdentifier, for: indexPath) as! DuplicateSimilarCell
+        
+        return cell
+    }
 }

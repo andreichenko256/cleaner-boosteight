@@ -13,27 +13,20 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
     
     lazy var customNavigationBar = CustomNavigationBar(title: title)
     
-    private let tableView: UITableView = {
+    let tableView: UITableView = {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.isScrollEnabled = true
-//        $0.register(DuplicateSimilarCell.self, forCellReuseIdentifier: DuplicateSimilarCell.reuseIdentifier)
+        $0.register(DuplicateSimilarCell.self, forCellReuseIdentifier: DuplicateSimilarCell.reuseIdentifier)
         return $0
     }(UITableView())
     
     private let title: String
 
-    init(title: String, type: DuplicateSimilarViewType) {
+    init(title: String) {
         self.title = title
         super.init(frame: .zero)
-        
-        switch type {
-        case .duplicate:
-            print("duplicate")
-        case .similar:
-            print("similar")
-        }
         
         setupCustomNavigationBar()
         setupConstraints()
@@ -46,7 +39,7 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
 
 private extension DuplicateSimilarView {
     func setupConstraints() {
-        [countInfoBadge, sizeInfoBadge, selectionView].forEach {
+        [countInfoBadge, sizeInfoBadge, selectionView, tableView].forEach {
             addSubview($0)
         }
         
@@ -64,5 +57,11 @@ private extension DuplicateSimilarView {
             $0.top.equalTo(safeTop).inset(13)
             $0.trailing.equalToSuperview().inset(16)
         }
+        
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(sizeInfoBadge.snp.bottom).offset(16)
+            $0.horizontalEdges.bottom.equalToSuperview()
+        }
+        
     }
 }
