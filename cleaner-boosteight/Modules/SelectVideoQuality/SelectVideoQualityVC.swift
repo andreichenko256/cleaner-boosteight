@@ -125,7 +125,6 @@ private extension SelectVideoQualityViewController {
     }
     
     @objc func compressButtonTapped() {
-        // TODO: Implement compression logic
     }
     
     func showError(_ message: String) {

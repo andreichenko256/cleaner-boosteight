@@ -3,8 +3,8 @@ import SnapKit
 import Combine
 import Photos
 
-final class DuplicatePhotosViewController: UIViewController {
-    private let viewModel: DuplicatePhotosViewModel
+final class SimilarPhotosViewController: UIViewController {
+    private let viewModel: SimilarPhotosViewModel
     private var cancellables = Set<AnyCancellable>()
     private let photoFetchService = PhotoFetchService()
     private var groupSelectionStates: [String: Set<String>] = [:]
@@ -14,7 +14,7 @@ final class DuplicatePhotosViewController: UIViewController {
         return view as! DuplicateSimilarView
     }
     
-    init(viewModel: DuplicatePhotosViewModel = DuplicatePhotosViewModel()) {
+    init(viewModel: SimilarPhotosViewModel = SimilarPhotosViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,36 +32,37 @@ final class DuplicatePhotosViewController: UIViewController {
     }
     
     override func loadView() {
-        view = DuplicateSimilarView(title: "Duplicate Photos")
+        view = DuplicateSimilarView(title: "Similar Photos")
     }
 }
 
-extension DuplicatePhotosViewController: UITableViewDelegate, UITableViewDataSource {
+extension SimilarPhotosViewController: UITableViewDelegate, UITableViewDataSource {
     func setupTableView() {
         duplicateSimilarView.tableView.dataSource = self
         duplicateSimilarView.tableView.delegate = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.duplicateGroups.count
+        viewModel.similarGroups.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DuplicateSimilarCell.reuseIdentifier, for: indexPath) as! DuplicateSimilarCell
         
-        guard indexPath.row < viewModel.duplicateGroups.count else {
+        guard indexPath.row < viewModel.similarGroups.count else {
             return cell
         }
         
-        let group = viewModel.duplicateGroups[indexPath.row]
+        let group = viewModel.similarGroups[indexPath.row]
         let groupId = group.first?.localIdentifier ?? ""
-        let duplicateCount = group.count - 1
+        let similarCount = group.count - 1
         let selectionState = groupSelectionStates[groupId] ?? Set<String>()
         cell.configure(
             with: group,
-            count: duplicateCount,
+            count: similarCount,
             photoFetchService: photoFetchService,
-            selectedAssetIdentifiers: selectionState
+            selectedAssetIdentifiers: selectionState,
+            suffixText: "Similar"
         ) { [weak self] assetIdentifier, isSelected in
             guard let self = self else { return }
             if isSelected {
@@ -76,9 +77,9 @@ extension DuplicatePhotosViewController: UITableViewDelegate, UITableViewDataSou
     }
 }
 
-private extension DuplicatePhotosViewController {
+private extension SimilarPhotosViewController {
     func setupBindings() {
-        viewModel.$duplicateGroups
+        viewModel.$similarGroups
             .receive(on: DispatchQueue.main)
             .sink { [weak self] groups in
                 self?.initializeSelectionStates(for: groups)
@@ -139,7 +140,7 @@ private extension DuplicatePhotosViewController {
     }
     
     func selectAll() {
-        for group in viewModel.duplicateGroups {
+        for group in viewModel.similarGroups {
             let groupId = group.first?.localIdentifier ?? ""
             guard !groupId.isEmpty else { continue }
             
@@ -168,9 +169,9 @@ private extension DuplicatePhotosViewController {
         for (index, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
             if let duplicateCell = cell as? DuplicateSimilarCell,
                let indexPath = duplicateSimilarView.tableView.indexPath(for: cell),
-               indexPath.row < viewModel.duplicateGroups.count {
+               indexPath.row < viewModel.similarGroups.count {
                 
-                let group = viewModel.duplicateGroups[indexPath.row]
+                let group = viewModel.similarGroups[indexPath.row]
                 let groupId = group.first?.localIdentifier ?? ""
                 let selectionState = groupSelectionStates[groupId] ?? Set<String>()
                 
@@ -233,11 +234,11 @@ private extension DuplicatePhotosViewController {
         
         for (groupId, selectedIds) in groupSelectionStates {
             guard !selectedIds.isEmpty,
-                  let groupIndex = viewModel.duplicateGroups.firstIndex(where: { $0.first?.localIdentifier == groupId }) else {
+                  let groupIndex = viewModel.similarGroups.firstIndex(where: { $0.first?.localIdentifier == groupId }) else {
                 continue
             }
             
-            let group = viewModel.duplicateGroups[groupIndex]
+            let group = viewModel.similarGroups[groupIndex]
             for asset in group where selectedIds.contains(asset.localIdentifier) {
                 selectedAssets.append(asset)
             }
@@ -297,7 +298,7 @@ private extension DuplicatePhotosViewController {
         let selectedCount = calculateSelectedCount()
         
         let alert = UIAlertController(
-            title: "Delete Duplicate Photos",
+            title: "Delete Similar Photos",
             message: "Are you sure you want to delete \(selectedCount) item(s)?",
             preferredStyle: .alert
         )
@@ -317,11 +318,11 @@ private extension DuplicatePhotosViewController {
         
         for (groupId, selectedIds) in groupSelectionStates {
             guard !selectedIds.isEmpty,
-                  let groupIndex = viewModel.duplicateGroups.firstIndex(where: { $0.first?.localIdentifier == groupId }) else {
+                  let groupIndex = viewModel.similarGroups.firstIndex(where: { $0.first?.localIdentifier == groupId }) else {
                 continue
             }
             
-            let group = viewModel.duplicateGroups[groupIndex]
+            let group = viewModel.similarGroups[groupIndex]
             for asset in group where selectedIds.contains(asset.localIdentifier) {
                 assetsToDelete.append(asset)
             }

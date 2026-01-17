@@ -1,7 +1,6 @@
 import UIKit
 import SnapKit
 import Photos
-import Foundation
 
 final class BestCell: UICollectionViewCell {
     static let reuseIdentifier = "BestCell"
@@ -77,15 +76,17 @@ final class BestCell: UICollectionViewCell {
         representedAssetIdentifier = nil
         currentAsset = nil
         bestView.isHidden = true
+        checkMarkImageView.image = .uncheckedMarkSquare
     }
 }
 
 extension BestCell {
-    func configure(with asset: PHAsset, isBest: Bool = false, photoFetchService: PhotoFetchServiceProtocol) {
+    func configure(with asset: PHAsset, isBest: Bool = false, isSelected: Bool = false, photoFetchService: PhotoFetchServiceProtocol) {
         self.currentAsset = asset
         self.photoFetchService = photoFetchService
         self.representedAssetIdentifier = asset.localIdentifier
         bestView.isHidden = !isBest
+        checkMarkImageView.image = isSelected ? .checkmarkSquare : .uncheckedMarkSquare
         
         let cacheKey = asset.localIdentifier as NSString
         
@@ -96,7 +97,7 @@ extension BestCell {
             loadThumbnail(for: asset)
         }
     }
-    
+
     private func loadThumbnail(for asset: PHAsset) {
         let assetIdentifier = asset.localIdentifier
         
@@ -125,6 +126,11 @@ extension BestCell {
             }
         }
     }
+    
+    func updateSelection(isSelected: Bool) {
+        checkMarkImageView.image = isSelected ? .checkmarkSquare : .uncheckedMarkSquare
+    }
+
 }
 
 private extension BestCell {

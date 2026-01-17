@@ -7,6 +7,7 @@ protocol PhotoFetchServiceProtocol {
     func fetchLivePhotos() async -> [PhotoAssetModel]
     func fetchScreenRecordings() async -> [PhotoAssetModel]
     func fetchDuplicatePhotoGroups() async -> [[PHAsset]]
+    func fetchSimilarPhotoGroups() async -> [[PHAsset]]
     func requestThumbnail(for asset: PHAsset, targetSize: CGSize) async -> UIImage?
     func calculateSize(for assets: [PHAsset]) -> UInt64
 }
@@ -106,6 +107,61 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
                 let duplicateGroups = assetsBySize.values.filter { $0.count > 1 }
                 
                 continuation.resume(returning: Array(duplicateGroups))
+            }
+        }
+    }
+    
+    func fetchSimilarPhotoGroups() async -> [[PHAsset]] {
+        return await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let fetchOptions = PHFetchOptions()
+                fetchOptions.includeHiddenAssets = false
+                fetchOptions.includeAllBurstAssets = false
+                fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+                
+                let photosResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+                
+                var assetsWithMetadata: [(asset: PHAsset, date: Date?, width: Int, height: Int)] = []
+                photosResult.enumerateObjects { asset, _, _ in
+                    assetsWithMetadata.append((
+                        asset: asset,
+                        date: asset.creationDate,
+                        width: asset.pixelWidth,
+                        height: asset.pixelHeight
+                    ))
+                }
+                
+                var similarGroups: [[PHAsset]] = []
+                var currentGroup: [PHAsset] = []
+                var previousData: (asset: PHAsset, date: Date?, width: Int, height: Int)?
+                
+                for data in assetsWithMetadata {
+                    if let previous = previousData {
+                        let timeDifference = abs(data.date?.timeIntervalSince(previous.date ?? Date()) ?? 0)
+                        
+                        if timeDifference < 10 &&
+                           abs(previous.width - data.width) < 100 &&
+                           abs(previous.height - data.height) < 100 {
+                            if currentGroup.isEmpty {
+                                currentGroup.append(previous.asset)
+                            }
+                            currentGroup.append(data.asset)
+                        } else {
+                            if currentGroup.count > 1 {
+                                similarGroups.append(currentGroup)
+                            }
+                            currentGroup = []
+                        }
+                    }
+                    
+                    previousData = data
+                }
+                
+                if currentGroup.count > 1 {
+                    similarGroups.append(currentGroup)
+                }
+                
+                continuation.resume(returning: similarGroups)
             }
         }
     }

@@ -64,7 +64,11 @@ private extension MainCoordinator {
             showLivePhotos()
         case .screenRecordings:
             showScreenRecordings()
-        case .duplicatePhotos, .similarPhotos, .similarVideos:
+        case .duplicatePhotos:
+            showDuplicatePhotos()
+        case .similarPhotos:
+            showSimilarPhotos()
+        case .similarVideos:
             break
         }
     }
@@ -72,6 +76,16 @@ private extension MainCoordinator {
     func showScreenPhotos() {
         let screenPhotosVC = ScreenPhotosViewController()
         navigationController.pushViewController(screenPhotosVC, animated: true)
+    }
+    
+    func showDuplicatePhotos() {
+        let duplicatePhotosVC = DuplicatePhotosViewController()
+        navigationController.pushViewController(duplicatePhotosVC, animated: true)
+    }
+    
+    func showSimilarPhotos() {
+        let similarPhotosVC = SimilarPhotosViewController()
+        navigationController.pushViewController(similarPhotosVC, animated: true)
     }
     
     func showLivePhotos() {

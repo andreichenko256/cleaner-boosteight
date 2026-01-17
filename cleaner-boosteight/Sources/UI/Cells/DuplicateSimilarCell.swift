@@ -7,6 +7,8 @@ final class DuplicateSimilarCell: UITableViewCell {
     static let reuseIdentifier = "DuplicateSimilarCell"
     private var assets: [PHAsset] = []
     private var photoFetchService: PhotoFetchServiceProtocol?
+    private var selectedAssetIdentifiers = Set<String>()
+    private var onSelectionChanged: ((String, Bool) -> Void)?
     
     private let containerView = UIView()
     
@@ -26,7 +28,8 @@ final class DuplicateSimilarCell: UITableViewCell {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.allowsMultipleSelection = true
+        collectionView.allowsSelection = true
+        collectionView.allowsMultipleSelection = false
         collectionView.register(BestCell.self, forCellWithReuseIdentifier: BestCell.reuseIdentifier)
         return collectionView
     }()
@@ -75,10 +78,25 @@ private extension DuplicateSimilarCell {
 }
 
 extension DuplicateSimilarCell {
-    func configure(with assets: [PHAsset], count: Int, photoFetchService: PhotoFetchServiceProtocol) {
+    func configure(
+        with assets: [PHAsset],
+        count: Int,
+        photoFetchService: PhotoFetchServiceProtocol,
+        selectedAssetIdentifiers: Set<String>,
+        onSelectionChanged: @escaping (String, Bool) -> Void,
+        suffixText: String = "Duplicates"
+    ) {
         self.assets = assets
         self.photoFetchService = photoFetchService
-        countLabel.text = "\(count) Duplicates"
+        self.selectedAssetIdentifiers = selectedAssetIdentifiers
+        self.onSelectionChanged = onSelectionChanged
+        
+        countLabel.text = "\(count) \(suffixText)"
+        collectionView.reloadData()
+    }
+    
+    func updateSelectionState(_ selectedAssetIdentifiers: Set<String>) {
+        self.selectedAssetIdentifiers = selectedAssetIdentifiers
         collectionView.reloadData()
     }
 }
@@ -103,9 +121,42 @@ extension DuplicateSimilarCell: UICollectionViewDelegate, UICollectionViewDataSo
         
         let asset = assets[indexPath.item]
         let isBest = indexPath.item == 0
+        let isSelected = selectedAssetIdentifiers.contains(asset.localIdentifier)
         
-        cell.configure(with: asset, isBest: isBest, photoFetchService: photoFetchService)
+        cell.configure(with: asset, isBest: isBest, isSelected: isSelected, photoFetchService: photoFetchService)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+        
+        guard indexPath.item < assets.count else { return }
+        
+        let asset = assets[indexPath.item]
+        let assetIdentifier = asset.localIdentifier
+        
+        let isCurrentlySelected = selectedAssetIdentifiers.contains(assetIdentifier)
+        let newSelectionState = !isCurrentlySelected
+        
+        if newSelectionState {
+            selectedAssetIdentifiers.insert(assetIdentifier)
+        } else {
+            selectedAssetIdentifiers.remove(assetIdentifier)
+        }
+        
+        onSelectionChanged?(assetIdentifier, newSelectionState)
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? BestCell {
+            cell.updateSelection(isSelected: newSelectionState)
+        }
     }
 }

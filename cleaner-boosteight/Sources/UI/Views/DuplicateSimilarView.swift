@@ -10,6 +10,10 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
     let countInfoBadge = InfoBadgeView(title: "0", icon: .videoBadge)
     let sizeInfoBadge = InfoBadgeView(title: "0", icon: .storageBadge)
     let selectionView = SelectionView()
+    let deleteButton = {
+        $0.isHidden = true
+        return $0
+    }(PrimaryButton(title: "Delete"))
     
     lazy var customNavigationBar = CustomNavigationBar(title: title)
     
@@ -39,7 +43,8 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
 
 private extension DuplicateSimilarView {
     func setupConstraints() {
-        [countInfoBadge, sizeInfoBadge, selectionView, tableView].forEach {
+        [countInfoBadge, sizeInfoBadge, selectionView,
+         tableView, deleteButton].forEach {
             addSubview($0)
         }
         
@@ -62,6 +67,11 @@ private extension DuplicateSimilarView {
             $0.top.equalTo(sizeInfoBadge.snp.bottom).offset(16)
             $0.leading.equalToSuperview().inset(16)
             $0.trailing.bottom.equalToSuperview()
+        }
+        
+        deleteButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(safeBottom).inset(16)
         }
     }
 }
