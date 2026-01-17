@@ -9,10 +9,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
 
-        let coordinator = AppCoordinator(window: window)
-        coordinator.start()
+//        let coordinator = AppCoordinator(window: window)
+//        coordinator.start()
+        window.rootViewController = PreviewAfterCompressViewController()
+        window.makeKeyAndVisible()
         self.window = window
-        self.appCoordinator = coordinator
+//        self.appCoordinator = coordinator
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {

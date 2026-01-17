@@ -165,7 +165,7 @@ private extension DuplicatePhotosViewController {
     }
     
     private func reloadVisibleCollectionViews() {
-        for (index, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
+        for (_, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
             if let duplicateCell = cell as? DuplicateSimilarCell,
                let indexPath = duplicateSimilarView.tableView.indexPath(for: cell),
                indexPath.row < viewModel.duplicateGroups.count {

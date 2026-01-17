@@ -34,7 +34,6 @@ final class VideoCompressorViewController: UIViewController {
 }
 
 extension VideoCompressorViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
     private func setupCollectionView() {
         videoCompressorView.videosCollectionView.delegate = self
         videoCompressorView.videosCollectionView.dataSource = self

@@ -27,8 +27,11 @@ final class SizeChangeView: UIView {
         return $0
     }(UIImageView(image: .arrowUp2))
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(nowText: String = "Now", willBeText: String = "Will be") {
+        super.init(frame: .zero)
+        nowLabel.text = nowText
+        willBeLabel.text = willBeText
+        
         setupConstraints()
     }
     

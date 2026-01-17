@@ -62,16 +62,15 @@ extension SimilarPhotosViewController: UITableViewDelegate, UITableViewDataSourc
             count: similarCount,
             photoFetchService: photoFetchService,
             selectedAssetIdentifiers: selectionState,
-            suffixText: "Similar"
-        ) { [weak self] assetIdentifier, isSelected in
-            guard let self = self else { return }
-            if isSelected {
-                self.groupSelectionStates[groupId]?.insert(assetIdentifier)
-            } else {
-                self.groupSelectionStates[groupId]?.remove(assetIdentifier)
-            }
-            self.updateSelectionUI()
-        }
+            onSelectionChanged:  { [weak self] assetIdentifier, isSelected in
+                guard let self = self else { return }
+                if isSelected {
+                    self.groupSelectionStates[groupId]?.insert(assetIdentifier)
+                } else {
+                    self.groupSelectionStates[groupId]?.remove(assetIdentifier)
+                }
+                self.updateSelectionUI()
+            }, suffixText: "Similar")
         
         return cell
     }
@@ -166,7 +165,7 @@ private extension SimilarPhotosViewController {
     }
     
     private func reloadVisibleCollectionViews() {
-        for (index, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
+        for (_, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
             if let duplicateCell = cell as? DuplicateSimilarCell,
                let indexPath = duplicateSimilarView.tableView.indexPath(for: cell),
                indexPath.row < viewModel.similarGroups.count {
