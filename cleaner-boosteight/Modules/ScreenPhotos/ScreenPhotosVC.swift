@@ -75,6 +75,25 @@ extension ScreenPhotosViewController: UICollectionViewDelegate, UICollectionView
     }
 }
 
+extension ScreenPhotosViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let horizontalInset: CGFloat = 16
+        let interItemSpacing: CGFloat = 8
+        let numberOfItemsPerRow: CGFloat = 2
+        
+        let availableWidth = collectionView.bounds.width - 
+            (horizontalInset * 2) - 
+            (interItemSpacing * (numberOfItemsPerRow - 1))
+        let itemWidth = availableWidth / numberOfItemsPerRow
+        
+        return CGSize(width: itemWidth, height: itemWidth * (216.0 / 177.0))
+    }
+}
+
 private extension ScreenPhotosViewController {
     func setupCollectionView() {
         screenPhotosView.collectionView.delegate = self

@@ -110,7 +110,7 @@ private extension DuplicateSimilarView {
         }
         
         gradientOverlay.snp.makeConstraints {
-            $0.top.equalTo(deleteButton.snp.bottom)
+            $0.top.equalTo(deleteButton.snp.centerY)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }

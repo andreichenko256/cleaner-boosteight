@@ -62,6 +62,25 @@ extension MediaViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
+extension MediaViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let horizontalInset: CGFloat = 16.7
+        let interItemSpacing: CGFloat = 16
+        let numberOfItemsPerRow: CGFloat = 2
+        
+        let availableWidth = collectionView.bounds.width - 
+            (horizontalInset * 2) - 
+            (interItemSpacing * (numberOfItemsPerRow - 1))
+        let itemWidth = availableWidth / numberOfItemsPerRow
+        
+        return CGSize(width: itemWidth, height: itemWidth * 0.73)
+    }
+}
+
 private extension MediaViewController {
     func setupBackButton() {
         mediaView.customNavigationBar.onBackTap = { [weak self] in

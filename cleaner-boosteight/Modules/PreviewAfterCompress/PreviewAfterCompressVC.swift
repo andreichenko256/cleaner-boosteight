@@ -176,9 +176,7 @@ private extension PreviewAfterCompressViewController {
     func deleteOriginalVideo() {
         Task {
             do {
-                // Сначала сохраняем сжатое видео в библиотеку
                 try await viewModel.saveCompressedVideoToLibrary()
-                // Затем удаляем оригинальное видео
                 try await viewModel.deleteOriginalVideo()
                 await MainActor.run {
                     isNavigatingBack = true

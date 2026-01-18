@@ -16,7 +16,6 @@ final class MediaGridView: MainCommonView, CustomNavigationBarConfigurable {
     let collectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 177, height: 216)
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 8
         
@@ -144,7 +143,7 @@ private extension MediaGridView {
         }
         
         gradientOverlay.snp.makeConstraints {
-            $0.top.equalTo(deleteItemsButton.snp.bottom).offset(-40)
+            $0.top.equalTo(deleteItemsButton.snp.centerY)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }

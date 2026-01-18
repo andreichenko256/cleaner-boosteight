@@ -25,7 +25,7 @@ final class MediaCell: UICollectionViewCell {
     
     private let activityIndicator = {
         $0.style = .medium
-        $0.color = Colors.midGray
+        $0.color = .black
         $0.hidesWhenStopped = true
         return $0
     }(UIActivityIndicatorView())
