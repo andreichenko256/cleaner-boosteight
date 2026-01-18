@@ -14,7 +14,7 @@ final class SelectionView: UIView {
         }
         $0.isUserInteractionEnabled = false
         return $0
-    }(UIImageView(image: .checkmarkBlack))
+    }(UIImageView(image: .checkMarkBlack))
     
     private let titleLabel = {
         $0.text = "Select all"
