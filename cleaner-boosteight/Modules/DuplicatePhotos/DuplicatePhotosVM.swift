@@ -20,7 +20,6 @@ final class DuplicatePhotosViewModel {
     }
     
     func loadData() {
-        // Если данные уже загружены, не загружаем повторно
         guard duplicateGroups.isEmpty && !isLoading else { return }
         
         Task {
@@ -29,7 +28,6 @@ final class DuplicatePhotosViewModel {
     }
     
     func refreshData() {
-        // Принудительное обновление данных (например, после удаления)
         Task {
             await fetchDuplicateGroups()
         }

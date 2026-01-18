@@ -99,7 +99,6 @@ private extension MainViewController {
     }
     
     @objc func handleMediaItemsUpdated() {
-        // При добавлении нового медиа (например, сжатого видео) очищаем кэш для обновления
         viewModel.refreshDataWithCacheClear()
     }
     

@@ -159,7 +159,6 @@ extension MainViewModel {
         
         let status = permissionService.checkPhotoLibraryStatus()
         if status == .authorized {
-            // Очищаем кэш для гарантированного обновления (например, после сохранения нового видео)
             mediaCacheService.clearCache(for: .videos)
             mediaCacheService.clearCache(for: .allMedia)
             updateMediaCounts()

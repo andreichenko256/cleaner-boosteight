@@ -41,12 +41,22 @@ final class PreviewAfterCompressViewController: UIViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if navigationController?.interactivePopGestureRecognizer?.delegate === self {
+            navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        }
+    }
+    
     override func loadView() {
         view = PreviewAfterCompressView()
     }
     
     deinit {
         cleanup()
+        if navigationController?.interactivePopGestureRecognizer?.delegate === self {
+            navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        }
     }
 }
 

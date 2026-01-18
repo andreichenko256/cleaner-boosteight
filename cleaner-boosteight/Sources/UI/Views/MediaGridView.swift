@@ -1,8 +1,9 @@
 import UIKit
 import SnapKit
 
-final class ScreenPhotosView: MainCommonView, CustomNavigationBarConfigurable {
-    let customNavigationBar = CustomNavigationBar(title: "Screen Photos")
+final class MediaGridView: MainCommonView, CustomNavigationBarConfigurable {
+    lazy var customNavigationBar = CustomNavigationBar(title: title)
+    
     let countInfoBadge = InfoBadgeView(title: "0", icon: .videoBadge)
     let sizeInfoBadge = InfoBadgeView(title: "0", icon: .storageBadge)
     let selectionView = SelectionView()
@@ -23,8 +24,11 @@ final class ScreenPhotosView: MainCommonView, CustomNavigationBarConfigurable {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(SelectableItemCell.self, forCellWithReuseIdentifier: SelectableItemCell.reuseIdentifier)
+        
         return collectionView
     }()
+    
+    private let title: String
     
     private let loadingIndicator = {
         $0.style = .large
@@ -33,8 +37,9 @@ final class ScreenPhotosView: MainCommonView, CustomNavigationBarConfigurable {
         return $0
     }(UIActivityIndicatorView())
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(title: String) {
+        self.title = title
+        super.init(frame: .zero)
         setupCustomNavigationBar()
         setupConstraints()
     }
@@ -42,13 +47,48 @@ final class ScreenPhotosView: MainCommonView, CustomNavigationBarConfigurable {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func showLoading() {
+        loadingIndicator.startAnimating()
+        collectionView.alpha = 0.5
+        collectionView.isUserInteractionEnabled = false
+        countInfoBadge.alpha = 0.5
+        sizeInfoBadge.alpha = 0.5
+        selectionView.isUserInteractionEnabled = false
+    }
+    
+    func hideLoading() {
+        loadingIndicator.stopAnimating()
+        collectionView.alpha = 1.0
+        collectionView.isUserInteractionEnabled = true
+        countInfoBadge.alpha = 1.0
+        sizeInfoBadge.alpha = 1.0
+        selectionView.isUserInteractionEnabled = true
+    }
+    
+    func showEmptyState() {
+        collectionView.isHidden = true
+        countInfoBadge.isHidden = true
+        sizeInfoBadge.isHidden = true
+        selectionView.isHidden = true
+    }
+    
+    func hideEmptyState() {
+        collectionView.isHidden = false
+        countInfoBadge.isHidden = false
+        sizeInfoBadge.isHidden = false
+        selectionView.isHidden = false
+    }
 }
 
-private extension ScreenPhotosView {
+private extension MediaGridView {
     func setupConstraints() {
         [countInfoBadge,
-         sizeInfoBadge, selectionView,
-         collectionView, deleteItemsButton, loadingIndicator].forEach {
+         sizeInfoBadge,
+         selectionView,
+         collectionView,
+         deleteItemsButton,
+         loadingIndicator].forEach {
             addSubview($0)
         }
         
@@ -82,40 +122,8 @@ private extension ScreenPhotosView {
             $0.center.equalToSuperview()
         }
         
+        bringSubviewToFront(loadingIndicator)
         bringSubviewToFront(selectionView)
-    }
-}
-
-extension ScreenPhotosView {
-    func showLoading() {
-        loadingIndicator.startAnimating()
-        collectionView.alpha = 0.5
-        collectionView.isUserInteractionEnabled = false
-        countInfoBadge.alpha = 0.5
-        sizeInfoBadge.alpha = 0.5
-        selectionView.isUserInteractionEnabled = false
-    }
-    
-    func hideLoading() {
-        loadingIndicator.stopAnimating()
-        collectionView.alpha = 1.0
-        collectionView.isUserInteractionEnabled = true
-        countInfoBadge.alpha = 1.0
-        sizeInfoBadge.alpha = 1.0
-        selectionView.isUserInteractionEnabled = true
-    }
-    
-    func showEmptyState() {
-        collectionView.isHidden = true
-        countInfoBadge.isHidden = true
-        sizeInfoBadge.isHidden = true
-        selectionView.isHidden = true
-    }
-    
-    func hideEmptyState() {
-        collectionView.isHidden = false
-        countInfoBadge.isHidden = false
-        sizeInfoBadge.isHidden = false
-        selectionView.isHidden = false
+        bringSubviewToFront(deleteItemsButton)
     }
 }

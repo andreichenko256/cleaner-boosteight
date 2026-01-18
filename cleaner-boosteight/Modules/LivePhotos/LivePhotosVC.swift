@@ -8,8 +8,8 @@ final class LivePhotosViewController: UIViewController {
     private let thumbnailCache = NSCache<NSString, UIImage>()
     private let photoFetchService = PhotoFetchService()
     
-    private var livePhotosView: LivePhotosView {
-        return view as! LivePhotosView
+    private var livePhotosView: MediaGridView {
+        return view as! MediaGridView
     }
     
     init(viewModel: LivePhotosViewModel = LivePhotosViewModel()) {
@@ -30,7 +30,7 @@ final class LivePhotosViewController: UIViewController {
     }
     
     override func loadView() {
-        view = LivePhotosView()
+        view = MediaGridView(title: "Live Photos")
     }
 }
 

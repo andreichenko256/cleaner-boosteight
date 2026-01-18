@@ -11,8 +11,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let coordinator = AppCoordinator(window: window)
         coordinator.start()
-//        window.rootViewController = PreviewAfterCompressViewController()
-        window.makeKeyAndVisible()
         self.window = window
         self.appCoordinator = coordinator
     }

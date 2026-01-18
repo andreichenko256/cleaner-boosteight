@@ -69,7 +69,6 @@ final class PreviewAfterCompressViewModel: PreviewAfterCompressViewModelProtocol
         
         await MainActor.run {
             isVideoSaved = true
-            // Отправляем уведомление об обновлении медиа
             NotificationCenter.default.post(name: .mediaItemsUpdated, object: nil)
         }
     }

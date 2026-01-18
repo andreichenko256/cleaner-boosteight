@@ -10,8 +10,8 @@ final class ScreenRecordingsViewController: UIViewController {
     private let photoFetchService = PhotoFetchService()
     private var sizeCalculationTask: Task<Void, Never>?
     
-    private var screenRecordingsView: ScreenRecordingsView {
-        return view as! ScreenRecordingsView
+    private var screenRecordingsView: MediaGridView {
+        return view as! MediaGridView
     }
     
     init(viewModel: ScreenRecordingsViewModel = ScreenRecordingsViewModel()) {
@@ -32,7 +32,7 @@ final class ScreenRecordingsViewController: UIViewController {
     }
     
     override func loadView() {
-        view = ScreenRecordingsView()
+        view = MediaGridView(title: "Screen Recordings")
     }
 }
 
