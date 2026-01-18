@@ -155,6 +155,7 @@ private extension ScreenRecordingsViewController {
     func updateSelectionUI() {
         let hasSelection = viewModel.selectedCount > 0
         screenRecordingsView.deleteItemsButton.isHidden = !hasSelection
+        screenRecordingsView.gradientOverlay.isHidden = !hasSelection
         screenRecordingsView.selectionView.updateSelectionState(hasSelectedItems: hasSelection)
         
         if hasSelection {

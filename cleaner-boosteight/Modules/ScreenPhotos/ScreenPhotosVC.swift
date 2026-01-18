@@ -155,6 +155,7 @@ private extension ScreenPhotosViewController {
     func updateSelectionUI() {
         let hasSelection = viewModel.selectedCount > 0
         screenPhotosView.deleteItemsButton.isHidden = !hasSelection
+        screenPhotosView.gradientOverlay.isHidden = !hasSelection
         screenPhotosView.selectionView.updateSelectionState(hasSelectedItems: hasSelection)
         
         if hasSelection {

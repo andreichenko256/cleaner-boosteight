@@ -153,6 +153,7 @@ private extension LivePhotosViewController {
     func updateSelectionUI() {
         let hasSelection = viewModel.selectedCount > 0
         livePhotosView.deleteItemsButton.isHidden = !hasSelection
+        livePhotosView.gradientOverlay.isHidden = !hasSelection
         livePhotosView.selectionView.updateSelectionState(hasSelectedItems: hasSelection)
         
         if hasSelection {

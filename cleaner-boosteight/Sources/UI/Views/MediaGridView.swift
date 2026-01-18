@@ -37,6 +37,30 @@ final class MediaGridView: MainCommonView, CustomNavigationBarConfigurable {
         return $0
     }(UIActivityIndicatorView())
     
+    let gradientOverlay = {
+        let view = UIView()
+        view.isHidden = true
+        view.backgroundColor = .clear
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.white.cgColor,
+            UIColor.white.withAlphaComponent(0.0).cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: -0.98)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        
+        return view
+    }()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let gradientLayer = gradientOverlay.layer.sublayers?.first as? CAGradientLayer {
+            gradientLayer.frame = gradientOverlay.bounds
+        }
+    }
+    
     init(title: String) {
         self.title = title
         super.init(frame: .zero)
@@ -88,6 +112,7 @@ private extension MediaGridView {
          selectionView,
          collectionView,
          deleteItemsButton,
+         gradientOverlay,
          loadingIndicator].forEach {
             addSubview($0)
         }
@@ -118,6 +143,12 @@ private extension MediaGridView {
             $0.bottom.equalTo(safeBottom).inset(16)
         }
         
+        gradientOverlay.snp.makeConstraints {
+            $0.top.equalTo(deleteItemsButton.snp.bottom).offset(-40)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
@@ -126,4 +157,6 @@ private extension MediaGridView {
         bringSubviewToFront(selectionView)
         bringSubviewToFront(deleteItemsButton)
     }
+    
+
 }

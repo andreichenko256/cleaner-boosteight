@@ -33,6 +33,26 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
         return $0
     }(UIActivityIndicatorView())
     
+    let gradientOverlay = {
+        let view = UIView()
+        view.isHidden = true
+        view.backgroundColor = .clear
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.white.withAlphaComponent(0.0).cgColor,
+            UIColor.white.withAlphaComponent(0.4).cgColor,
+            UIColor.white.withAlphaComponent(0.75).cgColor,
+            UIColor.white.withAlphaComponent(0.95).cgColor
+        ]
+        gradientLayer.locations = [0.0, 0.3, 0.7, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        view.layer.addSublayer(gradientLayer)
+        
+        return view
+    }()
+    
     private let title: String
 
     init(title: String) {
@@ -46,12 +66,19 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let gradientLayer = gradientOverlay.layer.sublayers?.first as? CAGradientLayer {
+            gradientLayer.frame = gradientOverlay.bounds
+        }
+    }
 }
 
 private extension DuplicateSimilarView {
     func setupConstraints() {
         [countInfoBadge, sizeInfoBadge, selectionView,
-         tableView, deleteButton, loadingIndicator].forEach {
+         tableView, deleteButton, gradientOverlay, loadingIndicator].forEach {
             addSubview($0)
         }
         
@@ -81,11 +108,18 @@ private extension DuplicateSimilarView {
             $0.bottom.equalTo(safeBottom).inset(16)
         }
         
+        gradientOverlay.snp.makeConstraints {
+            $0.top.equalTo(deleteButton.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
         
         bringSubviewToFront(selectionView)
+        bringSubviewToFront(deleteButton)
     }
 }
 

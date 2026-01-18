@@ -199,6 +199,7 @@ private extension DuplicatePhotosViewController {
         let hasSelection = selectedCount > 0
         
         duplicateSimilarView.deleteButton.isHidden = !hasSelection
+        duplicateSimilarView.gradientOverlay.isHidden = !hasSelection
         duplicateSimilarView.selectionView.updateSelectionState(hasSelectedItems: hasSelection)
         
         if hasSelection {
