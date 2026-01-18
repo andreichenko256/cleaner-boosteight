@@ -40,9 +40,8 @@ private extension OnboardingPageView {
             addSubview($0)
         }
         
-        imageView.snp.makeConstraints {
-            $0.bottom.equalTo(titleLabel.snp.top).offset(-22)
-            $0.horizontalEdges.equalToSuperview()
+        descriptionLabel.snp.makeConstraints {
+            $0.bottom.horizontalEdges.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints {
@@ -50,8 +49,10 @@ private extension OnboardingPageView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        descriptionLabel.snp.makeConstraints {
-            $0.bottom.horizontalEdges.equalToSuperview()
+        imageView.snp.makeConstraints {
+            $0.top.equalTo(safeTop).inset(UIDevice.hasHomeButton ? 22 : 44)
+            $0.bottom.equalTo(titleLabel.snp.top).offset(UIDevice.hasHomeButton ? -11 : -22)
+            $0.horizontalEdges.equalToSuperview()
         }
     }
 }

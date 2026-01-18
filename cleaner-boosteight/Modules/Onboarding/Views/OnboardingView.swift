@@ -27,6 +27,7 @@ private extension OnboardingView {
         }
         
         continueButton.snp.makeConstraints {
+            $0.height.equalTo(56)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalTo(safeBottom).inset(16)
         }
