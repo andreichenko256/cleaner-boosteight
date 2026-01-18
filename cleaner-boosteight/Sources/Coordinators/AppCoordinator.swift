@@ -19,7 +19,7 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         setupWindow()
-        
+        setupNavigationGestures()
         if shouldShowOnboarding() {
             showOnboarding()
         } else {
@@ -63,5 +63,12 @@ private extension AppCoordinator {
         
         addChild(mainCoordinator)
         mainCoordinator.start()
+    }
+}
+
+private extension AppCoordinator {
+    func setupNavigationGestures() {
+        navigationController.interactivePopGestureRecognizer?.delegate = nil
+        navigationController.interactivePopGestureRecognizer?.isEnabled = true
     }
 }

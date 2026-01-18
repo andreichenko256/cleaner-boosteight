@@ -14,6 +14,7 @@ final class PreviewAfterCompressViewController: UIViewController {
     private let viewModel: PreviewAfterCompressViewModelProtocol
     private var playerViewController: AVPlayerViewController?
     private var cancellables = Set<AnyCancellable>()
+    private var isNavigatingBack = false
     
     init(viewModel: PreviewAfterCompressViewModelProtocol) {
         self.viewModel = viewModel
@@ -28,9 +29,16 @@ final class PreviewAfterCompressViewController: UIViewController {
         super.viewDidLoad()
         setupVideoPlayer()
         setupButtons()
+        setupSwipeBackGesture()
         bindViewModel()
         loadVideo()
         viewModel.loadCompressedVideoSize()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func loadView() {
@@ -39,6 +47,19 @@ final class PreviewAfterCompressViewController: UIViewController {
     
     deinit {
         cleanup()
+    }
+}
+
+extension PreviewAfterCompressViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == navigationController?.interactivePopGestureRecognizer {
+            if !isNavigatingBack {
+                isNavigatingBack = true
+                onBack?()
+                return false
+            }
+        }
+        return true
     }
 }
 
@@ -69,8 +90,14 @@ private extension PreviewAfterCompressViewController {
         }
         
         previewAfterCompressView.customNavigationBar.onBackTap = { [weak self] in
+            self?.isNavigatingBack = true
             self?.onBack?()
         }
+    }
+    
+    func setupSwipeBackGesture() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     func bindViewModel() {
@@ -110,6 +137,7 @@ private extension PreviewAfterCompressViewController {
             do {
                 try await viewModel.saveCompressedVideoToLibrary()
                 await MainActor.run {
+                    isNavigatingBack = true
                     onBack?()
                 }
             } catch {
@@ -140,6 +168,7 @@ private extension PreviewAfterCompressViewController {
             do {
                 try await viewModel.deleteOriginalVideo()
                 await MainActor.run {
+                    isNavigatingBack = true
                     onBack?()
                 }
             } catch {
