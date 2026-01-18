@@ -176,6 +176,9 @@ private extension PreviewAfterCompressViewController {
     func deleteOriginalVideo() {
         Task {
             do {
+                // Сначала сохраняем сжатое видео в библиотеку
+                try await viewModel.saveCompressedVideoToLibrary()
+                // Затем удаляем оригинальное видео
                 try await viewModel.deleteOriginalVideo()
                 await MainActor.run {
                     isNavigatingBack = true
@@ -183,7 +186,7 @@ private extension PreviewAfterCompressViewController {
                 }
             } catch {
                 await MainActor.run {
-                    showError("Failed to delete original video: \(error.localizedDescription)")
+                    showError("Failed to process video: \(error.localizedDescription)")
                 }
             }
         }

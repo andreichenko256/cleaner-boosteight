@@ -28,6 +28,11 @@ final class VideoCompressorViewController: UIViewController {
         viewModel.loadVideos()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadVideos()
+    }
+    
     override func loadView() {
         view = VideoCompressorView()
     }

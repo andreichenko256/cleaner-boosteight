@@ -7,12 +7,15 @@ final class VideoCompressorCoordinator: Coordinator {
     
     var onFinish: VoidBlock?
     
+    private weak var videoCompressorViewController: VideoCompressorViewController?
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start() {
         let videoCompressorVC = VideoCompressorViewController()
+        self.videoCompressorViewController = videoCompressorVC
         videoCompressorVC.onBack = { [weak self] in
             self?.finish()
         }
@@ -67,7 +70,11 @@ final class VideoCompressorCoordinator: Coordinator {
         let previewVC = PreviewAfterCompressViewController(viewModel: viewModel)
         
         previewVC.onBack = { [weak self] in
-            self?.navigationController.popToRootViewController(animated: true)
+            guard let self = self,
+                  let videoCompressorVC = self.videoCompressorViewController else {
+                return
+            }
+            self.navigationController.popToViewController(videoCompressorVC, animated: true)
         }
         
         navigationController.pushViewController(previewVC, animated: true)
