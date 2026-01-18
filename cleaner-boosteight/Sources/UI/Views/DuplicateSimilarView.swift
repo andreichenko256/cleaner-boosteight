@@ -26,6 +26,13 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
         return $0
     }(UITableView())
     
+    private let loadingIndicator = {
+        $0.style = .large
+        $0.hidesWhenStopped = true
+        $0.color = .black
+        return $0
+    }(UIActivityIndicatorView())
+    
     private let title: String
 
     init(title: String) {
@@ -44,7 +51,7 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
 private extension DuplicateSimilarView {
     func setupConstraints() {
         [countInfoBadge, sizeInfoBadge, selectionView,
-         tableView, deleteButton].forEach {
+         tableView, deleteButton, loadingIndicator].forEach {
             addSubview($0)
         }
         
@@ -73,5 +80,31 @@ private extension DuplicateSimilarView {
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalTo(safeBottom).inset(16)
         }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        bringSubviewToFront(selectionView)
+    }
+}
+
+extension DuplicateSimilarView {
+    func showLoading() {
+        loadingIndicator.startAnimating()
+        tableView.alpha = 0.5
+        tableView.isUserInteractionEnabled = false
+        countInfoBadge.alpha = 0.5
+        sizeInfoBadge.alpha = 0.5
+        selectionView.isUserInteractionEnabled = false
+    }
+    
+    func hideLoading() {
+        loadingIndicator.stopAnimating()
+        tableView.alpha = 1.0
+        tableView.isUserInteractionEnabled = true
+        countInfoBadge.alpha = 1.0
+        sizeInfoBadge.alpha = 1.0
+        selectionView.isUserInteractionEnabled = true
     }
 }

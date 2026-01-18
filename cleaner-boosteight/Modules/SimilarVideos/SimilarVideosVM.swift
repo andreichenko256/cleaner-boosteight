@@ -2,7 +2,7 @@ import Combine
 import Photos
 import Foundation
 
-final class SimilarPhotosViewModel {
+final class SimilarVideosViewModel {
     private let photoFetchService: PhotoFetchServiceProtocol
     private let mediaCountService: MediaCountServiceProtocol
     
@@ -36,13 +36,13 @@ final class SimilarPhotosViewModel {
     }
 }
 
-private extension SimilarPhotosViewModel {
+private extension SimilarVideosViewModel {
     func fetchSimilarGroups() async {
         await MainActor.run {
             isLoading = true
         }
         
-        let groups = await photoFetchService.fetchSimilarPhotoGroups()
+        let groups = await photoFetchService.fetchSimilarVideoGroups()
         let allAssets = groups.flatMap { $0 }
         let size = photoFetchService.calculateSize(for: allAssets)
         

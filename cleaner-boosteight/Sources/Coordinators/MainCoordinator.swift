@@ -4,6 +4,11 @@ final class MainCoordinator: Coordinator {
     let navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
+    private var mediaViewModel: MediaViewModel?
+    private var duplicatePhotosViewModel: DuplicatePhotosViewModel?
+    private var similarPhotosViewModel: SimilarPhotosViewModel?
+    private var similarVideosViewModel: SimilarVideosViewModel?
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -47,10 +52,14 @@ private extension MainCoordinator {
     }
     
     func showMedia() {
-        let viewModel = MediaViewModel()
-        viewModel.onMediaItemTapped = { [weak self] mediaType in
-            self?.handleMediaItemTap(mediaType)
+        if mediaViewModel == nil {
+            mediaViewModel = MediaViewModel()
+            mediaViewModel?.onMediaItemTapped = { [weak self] mediaType in
+                self?.handleMediaItemTap(mediaType)
+            }
         }
+        
+        guard let viewModel = mediaViewModel else { return }
         
         let mediaVC = MediaViewController(viewModel: viewModel)
         navigationController.pushViewController(mediaVC, animated: true)
@@ -69,7 +78,7 @@ private extension MainCoordinator {
         case .similarPhotos:
             showSimilarPhotos()
         case .similarVideos:
-            break
+            showSimilarVideos()
         }
     }
     
@@ -79,12 +88,22 @@ private extension MainCoordinator {
     }
     
     func showDuplicatePhotos() {
-        let duplicatePhotosVC = DuplicatePhotosViewController()
+        if duplicatePhotosViewModel == nil {
+            duplicatePhotosViewModel = DuplicatePhotosViewModel()
+        }
+        
+        guard let viewModel = duplicatePhotosViewModel else { return }
+        let duplicatePhotosVC = DuplicatePhotosViewController(viewModel: viewModel)
         navigationController.pushViewController(duplicatePhotosVC, animated: true)
     }
     
     func showSimilarPhotos() {
-        let similarPhotosVC = SimilarPhotosViewController()
+        if similarPhotosViewModel == nil {
+            similarPhotosViewModel = SimilarPhotosViewModel()
+        }
+        
+        guard let viewModel = similarPhotosViewModel else { return }
+        let similarPhotosVC = SimilarPhotosViewController(viewModel: viewModel)
         navigationController.pushViewController(similarPhotosVC, animated: true)
     }
     
@@ -96,5 +115,15 @@ private extension MainCoordinator {
     func showScreenRecordings() {
         let screenRecordingsVC = ScreenRecordingsViewController()
         navigationController.pushViewController(screenRecordingsVC, animated: true)
+    }
+    
+    func showSimilarVideos() {
+        if similarVideosViewModel == nil {
+            similarVideosViewModel = SimilarVideosViewModel()
+        }
+        
+        guard let viewModel = similarVideosViewModel else { return }
+        let similarVideosVC = SimilarVideosViewController(viewModel: viewModel)
+        navigationController.pushViewController(similarVideosVC, animated: true)
     }
 }

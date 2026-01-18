@@ -19,7 +19,7 @@ final class CompressingView: UIView {
     private let loadingIndicator = {
         $0.style = .large
         $0.hidesWhenStopped = true
-        $0.color = .white
+        $0.color = .black
         return $0
     }(UIActivityIndicatorView())
     

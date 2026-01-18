@@ -77,7 +77,22 @@ extension SimilarPhotosViewController: UITableViewDelegate, UITableViewDataSourc
 }
 
 private extension SimilarPhotosViewController {
+    func updateLoadingState(_ isLoading: Bool) {
+        if isLoading {
+            duplicateSimilarView.showLoading()
+        } else {
+            duplicateSimilarView.hideLoading()
+        }
+    }
+    
     func setupBindings() {
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                self?.updateLoadingState(isLoading)
+            }
+            .store(in: &cancellables)
+        
         viewModel.$similarGroups
             .receive(on: DispatchQueue.main)
             .sink { [weak self] groups in
@@ -335,7 +350,7 @@ private extension SimilarPhotosViewController {
             }) { success, error in
                 if success {
                     Task {
-                        await self.viewModel.loadData()
+                        await self.viewModel.refreshData()
                         await MainActor.run {
                             self.groupSelectionStates.removeAll()
                             self.duplicateSimilarView.tableView.reloadData()

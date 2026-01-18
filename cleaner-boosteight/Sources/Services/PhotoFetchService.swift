@@ -8,6 +8,7 @@ protocol PhotoFetchServiceProtocol {
     func fetchScreenRecordings() async -> [PhotoAssetModel]
     func fetchDuplicatePhotoGroups() async -> [[PHAsset]]
     func fetchSimilarPhotoGroups() async -> [[PHAsset]]
+    func fetchSimilarVideoGroups() async -> [[PHAsset]]
     func requestThumbnail(for asset: PHAsset, targetSize: CGSize) async -> UIImage?
     func calculateSize(for assets: [PHAsset]) -> UInt64
 }
@@ -142,6 +143,58 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
                         if timeDifference < 10 &&
                            abs(previous.width - data.width) < 100 &&
                            abs(previous.height - data.height) < 100 {
+                            if currentGroup.isEmpty {
+                                currentGroup.append(previous.asset)
+                            }
+                            currentGroup.append(data.asset)
+                        } else {
+                            if currentGroup.count > 1 {
+                                similarGroups.append(currentGroup)
+                            }
+                            currentGroup = []
+                        }
+                    }
+                    
+                    previousData = data
+                }
+                
+                if currentGroup.count > 1 {
+                    similarGroups.append(currentGroup)
+                }
+                
+                continuation.resume(returning: similarGroups)
+            }
+        }
+    }
+    
+    func fetchSimilarVideoGroups() async -> [[PHAsset]] {
+        return await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let fetchOptions = PHFetchOptions()
+                fetchOptions.includeHiddenAssets = false
+                fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+                
+                let videosResult = PHAsset.fetchAssets(with: .video, options: fetchOptions)
+                
+                var assetsWithMetadata: [(asset: PHAsset, date: Date?, duration: TimeInterval)] = []
+                videosResult.enumerateObjects { asset, _, _ in
+                    assetsWithMetadata.append((
+                        asset: asset,
+                        date: asset.creationDate,
+                        duration: asset.duration
+                    ))
+                }
+                
+                var similarGroups: [[PHAsset]] = []
+                var currentGroup: [PHAsset] = []
+                var previousData: (asset: PHAsset, date: Date?, duration: TimeInterval)?
+                
+                for data in assetsWithMetadata {
+                    if let previous = previousData {
+                        let timeDifference = abs(data.date?.timeIntervalSince(previous.date ?? Date()) ?? 0)
+                        let durationDifference = abs(previous.duration - data.duration)
+                        
+                        if timeDifference < 30 && durationDifference < 5 {
                             if currentGroup.isEmpty {
                                 currentGroup.append(previous.asset)
                             }
