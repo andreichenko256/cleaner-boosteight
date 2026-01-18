@@ -8,6 +8,13 @@ final class PreviewAfterCompressView: UIView, CustomNavigationBarConfigurable {
     let customNavigationBar = CustomNavigationBar(title: "Video Compressor")
     let sizeChangeView = SizeChangeView(nowText: "Old Size", willBeText: "Now")
     
+    let videoContainerView = {
+        $0.backgroundColor = .clear
+        $0.layer.cornerRadius = 5
+        $0.clipsToBounds = true
+        return $0
+    }(UIView())
+    
     private lazy var deleteLabel = {
         $0.text = "Delete Original Video"
         $0.textColor = Colors.primaryBlue
@@ -37,10 +44,16 @@ private extension PreviewAfterCompressView {
     }
     
     func setupConstraints() {
-        [deleteLabel, keepOriginalButton, sizeChangeView].forEach {
+        [deleteLabel, keepOriginalButton, sizeChangeView, videoContainerView].forEach {
             addSubview($0)
         }
-        sizeChangeView.updateSizes(now: "30.88 MB", willBe: "15.75 MB")
+        
+        videoContainerView.snp.makeConstraints {
+            $0.top.equalTo(customNavigationBar.snp.bottom).offset(25)
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(sizeChangeView.snp.top).offset(-26)
+        }
+        
         keepOriginalButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalTo(safeBottom).inset(16)

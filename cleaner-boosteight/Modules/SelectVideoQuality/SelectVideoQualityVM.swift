@@ -10,6 +10,8 @@ protocol SelectVideoQualityViewModelProtocol: AnyObject {
     var errorMessage: String? { get }
     var currentSize: String { get }
     var estimatedSize: String { get }
+    var videoAsset: PHAsset { get }
+    var originalSize: UInt64 { get }
     
     var playerPublisher: AnyPublisher<AVPlayer?, Never> { get }
     var selectedQualityPublisher: AnyPublisher<VideoQuality, Never> { get }
@@ -58,6 +60,14 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
     
     private let videoModel: VideoModel
     private var cancellables = Set<AnyCancellable>()
+    
+    var videoAsset: PHAsset {
+        videoModel.asset
+    }
+    
+    var originalSize: UInt64 {
+        videoModel.size
+    }
     
     init(videoModel: VideoModel) {
         self.videoModel = videoModel

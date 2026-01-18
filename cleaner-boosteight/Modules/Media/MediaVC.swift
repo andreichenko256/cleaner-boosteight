@@ -22,6 +22,7 @@ final class MediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupBackButton()
         setupBindings()
     }
     
@@ -62,6 +63,12 @@ extension MediaViewController: UICollectionViewDelegate, UICollectionViewDataSou
 }
 
 private extension MediaViewController {
+    func setupBackButton() {
+        mediaView.customNavigationBar.onBackTap = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     func setupBindings() {
         viewModel.$mediaItems
             .receive(on: DispatchQueue.main)

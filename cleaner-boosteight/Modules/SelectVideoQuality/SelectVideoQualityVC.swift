@@ -2,9 +2,11 @@ import UIKit
 import SnapKit
 import AVKit
 import Combine
+import Photos
 
 final class SelectVideoQualityViewController: UIViewController {
     var onBack: VoidBlock?
+    var onCompress: ((PHAsset, VideoQuality) -> Void)?
     
     private var electVideoQualityView: SelectVideoQualityView {
         return view as! SelectVideoQualityView
@@ -125,6 +127,7 @@ private extension SelectVideoQualityViewController {
     }
     
     @objc func compressButtonTapped() {
+        onCompress?(viewModel.videoAsset, viewModel.selectedQuality)
     }
     
     func showError(_ message: String) {

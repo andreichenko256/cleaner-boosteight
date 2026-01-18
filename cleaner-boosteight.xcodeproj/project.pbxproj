@@ -17,6 +17,7 @@
 		204D44D26992992A29D93377 /* MediaCountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */; };
 		224B2F94B16498B4F34265B8 /* DiskInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8917662F19BC1000EAF996 /* DiskInfoService.swift */; };
 		25527D42BD25D98FE6889DAA /* VideoFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F463E4739312E9F1D2F46A /* VideoFetchService.swift */; };
+		3A5B7C8D9E2F4A1B2C3D4E5F /* VideoCompressionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6C8D9E0F1A2B3C4D5E6F7A /* VideoCompressionService.swift */; };
 		262227D96862DD9CB2D326BB /* MediaGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891B7E2F19CDE600EAF996 /* MediaGroupCell.swift */; };
 		265119FBCB2961F55672F0BE /* MediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34E6F22F1AAF43006B6330 /* MediaCell.swift */; };
 		27EEE0DBA221C89FBA98A004 /* MediaVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34E6F72F1AB54F00000001 /* MediaVM.swift */; };
@@ -92,14 +93,17 @@
 		ED891B882F19D3E600EAF996 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED891B872F19D3E600EAF996 /* Montserrat-SemiBold.ttf */; };
 		EDA71C782F1BBD65007C69A9 /* CompressingVideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA71C772F1BBD65007C69A9 /* CompressingVideoVC.swift */; };
 		EDA71C7B2F1BBD81007C69A9 /* CompressingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA71C7A2F1BBD80007C69A9 /* CompressingView.swift */; };
+		EDA71C832F1BED12007C69A9 /* CompressingVideoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA71C822F1BED12007C69A9 /* CompressingVideoVM.swift */; };
 		EDA71C7E2F1BE911007C69A9 /* PreviewAfterCompressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA71C7D2F1BE911007C69A9 /* PreviewAfterCompressView.swift */; };
 		EDA71C812F1BECE9007C69A9 /* PreviewAfterCompressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA71C802F1BECE8007C69A9 /* PreviewAfterCompressVC.swift */; };
+		EDA71C842F1BED13007C69A9 /* PreviewAfterCompressVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA71C852F1BED13007C69A9 /* PreviewAfterCompressVM.swift */; };
 		F7384B171EECDC4EEFA645BF /* QualityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34E5DE2F1A8976006B6330 /* QualityItem.swift */; };
 		F8BF9A894F661B08D6B25B30 /* MediaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34E6EA2F1AAE42006B6330 /* MediaVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		06F463E4739312E9F1D2F46A /* VideoFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFetchService.swift; sourceTree = "<group>"; };
+		4B6C8D9E0F1A2B3C4D5E6F7A /* VideoCompressionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressionService.swift; sourceTree = "<group>"; };
 		0789AC1136AFD0577FAA8F5A /* NotificationNames.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		0F2075E14F599B1520E272D5 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		20FFD7EEF35C775F1840CB4F /* ByteSizeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteSizeFormatter.swift; sourceTree = "<group>"; };
@@ -185,9 +189,11 @@
 		ED891C982F19FC4300EAF996 /* VideoCompressorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompressorView.swift; sourceTree = "<group>"; };
 		ED891C9B2F19FCB900EAF996 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		EDA71C772F1BBD65007C69A9 /* CompressingVideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressingVideoVC.swift; sourceTree = "<group>"; };
+		EDA71C822F1BED12007C69A9 /* CompressingVideoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressingVideoVM.swift; sourceTree = "<group>"; };
 		EDA71C7A2F1BBD80007C69A9 /* CompressingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressingView.swift; sourceTree = "<group>"; };
 		EDA71C7D2F1BE911007C69A9 /* PreviewAfterCompressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewAfterCompressView.swift; sourceTree = "<group>"; };
 		EDA71C802F1BECE8007C69A9 /* PreviewAfterCompressVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewAfterCompressVC.swift; sourceTree = "<group>"; };
+		EDA71C852F1BED13007C69A9 /* PreviewAfterCompressVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewAfterCompressVM.swift; sourceTree = "<group>"; };
 		F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCountService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -636,6 +642,7 @@
 				F04987F4E9BF4BFFE7DB4D44 /* MediaCountService.swift */,
 				656305455BA91D8FA3AEC7CF /* MediaCacheService.swift */,
 				06F463E4739312E9F1D2F46A /* VideoFetchService.swift */,
+				4B6C8D9E0F1A2B3C4D5E6F7A /* VideoCompressionService.swift */,
 				2746C06B2084D96F7DC86EF0 /* PhotoFetchService.swift */,
 			);
 			path = Services;
@@ -701,6 +708,7 @@
 			isa = PBXGroup;
 			children = (
 				EDA71C772F1BBD65007C69A9 /* CompressingVideoVC.swift */,
+				EDA71C822F1BED12007C69A9 /* CompressingVideoVM.swift */,
 				EDA71C792F1BBD76007C69A9 /* Views */,
 			);
 			path = CompressingVideo;
@@ -718,6 +726,7 @@
 			isa = PBXGroup;
 			children = (
 				EDA71C802F1BECE8007C69A9 /* PreviewAfterCompressVC.swift */,
+				EDA71C852F1BED13007C69A9 /* PreviewAfterCompressVM.swift */,
 				EDA71C7F2F1BE914007C69A9 /* Views */,
 			);
 			path = PreviewAfterCompress;
@@ -836,11 +845,13 @@
 				224B2F94B16498B4F34265B8 /* DiskInfoService.swift in Sources */,
 				C5DB9EC464A6BC619DF67D8E /* MediaCacheService.swift in Sources */,
 				25527D42BD25D98FE6889DAA /* VideoFetchService.swift in Sources */,
+				3A5B7C8D9E2F4A1B2C3D4E5F /* VideoCompressionService.swift in Sources */,
 				ED34E7192F1ADD48006B6330 /* DuplicatePhotosVC.swift in Sources */,
 				ED34E71E2F1ADD72006B6330 /* DuplicatePhotosVM.swift in Sources */,
 				ED34E7202F1ADD72006B6331 /* SimilarPhotosVC.swift in Sources */,
 				ED34E7222F1ADD72006B6331 /* SimilarPhotosVM.swift in Sources */,
 				EDA71C812F1BECE9007C69A9 /* PreviewAfterCompressVC.swift in Sources */,
+				EDA71C842F1BED13007C69A9 /* PreviewAfterCompressVM.swift in Sources */,
 				EDA71C7B2F1BBD81007C69A9 /* CompressingView.swift in Sources */,
 				DE3E7FBF8A7B7450F80D59FB /* DiskInfo.swift in Sources */,
 				BA7C7441436E621838407984 /* AlertModel.swift in Sources */,
@@ -856,6 +867,7 @@
 				1B2280157DC0C9B23DE87F51 /* ScreenRecordingsVC.swift in Sources */,
 				AB8B742C1343E5B78C9CA246 /* ScreenRecordingsView.swift in Sources */,
 				EDA71C782F1BBD65007C69A9 /* CompressingVideoVC.swift in Sources */,
+				EDA71C832F1BED12007C69A9 /* CompressingVideoVM.swift in Sources */,
 				0569BA21354F978D3EF4C407 /* ScreenPhotosVC.swift in Sources */,
 				876B02FF7CF76A777372C74C /* ScreenPhotosView.swift in Sources */,
 				C7892F131B872294D46AE28D /* LivePhotosVM.swift in Sources */,

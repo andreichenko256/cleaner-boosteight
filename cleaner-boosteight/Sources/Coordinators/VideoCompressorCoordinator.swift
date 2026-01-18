@@ -1,4 +1,5 @@
 import UIKit
+import Photos
 
 final class VideoCompressorCoordinator: Coordinator {
     let navigationController: UINavigationController
@@ -31,7 +32,45 @@ final class VideoCompressorCoordinator: Coordinator {
             self?.navigationController.popViewController(animated: true)
         }
         
+        selectVideoQualityVC.onCompress = { [weak self] asset, quality in
+            self?.showCompressingVideo(asset: asset, quality: quality, originalSize: viewModel.originalSize)
+        }
+        
         navigationController.pushViewController(selectVideoQualityVC, animated: true)
+    }
+    
+    private func showCompressingVideo(asset: PHAsset, quality: VideoQuality, originalSize: UInt64) {
+        let viewModel = CompressingVideoViewModel(videoAsset: asset, quality: quality)
+        let compressingVC = CompressingVideoViewController(viewModel: viewModel)
+        
+        compressingVC.onCancel = { [weak self] in
+            self?.navigationController.popViewController(animated: true)
+        }
+        
+        compressingVC.onCompletion = { [weak self] compressedURL in
+            self?.showPreviewAfterCompress(
+                originalAsset: asset,
+                originalSize: originalSize,
+                compressedURL: compressedURL
+            )
+        }
+        
+        navigationController.pushViewController(compressingVC, animated: true)
+    }
+    
+    private func showPreviewAfterCompress(originalAsset: PHAsset, originalSize: UInt64, compressedURL: URL) {
+        let viewModel = PreviewAfterCompressViewModel(
+            originalVideoAsset: originalAsset,
+            originalSizeBytes: originalSize,
+            compressedVideoURL: compressedURL
+        )
+        let previewVC = PreviewAfterCompressViewController(viewModel: viewModel)
+        
+        previewVC.onBack = { [weak self] in
+            self?.navigationController.popToRootViewController(animated: true)
+        }
+        
+        navigationController.pushViewController(previewVC, animated: true)
     }
     
     func finish() {

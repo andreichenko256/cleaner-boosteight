@@ -4,6 +4,7 @@ protocol MediaCacheServiceProtocol {
     func getCachedMediaInfo(for type: MediaCacheType) -> CachedMediaInfo?
     func saveMediaInfo(_ info: CachedMediaInfo, for type: MediaCacheType)
     func clearCache()
+    func clearCache(for type: MediaCacheType)
 }
 
 enum MediaCacheType: String {
@@ -54,6 +55,10 @@ final class MediaCacheService: MediaCacheServiceProtocol {
         MediaCacheType.allCases.forEach { type in
             userDefaults.removeObject(forKey: cacheKey(for: type))
         }
+    }
+    
+    func clearCache(for type: MediaCacheType) {
+        userDefaults.removeObject(forKey: cacheKey(for: type))
     }
     
     private func cacheKey(for type: MediaCacheType) -> String {

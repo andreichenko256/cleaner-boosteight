@@ -151,6 +151,18 @@ extension MainViewModel {
         }
     }
     
+    func refreshDataWithCacheClear() {
+        loadDiskInfo()
+        
+        let status = permissionService.checkPhotoLibraryStatus()
+        if status == .authorized {
+            // Очищаем кэш для гарантированного обновления (например, после сохранения нового видео)
+            mediaCacheService.clearCache(for: .videos)
+            mediaCacheService.clearCache(for: .allMedia)
+            updateMediaCounts()
+        }
+    }
+    
     func loadDiskInfo() {
         do {
             let diskInfo = try diskInfoService.getDiskInfo()

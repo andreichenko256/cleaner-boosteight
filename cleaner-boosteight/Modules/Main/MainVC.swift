@@ -78,9 +78,32 @@ private extension MainViewController {
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleMediaItemsUpdated),
+            name: .mediaItemsUpdated,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleMediaItemsDeleted),
+            name: .mediaItemsDeleted,
+            object: nil
+        )
     }
     
     @objc func handleAppWillEnterForeground() {
+        viewModel.refreshData()
+    }
+    
+    @objc func handleMediaItemsUpdated() {
+        // При добавлении нового медиа (например, сжатого видео) очищаем кэш для обновления
+        viewModel.refreshDataWithCacheClear()
+    }
+    
+    @objc func handleMediaItemsDeleted() {
         viewModel.refreshData()
     }
     
