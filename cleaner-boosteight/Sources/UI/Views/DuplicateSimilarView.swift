@@ -23,6 +23,7 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
         $0.showsVerticalScrollIndicator = false
         $0.isScrollEnabled = true
         $0.register(DuplicateSimilarCell.self, forCellReuseIdentifier: DuplicateSimilarCell.reuseIdentifier)
+        $0.contentInset.bottom = 100
         return $0
     }(UITableView())
     

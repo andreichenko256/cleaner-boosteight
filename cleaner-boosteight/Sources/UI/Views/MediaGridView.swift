@@ -24,7 +24,7 @@ final class MediaGridView: MainCommonView, CustomNavigationBarConfigurable {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(SelectableItemCell.self, forCellWithReuseIdentifier: SelectableItemCell.reuseIdentifier)
-        
+        collectionView.contentInset.bottom = 100
         return collectionView
     }()
     
@@ -157,6 +157,4 @@ private extension MediaGridView {
         bringSubviewToFront(selectionView)
         bringSubviewToFront(deleteItemsButton)
     }
-    
-
 }
