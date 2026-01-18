@@ -1,12 +1,14 @@
 import UIKit
 import SnapKit
 import Combine
+import Photos
 
 final class ScreenPhotosViewController: UIViewController {
     private let viewModel: ScreenPhotosViewModel
     private var cancellables = Set<AnyCancellable>()
     private let thumbnailCache = NSCache<NSString, UIImage>()
     private let photoFetchService = PhotoFetchService()
+    private var sizeCalculationTask: Task<Void, Never>?
     
     private var screenPhotosView: ScreenPhotosView {
         return view as! ScreenPhotosView
@@ -156,11 +158,85 @@ private extension ScreenPhotosViewController {
         screenPhotosView.selectionView.updateSelectionState(hasSelectedItems: hasSelection)
         
         if hasSelection {
+            let selectedCount = viewModel.selectedCount
+            let photoText = selectedCount == 1 ? "photo" : "photos"
             screenPhotosView.deleteItemsButton.setTitle(
-                "Delete (\(viewModel.selectedCount))",
+                "Delete \(selectedCount) \(photoText)",
                 for: .normal
             )
+            
+            sizeCalculationTask?.cancel()
+            
+            sizeCalculationTask = Task { [weak self] in
+                guard let self = self else { return }
+                let currentCount = selectedCount
+                
+                let size = await calculateSizeAsync()
+                
+                guard !Task.isCancelled else { return }
+                
+                let sizeFormatted = self.formatSizeInMB(size)
+                
+                await MainActor.run {
+                    guard !Task.isCancelled,
+                          currentCount == self.viewModel.selectedCount else {
+                        return
+                    }
+                    let photoText = currentCount == 1 ? "photo" : "photos"
+                    self.screenPhotosView.deleteItemsButton.setTitle(
+                        "Delete \(currentCount) \(photoText) (\(sizeFormatted))",
+                        for: .normal
+                    )
+                }
+            }
         }
+    }
+    
+    private func calculateSizeAsync() async -> UInt64 {
+        let selectedItems = viewModel.selectedItems
+        var totalSize: UInt64 = 0
+        let batchSize = 5
+        
+        for (index, item) in selectedItems.enumerated() {
+            if Task.isCancelled {
+                return totalSize
+            }
+            
+            let assetSize = await Task.detached(priority: .utility) {
+                let resources = PHAssetResource.assetResources(for: item.asset)
+                var size: UInt64 = 0
+                for resource in resources {
+                    if let fileSize = resource.value(forKey: "fileSize") as? UInt64 {
+                        size += fileSize
+                    }
+                }
+                return size
+            }.value
+            
+            totalSize += assetSize
+            
+            if (index + 1) % batchSize == 0 {
+                await Task.yield()
+            }
+        }
+        
+        return totalSize
+    }
+    
+    private func formatSizeInMB(_ bytes: UInt64) -> String {
+        let mb = Double(bytes) / 1_048_576.0
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 1
+        numberFormatter.minimumFractionDigits = 0
+        numberFormatter.decimalSeparator = ","
+        numberFormatter.groupingSeparator = ""
+        
+        guard let formattedNumber = numberFormatter.string(from: NSNumber(value: mb)) else {
+            return String(format: "%.1f MB", mb).replacingOccurrences(of: ".", with: ",")
+        }
+        
+        return "\(formattedNumber) MB"
     }
     
     @objc func deleteButtonTapped() {

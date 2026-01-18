@@ -48,7 +48,7 @@ private extension DuplicatePhotosViewModel {
         
         await MainActor.run {
             duplicateGroups = groups
-            count = groups.reduce(0) { $0 + ($1.count + 1) }
+            count = groups.reduce(0) { $0 + ($1.count - 1) }
             totalSize = ByteSizeFormatter.format(size)
             isLoading = false
         }

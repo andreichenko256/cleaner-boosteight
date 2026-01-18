@@ -52,6 +52,9 @@ private extension MainViewModel {
     }
     
     func loadMediaDataAsync() async {
+        let permissionStatus = permissionService.checkPhotoLibraryStatus()
+        let isAuthorized = permissionStatus == .authorized
+        
         async let videoCountAsync = mediaCountService.countAllVideos()
         async let mediaCountAsync = mediaCountService.countAllMedia()
         
@@ -80,8 +83,8 @@ private extension MainViewModel {
         
         await MainActor.run {
             medias = [
-                .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: videoSize, isLocked: true, isLoading: needsVideoUpdate),
-                .init(type: .media, mediaCount: mediaCount, mediaSize: mediaSize, isLocked: true, isLoading: needsMediaUpdate)
+                .init(type: .videoCompressor, mediaCount: videoCount, mediaSize: videoSize, isLocked: !isAuthorized, isLoading: needsVideoUpdate),
+                .init(type: .media, mediaCount: mediaCount, mediaSize: mediaSize, isLocked: !isAuthorized, isLoading: needsMediaUpdate)
             ]
         }
         
@@ -186,6 +189,7 @@ extension MainViewModel {
         switch status {
         case .authorized:
             permissionGranted = true
+            unlockMedia()
         case .denied, .restricted:
             permissionGranted = false
         case .notDetermined:
