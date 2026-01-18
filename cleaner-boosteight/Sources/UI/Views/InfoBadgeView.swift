@@ -33,12 +33,6 @@ final class InfoBadgeView: UIView {
     }
 }
 
-extension InfoBadgeView {
-    func updateTitle(_ title: String) {
-        titleLabel.text = title
-    }
-}
-
 private extension InfoBadgeView {
     func setupUI() {
         backgroundColor = .white
@@ -48,7 +42,8 @@ private extension InfoBadgeView {
     }
     
     func setupConstraints() {
-        [iconImageView, titleLabel].forEach {
+        [iconImageView,
+         titleLabel].forEach {
             addSubview($0)
         }
         
@@ -73,3 +68,10 @@ private extension InfoBadgeView {
         layer.masksToBounds = false
     }
 }
+
+extension InfoBadgeView {
+    func updateTitle(_ title: String) {
+        titleLabel.text = title
+    }
+}
+

@@ -2,10 +2,10 @@ import UIKit
 import Photos
 
 final class VideoCompressorCoordinator: Coordinator {
-    let navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
-    
     var onFinish: VoidBlock?
+    
+    let navigationController: UINavigationController
     
     private weak var videoCompressorViewController: VideoCompressorViewController?
     
@@ -27,7 +27,14 @@ final class VideoCompressorCoordinator: Coordinator {
         navigationController.pushViewController(videoCompressorVC, animated: true)
     }
     
-    private func showSelectVideoQuality(for video: VideoModel) {
+    func finish() {
+        navigationController.popViewController(animated: true)
+        onFinish?()
+    }
+}
+
+private extension VideoCompressorCoordinator {
+    func showSelectVideoQuality(for video: VideoModel) {
         let viewModel = SelectVideoQualityViewModel(videoModel: video)
         let selectVideoQualityVC = SelectVideoQualityViewController(viewModel: viewModel)
         
@@ -42,7 +49,7 @@ final class VideoCompressorCoordinator: Coordinator {
         navigationController.pushViewController(selectVideoQualityVC, animated: true)
     }
     
-    private func showCompressingVideo(asset: PHAsset, quality: VideoQuality, originalSize: UInt64) {
+    func showCompressingVideo(asset: PHAsset, quality: VideoQuality, originalSize: UInt64) {
         let viewModel = CompressingVideoViewModel(videoAsset: asset, quality: quality)
         let compressingVC = CompressingVideoViewController(viewModel: viewModel)
         
@@ -61,7 +68,7 @@ final class VideoCompressorCoordinator: Coordinator {
         navigationController.pushViewController(compressingVC, animated: true)
     }
     
-    private func showPreviewAfterCompress(originalAsset: PHAsset, originalSize: UInt64, compressedURL: URL) {
+    func showPreviewAfterCompress(originalAsset: PHAsset, originalSize: UInt64, compressedURL: URL) {
         let viewModel = PreviewAfterCompressViewModel(
             originalVideoAsset: originalAsset,
             originalSizeBytes: originalSize,
@@ -78,10 +85,5 @@ final class VideoCompressorCoordinator: Coordinator {
         }
         
         navigationController.pushViewController(previewVC, animated: true)
-    }
-    
-    func finish() {
-        navigationController.popViewController(animated: true)
-        onFinish?()
     }
 }

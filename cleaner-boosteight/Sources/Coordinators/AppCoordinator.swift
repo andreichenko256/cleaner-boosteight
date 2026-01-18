@@ -1,9 +1,9 @@
 import UIKit
 
 final class AppCoordinator: Coordinator {
-    let navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
-    
+    let navigationController: UINavigationController
+
     private let window: UIWindow
     private let onboardingService: OnboardingServiceProtocol
     
@@ -57,16 +57,12 @@ private extension AppCoordinator {
     }
     
     func showMainFlow() {
-        let mainCoordinator = MainCoordinator(
-            navigationController: navigationController
-        )
+        let mainCoordinator = MainCoordinator(navigationController: navigationController)
         
         addChild(mainCoordinator)
         mainCoordinator.start()
     }
-}
-
-private extension AppCoordinator {
+    
     func setupNavigationGestures() {
         navigationController.interactivePopGestureRecognizer?.delegate = nil
         navigationController.interactivePopGestureRecognizer?.isEnabled = true

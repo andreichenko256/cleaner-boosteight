@@ -3,13 +3,13 @@ import Photos
 import Foundation
 
 final class SimilarVideosViewModel {
-    private let photoFetchService: PhotoFetchServiceProtocol
-    private let mediaCountService: MediaCountServiceProtocol
-    
     @Published private(set) var similarGroups: [[PHAsset]] = []
     @Published private(set) var count: Int = 0
     @Published private(set) var totalSize: String = "0 MB"
     @Published private(set) var isLoading: Bool = false
+    
+    private let photoFetchService: PhotoFetchServiceProtocol
+    private let mediaCountService: MediaCountServiceProtocol
     
     init(
         photoFetchService: PhotoFetchServiceProtocol = PhotoFetchService(),

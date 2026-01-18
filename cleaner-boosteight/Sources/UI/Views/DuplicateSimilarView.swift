@@ -1,15 +1,11 @@
 import UIKit
 import SnapKit
 
-enum DuplicateSimilarViewType {
-    case duplicate
-    case similar
-}
-
 final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurable {
     let countInfoBadge = InfoBadgeView(title: "0", icon: .videoBadge)
     let sizeInfoBadge = InfoBadgeView(title: "0", icon: .storageBadge)
     let selectionView = SelectionView()
+    
     let deleteButton = {
         $0.isHidden = true
         return $0
@@ -26,13 +22,6 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
         $0.contentInset.bottom = 100
         return $0
     }(UITableView())
-    
-    private let loadingIndicator = {
-        $0.style = .large
-        $0.hidesWhenStopped = true
-        $0.color = .black
-        return $0
-    }(UIActivityIndicatorView())
     
     let gradientOverlay = {
         let view = UIView()
@@ -54,8 +43,15 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
         return view
     }()
     
+    private let loadingIndicator = {
+        $0.style = .large
+        $0.hidesWhenStopped = true
+        $0.color = .black
+        return $0
+    }(UIActivityIndicatorView())
+    
     private let title: String
-
+    
     init(title: String) {
         self.title = title
         super.init(frame: .zero)
@@ -78,8 +74,13 @@ final class DuplicateSimilarView: MainCommonView, CustomNavigationBarConfigurabl
 
 private extension DuplicateSimilarView {
     func setupConstraints() {
-        [countInfoBadge, sizeInfoBadge, selectionView,
-         tableView, deleteButton, gradientOverlay, loadingIndicator].forEach {
+        [countInfoBadge,
+         sizeInfoBadge,
+         selectionView,
+         tableView,
+         deleteButton,
+         gradientOverlay,
+         loadingIndicator].forEach {
             addSubview($0)
         }
         

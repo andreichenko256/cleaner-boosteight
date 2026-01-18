@@ -64,8 +64,10 @@ final class VideoFetchService: VideoFetchServiceProtocol {
             }
         }
     }
-    
-    private func getAssetSize(_ asset: PHAsset) -> UInt64 {
+}
+
+private extension VideoFetchService {
+    func getAssetSize(_ asset: PHAsset) -> UInt64 {
         let resources = PHAssetResource.assetResources(for: asset)
         var totalSize: UInt64 = 0
         

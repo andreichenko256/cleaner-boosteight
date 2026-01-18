@@ -2,6 +2,7 @@ import UIKit
 import SnapKit
 
 final class OnboardingPageViewController: UIViewController {
+    
     private var onboardingPageView: OnboardingPageView {
         return view as! OnboardingPageView
     }

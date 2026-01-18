@@ -5,11 +5,11 @@ final class VideoCompressorViewController: UIViewController {
     var onBack: VoidBlock?
     var onVideoSelected: ((VideoModel) -> Void)?
     
-    private let viewModel: VideoCompressorVMProtocol
-    
     private var videoCompressorView: VideoCompressorView {
         return view as! VideoCompressorView
     }
+    
+    private let viewModel: VideoCompressorVMProtocol
     
     init(viewModel: VideoCompressorVMProtocol = VideoCompressorVM()) {
         self.viewModel = viewModel
@@ -71,7 +71,6 @@ extension VideoCompressorViewController: UICollectionViewDataSource, UICollectio
         let video = viewModel.videos[indexPath.item]
         onVideoSelected?(video)
     }
-    
 }
 
 private extension VideoCompressorViewController {
@@ -104,5 +103,24 @@ private extension VideoCompressorViewController {
         )
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+}
+
+extension VideoCompressorViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let horizontalInset: CGFloat = 8
+        let interItemSpacing: CGFloat = 24
+        let numberOfItemsPerRow: CGFloat = 2
+        
+        let availableWidth = collectionView.bounds.width -
+        (horizontalInset * 2) -
+        (interItemSpacing * (numberOfItemsPerRow - 1))
+        let itemWidth = availableWidth / numberOfItemsPerRow
+        
+        return CGSize(width: itemWidth, height: itemWidth)
     }
 }

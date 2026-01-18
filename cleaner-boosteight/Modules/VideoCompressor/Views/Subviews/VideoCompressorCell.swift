@@ -4,6 +4,18 @@ import SnapKit
 final class VideoCompressorCell: UICollectionViewCell {
     static let reuseIdentifier = "VideoCompressorCell"
     
+    private lazy var sizeContainerView = {
+        $0.addSubview(sizeLabel)
+        sizeLabel.snp.makeConstraints { make in
+            make.verticalEdges.equalToSuperview().inset(3.5)
+            make.horizontalEdges.equalToSuperview().inset(4)
+        }
+        $0.backgroundColor = Colors.primaryBlue
+        $0.layer.cornerRadius = 5
+        $0.clipsToBounds = true
+        return $0
+    }(UIView())
+    
     private let thumbnailImageView = {
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = Colors.secondaryGray.withAlphaComponent(0.5)
@@ -18,18 +30,6 @@ final class VideoCompressorCell: UICollectionViewCell {
         return $0
     }(UILabel())
     
-    private lazy var sizeContainerView = {
-        $0.addSubview(sizeLabel)
-        sizeLabel.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(3.5)
-            make.horizontalEdges.equalToSuperview().inset(4)
-        }
-        $0.backgroundColor = Colors.primaryBlue
-        $0.layer.cornerRadius = 5
-        $0.clipsToBounds = true
-        return $0
-    }(UIView())
-
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupUI()
@@ -55,7 +55,8 @@ private extension VideoCompressorCell {
     }
     
     func setupConstraints() {
-        [thumbnailImageView, sizeContainerView].forEach {
+        [thumbnailImageView,
+         sizeContainerView].forEach {
             contentView.addSubview($0)
         }
         

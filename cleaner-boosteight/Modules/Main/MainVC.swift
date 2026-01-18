@@ -3,12 +3,13 @@ import SnapKit
 import Combine
 
 final class MainViewController: UIViewController {
-    private let viewModel: MainViewModel
     private var cancellables = Set<AnyCancellable>()
     
     private var mainView: MainView {
         return view as! MainView
     }
+    
+    private let viewModel: MainViewModel
     
     init(viewModel: MainViewModel = MainViewModel()) {
         self.viewModel = viewModel

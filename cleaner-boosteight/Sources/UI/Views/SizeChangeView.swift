@@ -42,8 +42,11 @@ final class SizeChangeView: UIView {
 
 private extension SizeChangeView {
     func setupConstraints() {
-        [nowLabel, willBeLabel, arrowImageView,
-         nowValueLabel, willBeValueLabel].forEach {
+        [nowLabel,
+         willBeLabel,
+         arrowImageView,
+         nowValueLabel,
+         willBeValueLabel].forEach {
             addSubview($0)
         }
         

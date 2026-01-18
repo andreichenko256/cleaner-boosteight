@@ -5,13 +5,14 @@ import Combine
 final class CompressingVideoViewController: UIViewController {
     var onCancel: VoidBlock?
     var onCompletion: ((URL) -> Void)?
+
+    private let viewModel: CompressingVideoViewModelProtocol
+    
+    private var cancellables = Set<AnyCancellable>()
     
     private var compressingView: CompressingView {
         return view as! CompressingView
     }
-    
-    private let viewModel: CompressingVideoViewModelProtocol
-    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: CompressingVideoViewModelProtocol) {
         self.viewModel = viewModel

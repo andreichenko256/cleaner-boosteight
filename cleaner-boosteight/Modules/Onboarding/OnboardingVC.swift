@@ -6,14 +6,14 @@ final class OnboardingViewController: UIViewController {
     private var pages: [UIViewController] = []
     private var pageModels: [OnboardingPageModel] = []
     private var cancellables: Set<AnyCancellable> = []
-    private let hapticService: HapticServiceProtocol
-    private let viewModel: OnboardingViewModel
-
     private var currentPageIndex: Int = 0
     
     private var onboardingView: OnboardingView {
         return view as! OnboardingView
     }
+    
+    private let hapticService: HapticServiceProtocol
+    private let viewModel: OnboardingViewModel
     
     override func viewDidLoad() {
         super.viewDidLoad()

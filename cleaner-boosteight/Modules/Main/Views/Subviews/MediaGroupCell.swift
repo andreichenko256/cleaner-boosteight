@@ -4,8 +4,6 @@ import SnapKit
 final class MediaGroupCell: UITableViewCell {
     static let reuseIdentifier = "MediaGroupCell"
     
-    private let containerView = UIView()
-    
     private lazy var viewAllContainer = {
         let label = UILabel()
         label.text = "View all"
@@ -30,6 +28,8 @@ final class MediaGroupCell: UITableViewCell {
         
         return $0
     }(UIView())
+    
+    private let containerView = UIView()
     
     private let titleLabel = {
         $0.font = Fonts.Montserrat.semiBold20

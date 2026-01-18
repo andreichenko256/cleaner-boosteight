@@ -2,17 +2,18 @@ import Combine
 import UIKit
 
 final class OnboardingViewModel {
-    @Published private(set) var currentPageIndex: Int = 0
-    @Published private(set) var isLastPage: Bool = false
-    
-    private(set) var pages: [OnboardingPageModel] = []
-    private var cancellables = Set<AnyCancellable>()
     
     var numberOfPages: Int {
         pages.count
     }
     
     var onOnboardingComplete: VoidBlock?
+    
+    @Published private(set) var currentPageIndex: Int = 0
+    @Published private(set) var isLastPage: Bool = false
+    
+    private(set) var pages: [OnboardingPageModel] = []
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
         setupPages()

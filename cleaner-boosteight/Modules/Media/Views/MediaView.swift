@@ -36,7 +36,8 @@ final class MediaView: MainCommonView, CustomNavigationBarConfigurable {
 
 private extension MediaView {
     func setupConstraints() {
-        [customNavigationBar, mediaCollectionView].forEach {
+        [customNavigationBar,
+         mediaCollectionView].forEach {
             addSubview($0)
         }
         

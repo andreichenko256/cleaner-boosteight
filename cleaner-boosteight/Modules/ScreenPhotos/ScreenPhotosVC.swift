@@ -4,12 +4,12 @@ import Combine
 import Photos
 
 final class ScreenPhotosViewController: UIViewController {
-    private let viewModel: ScreenPhotosViewModel
+    private var sizeCalculationTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
+    
     private let thumbnailCache = NSCache<NSString, UIImage>()
     private let photoFetchService = PhotoFetchService()
-    private var sizeCalculationTask: Task<Void, Never>?
-    
+    private let viewModel: ScreenPhotosViewModel
     private var screenPhotosView: MediaGridView {
         return view as! MediaGridView
     }
@@ -212,7 +212,7 @@ private extension ScreenPhotosViewController {
         }
     }
     
-    private func calculateSizeAsync() async -> UInt64 {
+    func calculateSizeAsync() async -> UInt64 {
         let selectedItems = viewModel.selectedItems
         var totalSize: UInt64 = 0
         let batchSize = 5
@@ -243,7 +243,7 @@ private extension ScreenPhotosViewController {
         return totalSize
     }
     
-    private func formatSizeInMB(_ bytes: UInt64) -> String {
+    func formatSizeInMB(_ bytes: UInt64) -> String {
         let mb = Double(bytes) / 1_048_576.0
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal

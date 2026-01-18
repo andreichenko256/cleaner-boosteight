@@ -15,9 +15,6 @@ protocol VideoCompressorVMProtocol: AnyObject {
 }
 
 final class VideoCompressorVM: VideoCompressorVMProtocol {
-    private let videoFetchService: VideoFetchServiceProtocol
-    private(set) var videos: [VideoModel] = []
-    
     var onVideosUpdated: VoidBlock?
     var onError: ((String) -> Void)?
     
@@ -33,6 +30,10 @@ final class VideoCompressorVM: VideoCompressorVMProtocol {
         return ByteSizeFormatter.format(totalSize)
     }
     
+    private(set) var videos: [VideoModel] = []
+    
+    private let videoFetchService: VideoFetchServiceProtocol
+
     init(videoFetchService: VideoFetchServiceProtocol = VideoFetchService()) {
         self.videoFetchService = videoFetchService
     }

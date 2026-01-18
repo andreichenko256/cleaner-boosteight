@@ -3,14 +3,15 @@ import SnapKit
 import Combine
 
 final class LivePhotosViewController: UIViewController {
-    private let viewModel: LivePhotosViewModel
     private var cancellables = Set<AnyCancellable>()
-    private let thumbnailCache = NSCache<NSString, UIImage>()
-    private let photoFetchService = PhotoFetchService()
-    
+
     private var livePhotosView: MediaGridView {
         return view as! MediaGridView
     }
+    
+    private let thumbnailCache = NSCache<NSString, UIImage>()
+    private let photoFetchService = PhotoFetchService()
+    private let viewModel: LivePhotosViewModel
     
     init(viewModel: LivePhotosViewModel = LivePhotosViewModel()) {
         self.viewModel = viewModel
@@ -83,9 +84,9 @@ extension LivePhotosViewController: UICollectionViewDelegateFlowLayout {
         let interItemSpacing: CGFloat = 8
         let numberOfItemsPerRow: CGFloat = 2
         
-        let availableWidth = collectionView.bounds.width - 
-            (horizontalInset * 2) - 
-            (interItemSpacing * (numberOfItemsPerRow - 1))
+        let availableWidth = collectionView.bounds.width -
+        (horizontalInset * 2) -
+        (interItemSpacing * (numberOfItemsPerRow - 1))
         let itemWidth = availableWidth / numberOfItemsPerRow
         
         return CGSize(width: itemWidth, height: itemWidth * (216.0 / 177.0))

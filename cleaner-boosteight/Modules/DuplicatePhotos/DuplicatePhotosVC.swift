@@ -4,15 +4,16 @@ import Combine
 import Photos
 
 final class DuplicatePhotosViewController: UIViewController {
-    private let viewModel: DuplicatePhotosViewModel
     private var cancellables = Set<AnyCancellable>()
-    private let photoFetchService = PhotoFetchService()
     private var groupSelectionStates: [String: Set<String>] = [:]
     private var sizeCalculationTask: Task<Void, Never>?
     
     private var duplicateSimilarView: DuplicateSimilarView {
         return view as! DuplicateSimilarView
     }
+    
+    private let viewModel: DuplicatePhotosViewModel
+    private let photoFetchService = PhotoFetchService()
     
     init(viewModel: DuplicatePhotosViewModel = DuplicatePhotosViewModel()) {
         self.viewModel = viewModel
@@ -179,7 +180,7 @@ private extension DuplicatePhotosViewController {
         updateSelectionUI()
     }
     
-    private func reloadVisibleCollectionViews() {
+    func reloadVisibleCollectionViews() {
         for (_, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
             if let duplicateCell = cell as? DuplicateSimilarCell,
                let indexPath = duplicateSimilarView.tableView.indexPath(for: cell),
@@ -236,7 +237,7 @@ private extension DuplicatePhotosViewController {
         }
     }
     
-    private func calculateSelectedCount() -> Int {
+    func calculateSelectedCount() -> Int {
         var totalCount = 0
         for selectedIds in groupSelectionStates.values {
             totalCount += selectedIds.count
@@ -244,7 +245,7 @@ private extension DuplicatePhotosViewController {
         return totalCount
     }
     
-    private func getSelectedAssets() -> [PHAsset] {
+    func getSelectedAssets() -> [PHAsset] {
         var selectedAssets: [PHAsset] = []
         
         for (groupId, selectedIds) in groupSelectionStates {
@@ -262,7 +263,7 @@ private extension DuplicatePhotosViewController {
         return selectedAssets
     }
     
-    private func calculateSizeAsync() async -> UInt64 {
+    func calculateSizeAsync() async -> UInt64 {
         let assets = getSelectedAssets()
         var totalSize: UInt64 = 0
         let batchSize = 5
@@ -293,7 +294,7 @@ private extension DuplicatePhotosViewController {
         return totalSize
     }
     
-    private func formatSizeInMB(_ bytes: UInt64) -> String {
+    func formatSizeInMB(_ bytes: UInt64) -> String {
         let mb = Double(bytes) / 1_048_576.0
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
@@ -328,7 +329,7 @@ private extension DuplicatePhotosViewController {
         present(alert, animated: true)
     }
     
-    private func deleteSelectedPhotos() async {
+    func deleteSelectedPhotos() async {
         var assetsToDelete: [PHAsset] = []
         
         for (groupId, selectedIds) in groupSelectionStates {

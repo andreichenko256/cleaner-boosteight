@@ -57,8 +57,10 @@ private extension MainView {
     }
     
     func setupConstraints() {
-        [iphoneStorageLabel, valueStorageLabel,
-         circularProgressView, containerView].forEach {
+        [iphoneStorageLabel,
+         valueStorageLabel,
+         circularProgressView,
+         containerView].forEach {
             addSubview($0)
         }
         

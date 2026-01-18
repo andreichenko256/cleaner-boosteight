@@ -1,5 +1,9 @@
 import Foundation
 
+protocol OnboardingFactoryProtocol {
+    func make() -> [OnboardingPageModel]
+}
+
 enum OnboardingFactory {
     static func make() -> [OnboardingPageModel] {
         return [
@@ -18,8 +22,3 @@ enum OnboardingFactory {
         ]
     }
 }
-
-protocol OnboardingFactoryProtocol {
-    func make() -> [OnboardingPageModel]
-}
-

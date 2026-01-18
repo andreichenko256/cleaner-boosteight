@@ -1,10 +1,10 @@
 import UIKit
 
 final class OnboardingCoordinator: Coordinator {
-    let navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
-    
     var onFinish: VoidBlock?
+    
+    let navigationController: UINavigationController
     
     private let onboardingService: OnboardingServiceProtocol
     

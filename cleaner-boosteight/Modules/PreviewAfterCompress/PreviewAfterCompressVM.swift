@@ -16,10 +16,11 @@ protocol PreviewAfterCompressViewModelProtocol: AnyObject {
 }
 
 final class PreviewAfterCompressViewModel: PreviewAfterCompressViewModelProtocol {
-    private(set) var originalSize: String
-    @Published private(set) var compressedSize: String = "Calculating..."
-    private(set) var compressedVideoURL: URL?
     @Published private(set) var isVideoSaved: Bool = false
+    @Published private(set) var compressedSize: String = "Calculating..."
+    
+    private(set) var compressedVideoURL: URL?
+    private(set) var originalSize: String
     
     var compressedSizePublisher: AnyPublisher<String, Never> {
         $compressedSize.eraseToAnyPublisher()
@@ -78,8 +79,10 @@ final class PreviewAfterCompressViewModel: PreviewAfterCompressViewModelProtocol
             PHAssetChangeRequest.deleteAssets([self.originalVideoAsset] as NSArray)
         }
     }
-    
-    private func getFileSize(at url: URL) async -> UInt64 {
+}
+
+private extension PreviewAfterCompressViewModel {
+    func getFileSize(at url: URL) async -> UInt64 {
         return await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
                 do {

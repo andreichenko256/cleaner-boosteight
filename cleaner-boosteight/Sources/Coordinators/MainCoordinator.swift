@@ -1,8 +1,9 @@
 import UIKit
 
 final class MainCoordinator: Coordinator {
-    let navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
+    
+    let navigationController: UINavigationController
     
     private var mediaViewModel: MediaViewModel?
     private var duplicatePhotosViewModel: DuplicatePhotosViewModel?
@@ -39,9 +40,7 @@ private extension MainCoordinator {
     }
     
     func showVideoCompressor() {
-        let videoCompressorCoordinator = VideoCompressorCoordinator(
-            navigationController: navigationController
-        )
+        let videoCompressorCoordinator = VideoCompressorCoordinator(navigationController: navigationController)
         
         videoCompressorCoordinator.onFinish = { [weak self] in
             self?.removeChild(videoCompressorCoordinator)

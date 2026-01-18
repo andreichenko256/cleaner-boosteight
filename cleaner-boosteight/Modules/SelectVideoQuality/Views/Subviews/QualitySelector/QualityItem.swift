@@ -2,13 +2,13 @@ import UIKit
 import SnapKit
 
 final class QualityItem: UIView {
+    var onTap: VoidBlock?
+    
     var isSelected: Bool = false {
         didSet {
             updateSelectionState()
         }
     }
-    
-    var onTap: VoidBlock?
     
     private let titleLabel = {
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -47,7 +47,8 @@ private extension QualityItem {
     }
     
     func setupConstraints() {
-        [titleLabel, checkIcon].forEach {
+        [titleLabel,
+         checkIcon].forEach {
             addSubview($0)
         }
         

@@ -3,12 +3,13 @@ import SnapKit
 import Combine
 
 final class MediaViewController: UIViewController {
-    private let viewModel: MediaViewModel
     private var cancellables = Set<AnyCancellable>()
     
     private var mediaView: MediaView {
         return view as! MediaView
     }
+    
+    private let viewModel: MediaViewModel
     
     init(viewModel: MediaViewModel = MediaViewModel()) {
         self.viewModel = viewModel
@@ -72,9 +73,9 @@ extension MediaViewController: UICollectionViewDelegateFlowLayout {
         let interItemSpacing: CGFloat = 16
         let numberOfItemsPerRow: CGFloat = 2
         
-        let availableWidth = collectionView.bounds.width - 
-            (horizontalInset * 2) - 
-            (interItemSpacing * (numberOfItemsPerRow - 1))
+        let availableWidth = collectionView.bounds.width -
+        (horizontalInset * 2) -
+        (interItemSpacing * (numberOfItemsPerRow - 1))
         let itemWidth = availableWidth / numberOfItemsPerRow
         
         return CGSize(width: itemWidth, height: itemWidth * 0.73)

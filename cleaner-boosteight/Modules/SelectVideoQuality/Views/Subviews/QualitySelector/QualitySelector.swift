@@ -9,6 +9,10 @@ enum VideoQuality {
 final class QualitySelector: UIStackView {
     var onQualitySelected: ((VideoQuality) -> Void)?
     
+    private var allItems: [QualityItem] {
+        [lowQuality, mediumQuality, highQuality]
+    }
+    
     private(set) var selectedQuality: VideoQuality = .medium {
         didSet {
             updateSelection()
@@ -18,10 +22,6 @@ final class QualitySelector: UIStackView {
     private let lowQuality = QualityItem(title: "Low quality")
     private let mediumQuality = QualityItem(title: "Medium quality")
     private let highQuality = QualityItem(title: "High quality")
-    
-    private var allItems: [QualityItem] {
-        [lowQuality, mediumQuality, highQuality]
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,12 +33,6 @@ final class QualitySelector: UIStackView {
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension QualitySelector {
-    func setQuality(_ quality: VideoQuality) {
-        selectedQuality = quality
     }
 }
 
@@ -91,5 +85,11 @@ private extension QualitySelector {
         case .high:
             highQuality.isSelected = true
         }
+    }
+}
+
+extension QualitySelector {
+    func setQuality(_ quality: VideoQuality) {
+        selectedQuality = quality
     }
 }

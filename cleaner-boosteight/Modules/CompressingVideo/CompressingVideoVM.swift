@@ -52,11 +52,12 @@ final class CompressingVideoViewModel: CompressingVideoViewModelProtocol {
         String(format: "%.0f%%", progress * 100)
     }
     
+    private var compressionTask: Task<Void, Never>?
+    
     private let videoAsset: PHAsset
     private let quality: VideoQuality
     private let compressionService: VideoCompressionServiceProtocol
-    private var compressionTask: Task<Void, Never>?
-    
+
     init(
         videoAsset: PHAsset,
         quality: VideoQuality,

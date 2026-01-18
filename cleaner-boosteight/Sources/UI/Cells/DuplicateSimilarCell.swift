@@ -5,6 +5,7 @@ import Foundation
 
 final class DuplicateSimilarCell: UITableViewCell {
     static let reuseIdentifier = "DuplicateSimilarCell"
+    
     private var assets: [PHAsset] = []
     private var photoFetchService: PhotoFetchServiceProtocol?
     private var selectedAssetIdentifiers = Set<String>()

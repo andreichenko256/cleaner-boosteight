@@ -141,8 +141,8 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
                         let timeDifference = abs(data.date?.timeIntervalSince(previous.date ?? Date()) ?? 0)
                         
                         if timeDifference < 10 &&
-                           abs(previous.width - data.width) < 100 &&
-                           abs(previous.height - data.height) < 100 {
+                            abs(previous.width - data.width) < 100 &&
+                            abs(previous.height - data.height) < 100 {
                             if currentGroup.isEmpty {
                                 currentGroup.append(previous.asset)
                             }
@@ -255,8 +255,10 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
         
         return totalSize
     }
-    
-    private func isScreenRecording(_ asset: PHAsset) -> Bool {
+}
+
+private extension PhotoFetchService {
+    func isScreenRecording(_ asset: PHAsset) -> Bool {
         guard asset.mediaType == .video else { return false }
         
         let resources = PHAssetResource.assetResources(for: asset)
@@ -265,8 +267,8 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
             if resource.type == .video {
                 let filename = resource.originalFilename.lowercased()
                 if filename.contains("rpreplay") ||
-                   filename.contains("screen recording") ||
-                   filename.contains("screenrecording") {
+                    filename.contains("screen recording") ||
+                    filename.contains("screenrecording") {
                     return true
                 }
             }
@@ -279,7 +281,7 @@ final class PhotoFetchService: PhotoFetchServiceProtocol {
         let videoHeight = asset.pixelHeight
         
         if (videoWidth == screenWidth && videoHeight == screenHeight) ||
-           (videoWidth == screenHeight && videoHeight == screenWidth) {
+            (videoWidth == screenHeight && videoHeight == screenWidth) {
             return true
         }
         

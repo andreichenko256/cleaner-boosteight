@@ -10,12 +10,6 @@ final class MainViewModel {
         let usagePercentage: Double
     }
     
-    private let diskInfoService: DiskInfoServiceProtocol
-    private let permissionService: PermissionServiceProtocol
-    private let mediaCountService: MediaCountServiceProtocol
-    private let mediaCacheService: MediaCacheServiceProtocol
-    private let hapticService: HapticServiceProtocol
-    
     @Published private(set) var diskInfoDisplayModel: DiskInfoDisplayModel?
     @Published private(set) var error: Error?
     @Published private(set) var permissionGranted: Bool?
@@ -23,6 +17,12 @@ final class MainViewModel {
     @Published private(set) var alertModel: AlertModel?
     
     var onMediaGroupTapped: ((MediaType) -> Void)?
+    
+    private let diskInfoService: DiskInfoServiceProtocol
+    private let permissionService: PermissionServiceProtocol
+    private let mediaCountService: MediaCountServiceProtocol
+    private let mediaCacheService: MediaCacheServiceProtocol
+    private let hapticService: HapticServiceProtocol
     
     init(
         diskInfoService: DiskInfoServiceProtocol = DiskInfoService(),
@@ -37,10 +37,6 @@ final class MainViewModel {
         self.mediaCacheService = mediaCacheService
         self.hapticService = hapticService
         loadMediaData()
-    }
-    
-    private func convertBytesToGB(_ bytes: UInt64) -> Float {
-        return Float(bytes) / 1_073_741_824.0
     }
 }
 
@@ -142,6 +138,63 @@ private extension MainViewModel {
             }
         }
     }
+    
+    func convertBytesToGB(_ bytes: UInt64) -> Float {
+        return Float(bytes) / 1_073_741_824.0
+    }
+    
+    func showPermissionDeniedAlert() {
+        alertModel = AlertModel(
+            title: "Access Denied",
+            message: "Photo library access is required to view your media. Please enable it in Settings.",
+            primaryAction: .init(title: "Settings", style: .openSettings, handler: nil),
+            secondaryAction: .init(title: "Cancel", style: .cancel, handler: nil)
+        )
+    }
+    
+    func updateMediaCountsAsync() async {
+        async let videoCountAsync = mediaCountService.countAllVideos()
+        async let mediaCountAsync = mediaCountService.countAllMedia()
+        
+        let videoCount = await videoCountAsync
+        let mediaCount = await mediaCountAsync
+        
+        let cachedVideoInfo = mediaCacheService.getCachedMediaInfo(for: .videos)
+        let cachedMediaInfo = mediaCacheService.getCachedMediaInfo(for: .allMedia)
+        
+        let needsVideoUpdate = cachedVideoInfo == nil || cachedVideoInfo?.count != videoCount
+        let needsMediaUpdate = cachedMediaInfo == nil || cachedMediaInfo?.count != mediaCount
+        
+        await MainActor.run {
+            medias = medias.map { media in
+                var updatedMedia = media
+                switch media.type {
+                case .videoCompressor:
+                    updatedMedia.mediaCount = videoCount
+                    updatedMedia.isLoading = needsVideoUpdate
+                    if let cached = cachedVideoInfo, cached.count == videoCount {
+                        updatedMedia.mediaSize = convertBytesToGB(cached.size)
+                    }
+                case .media:
+                    updatedMedia.mediaCount = mediaCount
+                    updatedMedia.isLoading = needsMediaUpdate
+                    if let cached = cachedMediaInfo, cached.count == mediaCount {
+                        updatedMedia.mediaSize = convertBytesToGB(cached.size)
+                    }
+                }
+                return updatedMedia
+            }
+        }
+        
+        if needsVideoUpdate || needsMediaUpdate {
+            await loadMediaSizes(
+                updateVideos: needsVideoUpdate,
+                updateMedia: needsMediaUpdate,
+                videoCount: videoCount,
+                mediaCount: mediaCount
+            )
+        }
+    }
 }
 
 extension MainViewModel {
@@ -232,50 +285,6 @@ extension MainViewModel {
         }
     }
     
-    private func updateMediaCountsAsync() async {
-        async let videoCountAsync = mediaCountService.countAllVideos()
-        async let mediaCountAsync = mediaCountService.countAllMedia()
-        
-        let videoCount = await videoCountAsync
-        let mediaCount = await mediaCountAsync
-        
-        let cachedVideoInfo = mediaCacheService.getCachedMediaInfo(for: .videos)
-        let cachedMediaInfo = mediaCacheService.getCachedMediaInfo(for: .allMedia)
-        
-        let needsVideoUpdate = cachedVideoInfo == nil || cachedVideoInfo?.count != videoCount
-        let needsMediaUpdate = cachedMediaInfo == nil || cachedMediaInfo?.count != mediaCount
-        
-        await MainActor.run {
-            medias = medias.map { media in
-                var updatedMedia = media
-                switch media.type {
-                case .videoCompressor:
-                    updatedMedia.mediaCount = videoCount
-                    updatedMedia.isLoading = needsVideoUpdate
-                    if let cached = cachedVideoInfo, cached.count == videoCount {
-                        updatedMedia.mediaSize = convertBytesToGB(cached.size)
-                    }
-                case .media:
-                    updatedMedia.mediaCount = mediaCount
-                    updatedMedia.isLoading = needsMediaUpdate
-                    if let cached = cachedMediaInfo, cached.count == mediaCount {
-                        updatedMedia.mediaSize = convertBytesToGB(cached.size)
-                    }
-                }
-                return updatedMedia
-            }
-        }
-        
-        if needsVideoUpdate || needsMediaUpdate {
-            await loadMediaSizes(
-                updateVideos: needsVideoUpdate,
-                updateMedia: needsMediaUpdate,
-                videoCount: videoCount,
-                mediaCount: mediaCount
-            )
-        }
-    }
-    
     func handleMediaCellTap(type: MediaType) {
         let status = permissionService.checkPhotoLibraryStatus()
         
@@ -285,14 +294,5 @@ extension MainViewModel {
         }
         
         onMediaGroupTapped?(type)
-    }
-    
-    private func showPermissionDeniedAlert() {
-        alertModel = AlertModel(
-            title: "Access Denied",
-            message: "Photo library access is required to view your media. Please enable it in Settings.",
-            primaryAction: .init(title: "Settings", style: .openSettings, handler: nil),
-            secondaryAction: .init(title: "Cancel", style: .cancel, handler: nil)
-        )
     }
 }

@@ -8,14 +8,14 @@ final class SelectVideoQualityViewController: UIViewController {
     var onBack: VoidBlock?
     var onCompress: ((PHAsset, VideoQuality) -> Void)?
     
+    private var playerViewController: AVPlayerViewController?
+    private var cancellables = Set<AnyCancellable>()
+    
     private var electVideoQualityView: SelectVideoQualityView {
         return view as! SelectVideoQualityView
     }
     
     private let viewModel: SelectVideoQualityViewModelProtocol
-    private var playerViewController: AVPlayerViewController?
-    private var cancellables = Set<AnyCancellable>()
-    
     
     init(viewModel: SelectVideoQualityViewModelProtocol) {
         self.viewModel = viewModel
@@ -25,7 +25,6 @@ final class SelectVideoQualityViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,6 +117,7 @@ private extension SelectVideoQualityViewController {
         .store(in: &cancellables)
     }
 }
+
 private extension SelectVideoQualityViewController {
     func handleQualitySelection(_ quality: VideoQuality) {
         viewModel.selectQuality(quality)

@@ -7,14 +7,15 @@ import Photos
 final class PreviewAfterCompressViewController: UIViewController {
     var onBack: VoidBlock?
     
+    private var playerViewController: AVPlayerViewController?
+    private var cancellables = Set<AnyCancellable>()
+    private var isNavigatingBack = false
+    
     private var previewAfterCompressView: PreviewAfterCompressView {
         return view as! PreviewAfterCompressView
     }
     
     private let viewModel: PreviewAfterCompressViewModelProtocol
-    private var playerViewController: AVPlayerViewController?
-    private var cancellables = Set<AnyCancellable>()
-    private var isNavigatingBack = false
     
     init(viewModel: PreviewAfterCompressViewModelProtocol) {
         self.viewModel = viewModel
@@ -57,19 +58,6 @@ final class PreviewAfterCompressViewController: UIViewController {
         if navigationController?.interactivePopGestureRecognizer?.delegate === self {
             navigationController?.interactivePopGestureRecognizer?.delegate = nil
         }
-    }
-}
-
-extension PreviewAfterCompressViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == navigationController?.interactivePopGestureRecognizer {
-            if !isNavigatingBack {
-                isNavigatingBack = true
-                onBack?()
-                return false
-            }
-        }
-        return true
     }
 }
 
@@ -204,5 +192,18 @@ private extension PreviewAfterCompressViewController {
         playerViewController?.player?.pause()
         playerViewController?.player = nil
         cancellables.removeAll()
+    }
+}
+
+extension PreviewAfterCompressViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == navigationController?.interactivePopGestureRecognizer {
+            if !isNavigatingBack {
+                isNavigatingBack = true
+                onBack?()
+                return false
+            }
+        }
+        return true
     }
 }

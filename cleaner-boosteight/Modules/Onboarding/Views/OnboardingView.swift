@@ -22,7 +22,9 @@ final class OnboardingView: MainCommonView {
 
 private extension OnboardingView {
     func setupConstraints() {
-        [continueButton, pageControl, containerView].forEach {
+        [continueButton,
+         pageControl,
+         containerView].forEach {
             addSubview($0)
         }
         

@@ -26,6 +26,8 @@ class CircularProgressView: UIView {
         }
     }
     
+    private let containerView = UIView()
+    
     private let backgroundLayer = {
         $0.fillColor = UIColor.clear.cgColor
         $0.lineCap = .round
@@ -55,8 +57,6 @@ class CircularProgressView: UIView {
         $0.textAlignment = .center
         return $0
     }(UILabel())
-    
-    private let containerView = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

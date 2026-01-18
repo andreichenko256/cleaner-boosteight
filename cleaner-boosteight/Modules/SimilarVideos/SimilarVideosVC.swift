@@ -4,9 +4,7 @@ import Combine
 import Photos
 
 final class SimilarVideosViewController: UIViewController {
-    private let viewModel: SimilarVideosViewModel
     private var cancellables = Set<AnyCancellable>()
-    private let photoFetchService = PhotoFetchService()
     private var groupSelectionStates: [String: Set<String>] = [:]
     private var sizeCalculationTask: Task<Void, Never>?
     
@@ -14,6 +12,9 @@ final class SimilarVideosViewController: UIViewController {
         return view as! DuplicateSimilarView
     }
     
+    private let viewModel: SimilarVideosViewModel
+    private let photoFetchService = PhotoFetchService()
+
     init(viewModel: SimilarVideosViewModel = SimilarVideosViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -37,7 +38,7 @@ final class SimilarVideosViewController: UIViewController {
 }
 
 extension SimilarVideosViewController: UITableViewDelegate, UITableViewDataSource {
-    func setupTableView() {
+    private func setupTableView() {
         duplicateSimilarView.tableView.dataSource = self
         duplicateSimilarView.tableView.delegate = self
     }
@@ -179,7 +180,7 @@ private extension SimilarVideosViewController {
         updateSelectionUI()
     }
     
-    private func reloadVisibleCollectionViews() {
+    func reloadVisibleCollectionViews() {
         for (_, cell) in duplicateSimilarView.tableView.visibleCells.enumerated() {
             if let duplicateCell = cell as? DuplicateSimilarCell,
                let indexPath = duplicateSimilarView.tableView.indexPath(for: cell),
@@ -236,7 +237,7 @@ private extension SimilarVideosViewController {
         }
     }
     
-    private func calculateSelectedCount() -> Int {
+    func calculateSelectedCount() -> Int {
         var totalCount = 0
         for selectedIds in groupSelectionStates.values {
             totalCount += selectedIds.count
@@ -262,7 +263,7 @@ private extension SimilarVideosViewController {
         return selectedAssets
     }
     
-    private func calculateSizeAsync() async -> UInt64 {
+    func calculateSizeAsync() async -> UInt64 {
         let assets = getSelectedAssets()
         var totalSize: UInt64 = 0
         let batchSize = 5
@@ -293,7 +294,7 @@ private extension SimilarVideosViewController {
         return totalSize
     }
     
-    private func formatSizeInMB(_ bytes: UInt64) -> String {
+    func formatSizeInMB(_ bytes: UInt64) -> String {
         let mb = Double(bytes) / 1_048_576.0
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
@@ -328,7 +329,7 @@ private extension SimilarVideosViewController {
         present(alert, animated: true)
     }
     
-    private func deleteSelectedVideos() async {
+    func deleteSelectedVideos() async {
         var assetsToDelete: [PHAsset] = []
         
         for (groupId, selectedIds) in groupSelectionStates {

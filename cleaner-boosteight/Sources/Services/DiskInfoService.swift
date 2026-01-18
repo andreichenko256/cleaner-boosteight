@@ -27,8 +27,10 @@ final class DiskInfoService: DiskInfoServiceProtocol {
             usedSpace: usedSpace
         )
     }
-    
-    private func getTotalDiskCapacity() -> UInt64 {
+}
+
+private extension DiskInfoService {
+    func getTotalDiskCapacity() -> UInt64 {
         if let attributes = try? fileManager.attributesOfFileSystem(forPath: NSHomeDirectory()),
            let size = attributes[.systemSize] as? NSNumber {
             return size.uint64Value
@@ -36,7 +38,7 @@ final class DiskInfoService: DiskInfoServiceProtocol {
         return ProcessInfo.processInfo.physicalMemory
     }
     
-    private func getAvailableDiskSpace() -> UInt64 {
+    func getAvailableDiskSpace() -> UInt64 {
         if #available(iOS 11.0, *) {
             if let space = try? URL(fileURLWithPath: NSHomeDirectory())
                 .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])

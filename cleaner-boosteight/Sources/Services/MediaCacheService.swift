@@ -19,7 +19,6 @@ struct CachedMediaInfo: Codable {
 }
 
 final class MediaCacheService: MediaCacheServiceProtocol {
-    
     private let userDefaults: UserDefaults
     private let cacheExpirationDays: Int
     
@@ -60,18 +59,20 @@ final class MediaCacheService: MediaCacheServiceProtocol {
     func clearCache(for type: MediaCacheType) {
         userDefaults.removeObject(forKey: cacheKey(for: type))
     }
-    
-    private func cacheKey(for type: MediaCacheType) -> String {
-        return "media_cache_\(type.rawValue)"
-    }
-    
-    private func isCacheExpired(_ timestamp: Date) -> Bool {
+}
+
+private extension MediaCacheService {
+    func isCacheExpired(_ timestamp: Date) -> Bool {
         let expirationDate = Calendar.current.date(
             byAdding: .day,
             value: cacheExpirationDays,
             to: timestamp
         ) ?? timestamp
         return Date() > expirationDate
+    }
+    
+    func cacheKey(for type: MediaCacheType) -> String {
+        return "media_cache_\(type.rawValue)"
     }
 }
 

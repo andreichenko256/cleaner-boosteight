@@ -35,19 +35,6 @@ final class SelectionView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print("SelectionView frame: \(frame)")
-        print("SelectionView bounds: \(bounds)")
-    }
-}
-
-extension SelectionView {
-    func updateSelectionState(hasSelectedItems: Bool) {
-        isAllSelected = hasSelectedItems
-        titleLabel.text = hasSelectedItems ? "Deselect all" : "Select all"
-    }
 }
 
 private extension SelectionView {
@@ -58,7 +45,8 @@ private extension SelectionView {
     }
     
     func setupConstraints() {
-        [checkMarkImageView, titleLabel].forEach {
+        [checkMarkImageView,
+         titleLabel].forEach {
             addSubview($0)
         }
         
@@ -96,5 +84,12 @@ private extension SelectionView {
         } else {
             onSelectAllTapped?()
         }
+    }
+}
+
+extension SelectionView {
+    func updateSelectionState(hasSelectedItems: Bool) {
+        isAllSelected = hasSelectedItems
+        titleLabel.text = hasSelectedItems ? "Deselect all" : "Select all"
     }
 }

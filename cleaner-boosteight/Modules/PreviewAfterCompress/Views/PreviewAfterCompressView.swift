@@ -44,7 +44,10 @@ private extension PreviewAfterCompressView {
     }
     
     func setupConstraints() {
-        [deleteLabel, keepOriginalButton, sizeChangeView, videoContainerView].forEach {
+        [deleteLabel,
+         keepOriginalButton,
+         sizeChangeView,
+         videoContainerView].forEach {
             addSubview($0)
         }
         
@@ -69,9 +72,7 @@ private extension PreviewAfterCompressView {
             $0.bottom.equalTo(deleteLabel.snp.top).offset(-28)
         }
     }
-}
-
-private extension PreviewAfterCompressView {
+    
     @objc func handleDeleteTap() {
         onDeleteTap?()
     }

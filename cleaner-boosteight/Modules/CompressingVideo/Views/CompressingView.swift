@@ -4,8 +4,6 @@ import SnapKit
 final class CompressingView: UIView {
     var onBackTap: VoidBlock?
     
-    let cancelButton = PrimaryButton(title: "Cancel")
-    
     lazy var backWhiteArrow = {
         $0.contentMode = .scaleAspectFit
         $0.snp.makeConstraints { make in
@@ -16,12 +14,7 @@ final class CompressingView: UIView {
         return $0
     }(UIImageView(image: .lightArrow))
     
-    private let loadingIndicator = {
-        $0.style = .large
-        $0.hidesWhenStopped = true
-        $0.color = .black
-        return $0
-    }(UIActivityIndicatorView())
+    let cancelButton = PrimaryButton(title: "Cancel")
     
     let progressLabel = {
         $0.text = "44%"
@@ -30,6 +23,13 @@ final class CompressingView: UIView {
         $0.font = .systemFont(ofSize: 24, weight: .semibold)
         return $0
     }(UILabel())
+    
+    private let loadingIndicator = {
+        $0.style = .large
+        $0.hidesWhenStopped = true
+        $0.color = .black
+        return $0
+    }(UIActivityIndicatorView())
     
     private let compressingLabel = {
         $0.text = "Compessing Video ..."
@@ -67,7 +67,9 @@ private extension CompressingView {
     }
     
     func setupConstraints() {
-        [backWhiteArrow, containerView, cancelButton,
+        [backWhiteArrow,
+         containerView,
+         cancelButton,
          dontCloseLabel].forEach {
             addSubview($0)
         }
@@ -116,9 +118,7 @@ private extension CompressingView {
             $0.bottom.equalToSuperview()
         }
     }
-}
-
-private extension CompressingView {
+    
     @objc func handleBackTap() {
         onBackTap?()
     }

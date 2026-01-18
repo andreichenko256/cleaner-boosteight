@@ -80,25 +80,34 @@ final class BestCell: UICollectionViewCell {
     }
 }
 
-extension BestCell {
-    func configure(with asset: PHAsset, isBest: Bool = false, isSelected: Bool = false, photoFetchService: PhotoFetchServiceProtocol) {
-        self.currentAsset = asset
-        self.photoFetchService = photoFetchService
-        self.representedAssetIdentifier = asset.localIdentifier
-        bestView.isHidden = !isBest
-        checkMarkImageView.image = isSelected ? .checkmarkSquare : .uncheckedMarkSquare
+private extension BestCell {
+    func setupUI() {
+        backgroundColor = .clear
+        layer.cornerRadius = 10
+        clipsToBounds = true
+    }
+    
+    func setupConstraints() {
+        [previewImageView, checkMarkImageView, bestView].forEach {
+            contentView.addSubview($0)
+        }
         
-        let cacheKey = asset.localIdentifier as NSString
+        previewImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
-        if let cachedImage = Self.thumbnailCache.object(forKey: cacheKey) {
-            previewImageView.image = cachedImage
-        } else {
-            previewImageView.image = nil
-            loadThumbnail(for: asset)
+        checkMarkImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(7.95)
+            $0.bottom.equalToSuperview().inset(11.25)
+        }
+        
+        bestView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(6.05)
+            $0.bottom.equalToSuperview().inset(11.25)
         }
     }
-
-    private func loadThumbnail(for asset: PHAsset) {
+    
+    func loadThumbnail(for asset: PHAsset) {
         let assetIdentifier = asset.localIdentifier
         
         guard assetIdentifier == representedAssetIdentifier else {
@@ -126,37 +135,27 @@ extension BestCell {
             }
         }
     }
+}
+
+extension BestCell {
+    func configure(with asset: PHAsset, isBest: Bool = false, isSelected: Bool = false, photoFetchService: PhotoFetchServiceProtocol) {
+        self.currentAsset = asset
+        self.photoFetchService = photoFetchService
+        self.representedAssetIdentifier = asset.localIdentifier
+        bestView.isHidden = !isBest
+        checkMarkImageView.image = isSelected ? .checkmarkSquare : .uncheckedMarkSquare
+        
+        let cacheKey = asset.localIdentifier as NSString
+        
+        if let cachedImage = Self.thumbnailCache.object(forKey: cacheKey) {
+            previewImageView.image = cachedImage
+        } else {
+            previewImageView.image = nil
+            loadThumbnail(for: asset)
+        }
+    }
     
     func updateSelection(isSelected: Bool) {
         checkMarkImageView.image = isSelected ? .checkmarkSquare : .uncheckedMarkSquare
-    }
-
-}
-
-private extension BestCell {
-    func setupUI() {
-        backgroundColor = .clear
-        layer.cornerRadius = 10
-        clipsToBounds = true
-    }
-    
-    func setupConstraints() {
-        [previewImageView, checkMarkImageView, bestView].forEach {
-            contentView.addSubview($0)
-        }
-        
-        previewImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        checkMarkImageView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(7.95)
-            $0.bottom.equalToSuperview().inset(11.25)
-        }
-        
-        bestView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(6.05)
-            $0.bottom.equalToSuperview().inset(11.25)
-        }
     }
 }

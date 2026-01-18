@@ -26,14 +26,6 @@ protocol SelectVideoQualityViewModelProtocol: AnyObject {
 }
 
 final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
-    
-    @Published private(set) var player: AVPlayer?
-    @Published private(set) var selectedQuality: VideoQuality = .medium
-    @Published private(set) var isLoadingVideo: Bool = false
-    @Published private(set) var errorMessage: String?
-    @Published private(set) var currentSize: String
-    @Published private(set) var estimatedSize: String
-    
     var playerPublisher: AnyPublisher<AVPlayer?, Never> {
         $player.eraseToAnyPublisher()
     }
@@ -58,9 +50,6 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
         $estimatedSize.eraseToAnyPublisher()
     }
     
-    private let videoModel: VideoModel
-    private var cancellables = Set<AnyCancellable>()
-    
     var videoAsset: PHAsset {
         videoModel.asset
     }
@@ -69,6 +58,17 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
         videoModel.size
     }
     
+    @Published private(set) var player: AVPlayer?
+    @Published private(set) var selectedQuality: VideoQuality = .medium
+    @Published private(set) var isLoadingVideo: Bool = false
+    @Published private(set) var errorMessage: String?
+    @Published private(set) var currentSize: String
+    @Published private(set) var estimatedSize: String
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    private let videoModel: VideoModel
+
     init(videoModel: VideoModel) {
         self.videoModel = videoModel
         self.currentSize = ByteSizeFormatter.format(videoModel.size)
@@ -107,8 +107,10 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
         player = nil
         cancellables.removeAll()
     }
-    
-    private func handleVideoLoaded(playerItem: AVPlayerItem?, info: [AnyHashable: Any]?) {
+}
+
+private extension SelectVideoQualityViewModel {
+    func handleVideoLoaded(playerItem: AVPlayerItem?, info: [AnyHashable: Any]?) {
         isLoadingVideo = false
         
         if let error = info?[PHImageErrorKey] as? Error {
@@ -124,7 +126,7 @@ final class SelectVideoQualityViewModel: SelectVideoQualityViewModelProtocol {
         player = AVPlayer(playerItem: playerItem)
     }
     
-    private static func calculateEstimatedSize(original: UInt64, quality: VideoQuality) -> UInt64 {
+    static func calculateEstimatedSize(original: UInt64, quality: VideoQuality) -> UInt64 {
         let compressionRatio: Double
         
         switch quality {

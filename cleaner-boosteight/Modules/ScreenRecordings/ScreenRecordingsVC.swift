@@ -4,15 +4,16 @@ import Combine
 import Photos
 
 final class ScreenRecordingsViewController: UIViewController {
-    private let viewModel: ScreenRecordingsViewModel
     private var cancellables = Set<AnyCancellable>()
-    private let thumbnailCache = NSCache<NSString, UIImage>()
-    private let photoFetchService = PhotoFetchService()
     private var sizeCalculationTask: Task<Void, Never>?
     
     private var screenRecordingsView: MediaGridView {
         return view as! MediaGridView
     }
+    
+    private let thumbnailCache = NSCache<NSString, UIImage>()
+    private let photoFetchService = PhotoFetchService()
+    private let viewModel: ScreenRecordingsViewModel
     
     init(viewModel: ScreenRecordingsViewModel = ScreenRecordingsViewModel()) {
         self.viewModel = viewModel
@@ -212,7 +213,7 @@ private extension ScreenRecordingsViewController {
         }
     }
     
-    private func calculateSizeAsync() async -> UInt64 {
+    func calculateSizeAsync() async -> UInt64 {
         let selectedItems = viewModel.selectedItems
         var totalSize: UInt64 = 0
         let batchSize = 5

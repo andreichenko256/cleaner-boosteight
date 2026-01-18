@@ -53,8 +53,10 @@ final class VideoCompressionService: VideoCompressionServiceProtocol {
             }
         }
     }
-    
-    private func compress(
+}
+
+private extension VideoCompressionService {
+    func compress(
         asset: AVAsset,
         quality: VideoQuality,
         progressHandler: @escaping (Float) -> Void
@@ -94,7 +96,7 @@ final class VideoCompressionService: VideoCompressionServiceProtocol {
         }
     }
     
-    private func createExportSession(asset: AVAsset, quality: VideoQuality) -> AVAssetExportSession? {
+    func createExportSession(asset: AVAsset, quality: VideoQuality) -> AVAssetExportSession? {
         let preset = getPreset(for: quality)
         
         guard let exportSession = AVAssetExportSession(
@@ -107,7 +109,7 @@ final class VideoCompressionService: VideoCompressionServiceProtocol {
         return exportSession
     }
     
-    private func getPreset(for quality: VideoQuality) -> String {
+    func getPreset(for quality: VideoQuality) -> String {
         switch quality {
         case .low:
             return AVAssetExportPresetLowQuality
@@ -118,7 +120,7 @@ final class VideoCompressionService: VideoCompressionServiceProtocol {
         }
     }
     
-    private func createOutputURL() -> URL {
+    func createOutputURL() -> URL {
         let documentsPath = FileManager.default.urls(
             for: .documentDirectory,
             in: .userDomainMask

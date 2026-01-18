@@ -2,10 +2,7 @@ import UIKit
 import SnapKit
 
 final class PageControlView: UIView {
-    private var dots: [UIView] = []
-    
-    private let dotSize: CGFloat = 8
-    
+
     var numberOfPages: Int = 3 {
         didSet {
             setupDots()
@@ -18,10 +15,14 @@ final class PageControlView: UIView {
         }
     }
     
+    private var dots: [UIView] = []
+    
     private var cornerRadius: CGFloat {
         dotSize / 2
     }
     
+    private let dotSize: CGFloat = 8
+
     private let stackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .horizontal

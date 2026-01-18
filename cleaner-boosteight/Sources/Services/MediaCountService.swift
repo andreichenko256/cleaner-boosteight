@@ -86,23 +86,6 @@ final class MediaCountService: MediaCountServiceProtocol {
         }
     }
     
-    private func calculateSizeForAssets(_ fetchResult: PHFetchResult<PHAsset>) -> UInt64 {
-        var totalSize: UInt64 = 0
-        
-        fetchResult.enumerateObjects { asset, _, _ in
-            let resources = PHAssetResource.assetResources(for: asset)
-            for resource in resources {
-                if let unsignedInt64 = resource.value(forKey: "fileSize") as? UInt64 {
-                    totalSize += unsignedInt64
-                }
-            }
-        }
-        
-        return totalSize
-    }
-}
-
-extension MediaCountService {
     func countScreenshots() async -> Int {
         return await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
@@ -202,9 +185,9 @@ extension MediaCountService {
                        let currDate = asset.creationDate {
                         let timeDifference = abs(currDate.timeIntervalSince(prevDate))
                         
-                        if timeDifference < 10 && 
-                           abs(previous.pixelWidth - asset.pixelWidth) < 100 &&
-                           abs(previous.pixelHeight - asset.pixelHeight) < 100 {
+                        if timeDifference < 10 &&
+                            abs(previous.pixelWidth - asset.pixelWidth) < 100 &&
+                            abs(previous.pixelHeight - asset.pixelHeight) < 100 {
                             similarCount += 1
                         }
                     }
@@ -305,8 +288,25 @@ extension MediaCountService {
             }
         }
     }
+}
+
+private extension MediaCountService {
+    func calculateSizeForAssets(_ fetchResult: PHFetchResult<PHAsset>) -> UInt64 {
+        var totalSize: UInt64 = 0
+        
+        fetchResult.enumerateObjects { asset, _, _ in
+            let resources = PHAssetResource.assetResources(for: asset)
+            for resource in resources {
+                if let unsignedInt64 = resource.value(forKey: "fileSize") as? UInt64 {
+                    totalSize += unsignedInt64
+                }
+            }
+        }
+        
+        return totalSize
+    }
     
-    private func isScreenRecording(_ asset: PHAsset) -> Bool {
+    func isScreenRecording(_ asset: PHAsset) -> Bool {
         guard asset.mediaType == .video else { return false }
         
         let resources = PHAssetResource.assetResources(for: asset)
@@ -314,9 +314,9 @@ extension MediaCountService {
         for resource in resources {
             if resource.type == .video {
                 let filename = resource.originalFilename.lowercased()
-                if filename.contains("rpreplay") || 
-                   filename.contains("screen recording") ||
-                   filename.contains("screenrecording") {
+                if filename.contains("rpreplay") ||
+                    filename.contains("screen recording") ||
+                    filename.contains("screenrecording") {
                     return true
                 }
             }
@@ -329,7 +329,7 @@ extension MediaCountService {
         let videoHeight = asset.pixelHeight
         
         if (videoWidth == screenWidth && videoHeight == screenHeight) ||
-           (videoWidth == screenHeight && videoHeight == screenWidth) {
+            (videoWidth == screenHeight && videoHeight == screenWidth) {
             return true
         }
         

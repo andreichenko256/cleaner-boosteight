@@ -39,7 +39,7 @@ final class CustomNavigationBar: UIView {
         titleLabel.text = title
         setupConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -47,7 +47,8 @@ final class CustomNavigationBar: UIView {
 
 private extension CustomNavigationBar {
     func setupConstraints() {
-        [arrowLeftImageView, titleLabel].forEach {
+        [arrowLeftImageView,
+         titleLabel].forEach {
             addSubview($0)
         }
         

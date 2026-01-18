@@ -4,12 +4,10 @@ import SnapKit
 final class VideoCompressorView: MainCommonView, CustomNavigationBarConfigurable {
     let customNavigationBar = CustomNavigationBar(title: "Video Compressor")
     
-    private let videoInfoBadge = InfoBadgeView(title: "Loading...", icon: .videoBadge)
-    
     let videosCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 176, height: 176)
+        
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 24
         
@@ -18,8 +16,11 @@ final class VideoCompressorView: MainCommonView, CustomNavigationBarConfigurable
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(VideoCompressorCell.self, forCellWithReuseIdentifier: VideoCompressorCell.reuseIdentifier)
         collectionView.contentInset.top = 16
+        collectionView.contentInset.bottom = 16
         return collectionView
     }()
+    
+    private let videoInfoBadge = InfoBadgeView(title: "Loading...", icon: .videoBadge)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,11 +30,6 @@ final class VideoCompressorView: MainCommonView, CustomNavigationBarConfigurable
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func updateVideoInfo(count: Int, size: String) {
-        let text = "\(count) Videos • \(size)"
-        videoInfoBadge.updateTitle(text)
     }
 }
 
@@ -53,5 +49,12 @@ private extension VideoCompressorView {
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview()
         }
+    }
+}
+
+extension VideoCompressorView {
+    func updateVideoInfo(count: Int, size: String) {
+        let text = "\(count) Videos • \(size)"
+        videoInfoBadge.updateTitle(text)
     }
 }

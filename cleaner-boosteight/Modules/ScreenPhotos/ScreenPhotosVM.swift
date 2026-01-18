@@ -3,14 +3,7 @@ import Photos
 import Foundation
 
 final class ScreenPhotosViewModel {
-    private let photoFetchService: PhotoFetchServiceProtocol
-    private let mediaCountService: MediaCountServiceProtocol
-    
-    @Published private(set) var items: [PhotoAssetModel] = []
-    @Published private(set) var count: Int = 0
-    @Published private(set) var totalSize: String = "0 MB"
-    @Published private(set) var isLoading: Bool = false
-    
+
     var selectedItems: [PhotoAssetModel] {
         items.filter { $0.isSelected }
     }
@@ -19,6 +12,14 @@ final class ScreenPhotosViewModel {
         selectedItems.count
     }
     
+    @Published private(set) var items: [PhotoAssetModel] = []
+    @Published private(set) var count: Int = 0
+    @Published private(set) var totalSize: String = "0 MB"
+    @Published private(set) var isLoading: Bool = false
+    
+    private let photoFetchService: PhotoFetchServiceProtocol
+    private let mediaCountService: MediaCountServiceProtocol
+
     init(
         photoFetchService: PhotoFetchServiceProtocol = PhotoFetchService(),
         mediaCountService: MediaCountServiceProtocol = MediaCountService()

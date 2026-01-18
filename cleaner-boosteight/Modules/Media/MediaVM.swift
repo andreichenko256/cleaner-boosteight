@@ -3,11 +3,11 @@ import Combine
 import UIKit
 
 final class MediaViewModel {
+    @Published private(set) var mediaItems: [MediaModel] = []
+    
+    var onMediaItemTapped: ((MediaItemType) -> Void)?
     
     private let mediaCountService: MediaCountServiceProtocol
-    
-    @Published private(set) var mediaItems: [MediaModel] = []
-    var onMediaItemTapped: ((MediaItemType) -> Void)?
     
     init(mediaCountService: MediaCountServiceProtocol = MediaCountService()) {
         self.mediaCountService = mediaCountService
@@ -25,18 +25,6 @@ final class MediaViewModel {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc private func handleMediaDeleted() {
-        Task {
-            await loadMediaData()
-        }
-    }
-    
-    func handleMediaItemTap(at index: Int) {
-        guard index < mediaItems.count else { return }
-        let item = mediaItems[index]
-        onMediaItemTapped?(item.type)
     }
 }
 
@@ -116,9 +104,21 @@ private extension MediaViewModel {
             ]
         }
     }
+    
+    @objc func handleMediaDeleted() {
+        Task {
+            await loadMediaData()
+        }
+    }
 }
 
 extension MediaViewModel {
+    func handleMediaItemTap(at index: Int) {
+        guard index < mediaItems.count else { return }
+        let item = mediaItems[index]
+        onMediaItemTapped?(item.type)
+    }
+    
     func refreshMediaData() {
         Task {
             await loadMediaData()

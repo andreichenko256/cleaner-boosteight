@@ -57,8 +57,11 @@ final class SelectVideoQualityView: MainCommonView, CustomNavigationBarConfigura
 
 private extension SelectVideoQualityView {
     func setupConstraints() {
-        [customNavigationBar, videoContainerView,
-         compressButton, qualitySelector, sizeChangeView].forEach {
+        [customNavigationBar,
+         videoContainerView,
+         compressButton,
+         qualitySelector,
+         sizeChangeView].forEach {
             addSubview($0)
         }
         

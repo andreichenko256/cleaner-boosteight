@@ -26,9 +26,7 @@ private extension PrimaryButton {
         titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         layer.cornerRadius = 16
     }
-}
-
-private extension PrimaryButton {
+    
     func setupTargetActions() {
         addTarget(self, action: #selector(handleTap), for: .touchUpInside)
     }

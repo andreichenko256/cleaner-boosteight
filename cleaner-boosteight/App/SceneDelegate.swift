@@ -1,5 +1,4 @@
 import UIKit
-import Photos
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -22,4 +21,3 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
     }
 }
-
