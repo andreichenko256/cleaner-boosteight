@@ -2,12 +2,12 @@
 
 iOS application for managing media files: video compression, finding duplicates and similar photos, managing screenshots and screen recordings.
 
-## Architecture
-
 ### Demo on Multiple Devices
 iPhone 17 Pro Max iOS 26.2 - https://drive.google.com/file/d/1qX8-BsfVU5-i1ZgHEW7nAGxZ7YLYbGK3/view?usp=sharing <br>
 iPhone 17 iOS 26.2 - https://drive.google.com/file/d/1dhRM-vuJYWv5i9XcxAxCW3YdwMHWfwoa/view?usp=sharing <br>
 iPhone 8 iOS 16.0 - https://drive.google.com/file/d/1rYMLAupTFOGZinFkek49F5C9TTagPUsE/view?usp=sharing
+
+## Architecture
 
 ### Patterns Used
 
