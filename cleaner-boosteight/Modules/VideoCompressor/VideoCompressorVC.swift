@@ -60,8 +60,14 @@ extension VideoCompressorViewController: UICollectionViewDataSource, UICollectio
         cell.configure(with: video)
         
         let thumbnailSize = CGSize(width: 352, height: 352)
-        viewModel.getThumbnail(for: indexPath.item, targetSize: thumbnailSize) { [weak cell] thumbnail in
-            cell?.updateThumbnail(thumbnail)
+        viewModel.getThumbnail(for: indexPath.item, targetSize: thumbnailSize) { [weak cell, weak collectionView] thumbnail in
+            guard let cell = cell,
+                  let collectionView = collectionView,
+                  let currentIndexPath = collectionView.indexPath(for: cell),
+                  currentIndexPath == indexPath else {
+                return
+            }
+            cell.updateThumbnail(thumbnail)
         }
         
         return cell
