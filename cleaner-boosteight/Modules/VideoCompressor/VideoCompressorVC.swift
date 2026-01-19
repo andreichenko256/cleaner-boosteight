@@ -112,13 +112,18 @@ extension VideoCompressorViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let horizontalInset: CGFloat = 8
-        let interItemSpacing: CGFloat = 24
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let interItemSpacing: CGFloat = 8
         let numberOfItemsPerRow: CGFloat = 2
         
+        let sectionInsets = flowLayout.sectionInset
         let availableWidth = collectionView.bounds.width -
-        (horizontalInset * 2) -
-        (interItemSpacing * (numberOfItemsPerRow - 1))
+            sectionInsets.left -
+            sectionInsets.right -
+            (interItemSpacing * (numberOfItemsPerRow - 1))
         let itemWidth = availableWidth / numberOfItemsPerRow
         
         return CGSize(width: itemWidth, height: itemWidth)

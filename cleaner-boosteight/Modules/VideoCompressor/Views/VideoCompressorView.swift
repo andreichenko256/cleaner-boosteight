@@ -10,6 +10,7 @@ final class VideoCompressorView: MainCommonView, CustomNavigationBarConfigurable
         
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 24
+        layout.sectionInset = .zero
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear

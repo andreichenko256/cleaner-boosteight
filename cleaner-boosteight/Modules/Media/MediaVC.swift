@@ -69,13 +69,21 @@ extension MediaViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let horizontalInset: CGFloat = 16.7
-        let interItemSpacing: CGFloat = 16
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let interItemSpacing: CGFloat = 6.6
         let numberOfItemsPerRow: CGFloat = 2
         
+        let sectionInsets = flowLayout.sectionInset
+        let contentInsets = collectionView.contentInset
         let availableWidth = collectionView.bounds.width -
-        (horizontalInset * 2) -
-        (interItemSpacing * (numberOfItemsPerRow - 1))
+            contentInsets.left -
+            contentInsets.right -
+            sectionInsets.left -
+            sectionInsets.right -
+            (interItemSpacing * (numberOfItemsPerRow - 1))
         let itemWidth = availableWidth / numberOfItemsPerRow
         
         return CGSize(width: itemWidth, height: itemWidth * 0.73)

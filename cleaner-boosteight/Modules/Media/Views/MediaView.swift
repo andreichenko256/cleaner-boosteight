@@ -5,13 +5,11 @@ final class MediaView: MainCommonView, CustomNavigationBarConfigurable {
     let customNavigationBar = CustomNavigationBar(title: "Media")
     
     let mediaCollectionView = {
-        let horizontalInset: CGFloat = 16
-        let interItemSpacing: CGFloat = 16
-        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = horizontalInset
-        layout.minimumInteritemSpacing = interItemSpacing
+        layout.minimumInteritemSpacing = 6.6
+        layout.minimumLineSpacing = 16
+        layout.sectionInset = .zero
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(MediaCell.self, forCellWithReuseIdentifier: MediaCell.reuseIdentifier)
